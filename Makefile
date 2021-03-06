@@ -43,8 +43,6 @@ $(EXE).tns: $(EXE).elf
 	$(GENZEHN) --input $^ --output $@.zehn $(ZEHNFLAGS)
 	make-prg $@.zehn $@
 	rm $@.zehn
-	rm /home/sylvain/SharedFolder/SharedFolder/*.tns
-	cp $(EXE).tns /home/sylvain/SharedFolder/SharedFolder/
 
 clean:
 	rm -f $(OBJS) $(DISTDIR)/$(EXE).tns $(DISTDIR)/$(EXE).elf $(DISTDIR)/$(EXE).zehn
