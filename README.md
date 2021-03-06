@@ -9,3 +9,4 @@ Copy 001.bmp.tns, 002.bmp.tns, Widgets.tns in a folder called Widget at the root
 This has only be tested on Ti NSpire CX II-T CAS using 5.2.0.711 and Ndless 5.2.
 
 Please report bugs so what they can be corrected in next revisions.
+
