@@ -10,7 +10,7 @@ This has only be tested on Ti NSpire CX II-T CAS using 5.2.0.711 and Ndless 5.2.
 
 Please report bugs so what they can be corrected in next revisions.
 
-Examples of an dummy application using the toolkit
+Examples of a dummy application using the toolkit
 
 <img src="https://imgur.com/JXtPthu.png" align="left"> <img src="https://imgur.com/1b8JVKE.png" align="right">
 
