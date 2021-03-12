@@ -11,7 +11,7 @@ class ContainerHWidget : public Widget
         ContainerHWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "ContainerH"; };
         virtual ~ContainerHWidget() { };
 
-        virtual void adjust();
+        virtual void adjust() override;
 
         virtual int getsize() { return nbchildren; };
 

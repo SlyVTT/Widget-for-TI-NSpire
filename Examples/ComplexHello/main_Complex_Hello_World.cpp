@@ -33,9 +33,7 @@ int main ( int argc, char** argv )
     ButtonWidget *buttonsmaller = new ButtonWidget( "Smaller", 1, 1, 1, 1, containerh );
 
     // the magic is coming from the container that will compute the size of the components
-    containerv->adjust();
-    containerh->adjust();
-
+    window->adjust();
 
 
     // We link the window to the desktop
@@ -44,8 +42,9 @@ int main ( int argc, char** argv )
     // We render the app for the first time so what we can see what's happening on the screen
     MyApp->render();
 
-    // We llop until que button is clicked
-    while (!buttonquit->ispressed())
+    // We loop until que button is clicked
+    bool done = false;
+    while (!buttonquit->ispressed() && !done)
     {
         // if we click to increase tjhe size
         if (buttonbigger->ispressed())
@@ -53,8 +52,7 @@ int main ( int argc, char** argv )
             // we set the size of the window
             window->setdimensions( 10, 10, 300, 200 );
             // and we re-do the magic
-            containerv->adjust();
-            containerh->adjust();
+            window->adjust();
             // we force the rendering
             MyApp->render();
         }
@@ -65,8 +63,7 @@ int main ( int argc, char** argv )
             // we set the size of the window
             window->setdimensions( 30, 40, 260, 100 );
             // and we re-do the magic
-            containerv->adjust();
-            containerh->adjust();
+            window->adjust();
             // we force the rendering
             MyApp->render();
         }
@@ -74,7 +71,8 @@ int main ( int argc, char** argv )
         // we run the application logic (rendiring is managed by the logic loop)
         MyApp->logic();
 
-
+        // this is a bit dirty, will be improved in next revisions
+        if (MyApp->keyboard->kbCTRL && MyApp->keyboard->kbESC) done = true;
 
     }
 

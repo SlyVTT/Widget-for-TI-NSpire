@@ -69,6 +69,12 @@ Widget::~Widget()
     children.clear();
 }
 
+void Widget::adjust()
+{
+    for (auto& c : children )
+        c->adjust();
+}
+
 void Widget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
 

@@ -49,6 +49,7 @@ class Widget
         virtual void setinvisible();
         virtual void enable();
         virtual void disable();
+        virtual void adjust();
 
         //GETTERs
         virtual int getxpos() { return xpos; };

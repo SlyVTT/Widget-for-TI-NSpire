@@ -7,10 +7,22 @@ void ContainerHWidget::adjust( )
 {
     if (parent)
     {
-        if (parent->getwidgettype()=="Window")
+
+        if ((parent->getwidgettype()=="ContainerV") || (parent->getwidgettype()=="ContainerH"))
+        {
+            // nothing to do, it comes from the parent
+        }
+        else
+        {
+            xpos = parent->getuseablexpos();
+            ypos = parent->getuseableypos();
+            width = parent->getuseablewidth();
+            height = parent->getuseableheight();
+        }
+/*        if (parent->getwidgettype()=="Window")
         {
             //remove 3 pixels all around the window borders and title bar to get the actual size
-            xpos = parent->getxpos() +3;
+            xpos = parent->getusxpos() +3;
             ypos = parent->getypos() +15;
             width = parent->getwidth() -6;
             height = parent->getheight() -18;
@@ -43,6 +55,7 @@ void ContainerHWidget::adjust( )
             //width = parent->getwidth();
             //height = parent->getheight();
         }
+*/
     }
 
     int i=0;
@@ -50,9 +63,14 @@ void ContainerHWidget::adjust( )
 
     for (auto& c : children )
     {
-        c->setdimensions( xpos+2 + width/nbchildren*i, ypos+2, width/nbchildren-4, height-4 );
+        //c->setdimensions( xpos+2 + width/nbchildren*i, ypos+2, width/nbchildren-4, height-4 );
+        c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height );
         i++;
     }
+
+    for (auto& c : children )
+        c->adjust();
+
 }
 
 void ContainerHWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
