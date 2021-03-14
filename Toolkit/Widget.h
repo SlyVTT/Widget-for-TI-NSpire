@@ -66,7 +66,7 @@ class Widget
         virtual bool getiscontainer() { return is_container; };
         virtual Widget* getparent() { return parent; };
         virtual bool getisenabled() { return is_enabled; };
-        virtual bool getisvisible() { return is_visible; };
+        virtual bool isvisible() { return is_visible; };
         virtual char* getwidgettype() {return widgettype; };
 
         //ACTION Linker

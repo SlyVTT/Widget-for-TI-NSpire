@@ -28,6 +28,15 @@ FontEngine::FontEngine()
 FontEngine::~FontEngine()
 {
     //dtor
+    for (auto& c : FontCollection )
+    {
+        for(auto& f : c->Font)
+        {
+            free( f->chardata );
+        }
+        delete c;
+    }
+    //delete FontCollection;
 }
 
 FontData* FontEngine::loadfontfromfilepointer( char* filename )

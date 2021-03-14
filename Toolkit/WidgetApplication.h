@@ -39,6 +39,7 @@ class WidgetApplication
         virtual void removedesktop( DesktopFeatures *desktoptoremove);
 
         virtual void addchild( Widget *root );
+        virtual void removechild( Widget *root );
         virtual void addchildtodesktop( Widget *root, DesktopFeatures *desktop );
 
         virtual DesktopFeatures* getcurrentdesktoppointer();
@@ -50,26 +51,37 @@ class WidgetApplication
 
         virtual void render( void );
         virtual void logic( void );
+        virtual void logicwithforcedrender( void );
 
         virtual void setuniformbackgroundcolor( Uint8 r, Uint8 g, Uint8 b);
         virtual void setbackgroundpicture( char *filename );
+        virtual void setdrawbackground( bool setter );
 
         // To handle the mouse and keyboard events
-        CursorTask *mouse = nullptr;
-        KeyboardTask *keyboard = nullptr;
-        nSDL_Font *currentfont = nullptr;
-
-        ColorEngine *colors = nullptr;
-        FontEngine *fonts = nullptr;
-
-        SDL_Surface *screen = nullptr;
+        virtual KeyboardTask* getkeyboardhandler();
+        virtual CursorTask* getmousehandler();
+        virtual ColorEngine* getcolorhandler();
+        virtual FontEngine* getfonthandler();
+        virtual SDL_Surface* getscreenhandler();
 
 
     protected:
         int cur_desktop = 0;
         int nb_desktop = 1;
         std::vector< DesktopFeatures* > desktops;
+
         DesktopFeatures* currentdesktop;
+
+        CursorTask *mouse = nullptr;
+        KeyboardTask *keyboard = nullptr;
+        //nSDL_Font *currentfont = nullptr;
+
+        ColorEngine *colors = nullptr;
+        FontEngine *fonts = nullptr;
+
+        SDL_Surface *screen = nullptr;
+
+        bool backgroundtobedrawn = true;
 
     private:
 };

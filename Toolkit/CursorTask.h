@@ -4,6 +4,12 @@
 #include <SDL/SDL_video.h>
 
 
+enum cursortype
+{
+    triangle = 0,
+    roundclock = 1
+};
+
 class CursorTask
 {
     public:
@@ -19,6 +25,7 @@ class CursorTask
         virtual bool ismouseclickevent() { return mouseclickevent; };
         virtual bool ismousereleaseevent() { return mousereleaseevent; };
 
+        virtual void setcursortype( cursortype type );
 
         int x = 0;
         int y = 0;
@@ -29,6 +36,8 @@ class CursorTask
         bool mousemoveevent = false;
         bool mouseclickevent = false;
         bool mousereleaseevent = false;
+
+        cursortype cursor = triangle;
 };
 
 #endif // CURSORTASK_H

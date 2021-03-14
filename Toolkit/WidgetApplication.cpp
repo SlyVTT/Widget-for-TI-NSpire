@@ -18,8 +18,6 @@
 #include <string>
 
 
-
-
 bool is_existing( const std::string & file )
 {
     struct stat buffer;
@@ -70,7 +68,7 @@ WidgetApplication::WidgetApplication()
         exit(EXIT_FAILURE);
     }
 
-    currentfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
+    //currentfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
 
     mouse = new CursorTask();
     keyboard = new KeyboardTask();
@@ -85,17 +83,57 @@ WidgetApplication::WidgetApplication()
     setcurrentdesktop( 0 );
 }
 
+
+KeyboardTask* WidgetApplication::getkeyboardhandler()
+{
+    if (keyboard!=nullptr) return keyboard;
+    else return nullptr;
+}
+
+CursorTask* WidgetApplication::getmousehandler()
+{
+    if (mouse!=nullptr) return mouse;
+    else return nullptr;
+}
+
+ColorEngine* WidgetApplication::getcolorhandler()
+{
+    if (colors!=nullptr) return colors;
+    else return nullptr;
+}
+
+FontEngine* WidgetApplication::getfonthandler()
+{
+    if (fonts!=nullptr) return fonts;
+    else return nullptr;
+}
+
+SDL_Surface* WidgetApplication::getscreenhandler()
+{
+    if (screen!=NULL) return screen;
+    else return nullptr;
+}
+
+
+
+
 WidgetApplication::~WidgetApplication()
 {
-    nSDL_FreeFont( currentfont );
+    //nSDL_FreeFont( currentfont );
     SDL_FreeSurface( screen );
 
     delete mouse;
     delete keyboard;
+    delete colors;
+    delete fonts;
 
+    for (auto& c : desktops)
+    {
+        if (c->background_image != nullptr) SDL_FreeSurface( c->background_image);
+    }
 
+    SDL_FreeSurface( screen );
 
-    if (currentdesktop->background_image) SDL_FreeSurface( currentdesktop->background_image );
     currentdesktop->rootwidgets.clear();
 
     SDL_Quit();
@@ -111,6 +149,21 @@ void WidgetApplication::addchild( Widget *root )
 }
 
 
+void WidgetApplication::removechild( Widget *root )
+{
+    int i=0;
+    for(auto& c : currentdesktop->rootwidgets )
+    {
+        if (c==root)
+        {
+            //delete currentdesktop->rootwidgets[i];
+            currentdesktop->rootwidgets.erase( currentdesktop->rootwidgets.begin() + i );
+            return;
+        }
+        i++;
+    }
+}
+
 void WidgetApplication::addchildtodesktop( Widget *root, DesktopFeatures *desktop )
 {
         desktop->rootwidgets.push_back( root );
@@ -124,10 +177,26 @@ void WidgetApplication::adddesktop( )
         nb_desktop++;
 }
 
+void WidgetApplication::setdrawbackground( bool setter )
+{
+    backgroundtobedrawn = setter;
+}
 
 void WidgetApplication::removedesktop( DesktopFeatures *desktoptoremove )
 {
         // to be coded here
+        int i=0;
+        for( auto& c : desktops)
+        {
+            if (c==desktoptoremove)
+            {
+                //delete desktops[i];
+                desktops.erase( desktops.begin()+i );
+                return;
+            }
+            i++;
+        }
+
 }
 
 DesktopFeatures* WidgetApplication::getcurrentdesktoppointer()
@@ -180,10 +249,12 @@ void WidgetApplication::setpreviousdesktop()
 
 void WidgetApplication::render( void )
 {
-    if (!currentdesktop->uniform_background && !currentdesktop->background_wallpaper) SDL_FillRect( screen, 0, 0x0000);
-    if (currentdesktop->uniform_background && !currentdesktop->background_wallpaper) SDL_FillRect( screen, 0, currentdesktop->rgb_background);
-    if (!currentdesktop->uniform_background && currentdesktop->background_wallpaper) SDL_BlitSurface( currentdesktop->background_image, NULL, screen, &currentdesktop->position_background);
-
+    if (backgroundtobedrawn)
+    {
+        if (!currentdesktop->uniform_background && !currentdesktop->background_wallpaper) SDL_FillRect( screen, 0, 0x0000);
+        if (currentdesktop->uniform_background && !currentdesktop->background_wallpaper) SDL_FillRect( screen, 0, currentdesktop->rgb_background);
+        if (!currentdesktop->uniform_background && currentdesktop->background_wallpaper) SDL_BlitSurface( currentdesktop->background_image, NULL, screen, &currentdesktop->position_background);
+    }
 
 /*    fonts->setcurrentfont( VGA_FONT );
     fonts->setmodifiertypo( Normal );
@@ -376,6 +447,32 @@ void WidgetApplication::logic( void )
     }
 
 }
+
+
+void WidgetApplication::logicwithforcedrender( void )
+{
+    mouse->logic();
+    keyboard->logic();
+
+    // render() has to be called at every loop cause it is force (this is usefull for game loop but not for usual apps.
+    render();
+
+    // if an event from mouse or from keyboard is detected, we launch the children->logic() processes
+    if (mouse->ismoouveevent() || keyboard->iskeyevent())
+    {
+        for (auto& c : currentdesktop->rootwidgets )
+            c->logic( mouse, keyboard );
+    }
+
+
+    // This is to take a screenshot to be store in the Widget folder.
+    if (keyboard->kbCTRL && keyboard->kbDOT)
+    {
+        takescreenshot( screen );
+    }
+
+}
+
 
 
 void WidgetApplication::setuniformbackgroundcolor( Uint8 r, Uint8 g, Uint8 b)
