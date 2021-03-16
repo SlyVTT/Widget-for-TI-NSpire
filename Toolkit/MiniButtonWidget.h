@@ -17,8 +17,8 @@ enum typesymbol
 class MiniButtonWidget : public ButtonWidget
 {
     public:
-        MiniButtonWidget()  { widgettype = "MiniButton"; };
-        MiniButtonWidget( char *l, int x, int y, int w, int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p ) { widgettype = "MiniButton"; };
+        MiniButtonWidget()  { widgettype = (char*) "MiniButton"; };
+        MiniButtonWidget( char *l, int x, int y, int w, int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p ) { widgettype = (char*) "MiniButton"; };
         virtual ~MiniButtonWidget() { };
 
         virtual bool ispressed() override;

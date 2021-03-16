@@ -22,7 +22,7 @@ Widget::Widget( char *l, int x, int y, int w, int h, Widget *p )
 
         // if the widget has a parent, then we have to compute relative coordinates
         // if the parent is directly the desktop, we are free to position the widget as we want
-        if (parent->getwidgettype() == "Desktop")
+        if (parent->getwidgettype() == (char*) "Desktop")
         {
             xpos = xrel;
             ypos = yrel;

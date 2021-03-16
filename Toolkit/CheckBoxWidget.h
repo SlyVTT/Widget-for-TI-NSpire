@@ -13,8 +13,8 @@ enum tick
 class CheckBoxWidget : public ButtonWidget
 {
     public:
-        CheckBoxWidget() { widgettype = "CheckBox"; };
-        CheckBoxWidget( char *l, int x, int y, int w, int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p ) { widgettype = "CheckBox"; };
+        CheckBoxWidget() { widgettype = (char*) "CheckBox"; };
+        CheckBoxWidget( char *l, int x, int y, int w, int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p ) { widgettype = (char*) "CheckBox"; };
         virtual ~CheckBoxWidget() { };
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;

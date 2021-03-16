@@ -15,8 +15,8 @@ enum align
 class LabelWidget : public Widget
 {
     public:
-        LabelWidget() { widgettype = "Label"; };
-        LabelWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "Label"; };
+        LabelWidget() { widgettype = (char*) "Label"; };
+        LabelWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Label"; };
         virtual ~LabelWidget() { };
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;

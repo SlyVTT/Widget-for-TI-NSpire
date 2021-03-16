@@ -8,7 +8,7 @@ void ContainerVWidget::adjust( )
     if (parent)
     {
 
-        if ((parent->getwidgettype()=="ContainerV") || (parent->getwidgettype()=="ContainerH"))
+        if ((parent->getwidgettype()==(char*) "ContainerV") || (parent->getwidgettype()==(char*) "ContainerH"))
         {
             // nothing to do, it comes from the parent
         }

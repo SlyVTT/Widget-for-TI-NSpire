@@ -7,8 +7,8 @@
 class FrameWidget : public Widget
 {
     public:
-        FrameWidget() { widgettype = "Frame"; };
-        FrameWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "Frame"; };
+        FrameWidget() { widgettype = (char*) "Frame"; };
+        FrameWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Frame"; };
         ~FrameWidget() { };
 
 

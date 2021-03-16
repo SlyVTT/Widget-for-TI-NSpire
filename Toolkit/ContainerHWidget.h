@@ -7,8 +7,8 @@
 class ContainerHWidget : public Widget
 {
     public:
-        ContainerHWidget() { widgettype = "ContainerH"; };
-        ContainerHWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "ContainerH"; };
+        ContainerHWidget() { widgettype = (char*) "ContainerH"; };
+        ContainerHWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "ContainerH"; };
         virtual ~ContainerHWidget() { };
 
         virtual void adjust() override;

@@ -8,8 +8,8 @@
 class InputWidget : public Widget
 {
     public:
-        InputWidget() { widgettype = "MiniButton"; };
-        InputWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) {};
+        InputWidget() { widgettype = (char*) "Input"; };
+        InputWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Input"; };
         virtual ~InputWidget() {};
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;

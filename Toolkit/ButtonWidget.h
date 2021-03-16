@@ -7,8 +7,8 @@
 class ButtonWidget : public Widget
 {
     public:
-        ButtonWidget() { widgettype = "Button"; };
-        ButtonWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "Button"; };
+        ButtonWidget() { widgettype = (char*) "Button"; };
+        ButtonWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Button"; };
         ~ButtonWidget() {};
 
         virtual bool ispressed();

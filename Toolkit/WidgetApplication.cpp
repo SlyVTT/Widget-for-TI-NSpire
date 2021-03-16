@@ -129,7 +129,7 @@ WidgetApplication::~WidgetApplication()
 
     for (auto& c : desktops)
     {
-        if (c->background_image != nullptr) SDL_FreeSurface( c->background_image);
+        if (c->background_image != nullptr) SDL_FreeSurface( c->background_image );
     }
 
     SDL_FreeSurface( screen );
@@ -145,7 +145,7 @@ WidgetApplication::~WidgetApplication()
 
 void WidgetApplication::addchild( Widget *root )
 {
-        currentdesktop->rootwidgets.push_back( root );
+    currentdesktop->rootwidgets.push_back( root );
 }
 
 

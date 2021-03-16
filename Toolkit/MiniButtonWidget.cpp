@@ -7,13 +7,13 @@ void MiniButtonWidget::settype( typesymbol type )
 {
     switch(type)
     {
-            case Bottom_Arrow: label = "\u001f"; break;
-            case Up_Arrow: label = "\u001e"; break;
-            case Left_Arrow: label = "\u0011"; break;
-            case Right_Arrow: label = "\u0010"; break;
-            case Close_Symbol: label = "\u0009"; break;
-            case Question_Symbol: label = "\u003f"; break;
-            case Exclamation_Symbol: label = "\u0021"; break;
+            case Bottom_Arrow: label = (char*) "\u001f"; break;
+            case Up_Arrow: label = (char*) "\u001e"; break;
+            case Left_Arrow: label = (char*) "\u0011"; break;
+            case Right_Arrow: label = (char*) "\u0010"; break;
+            case Close_Symbol: label = (char*) "\u0009"; break;
+            case Question_Symbol: label = (char*) "\u003f"; break;
+            case Exclamation_Symbol: label = (char*) "\u0021"; break;
     }
 }
 

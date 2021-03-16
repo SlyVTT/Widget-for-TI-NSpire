@@ -7,8 +7,8 @@
 class SliderWidget : public Widget
 {
     public:
-        SliderWidget() { widgettype = "Slider"; };
-        SliderWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { length_pixels = w-8; widgettype = "Slider"; };
+        SliderWidget() { widgettype = (char*) "Slider"; };
+        SliderWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { length_pixels = w-8; widgettype = (char*) "Slider"; };
         ~SliderWidget() { };
 
         int getvalueint();

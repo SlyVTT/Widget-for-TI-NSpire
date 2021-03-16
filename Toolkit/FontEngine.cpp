@@ -11,12 +11,12 @@
 
 FontEngine::FontEngine()
 {
-    this->loadfontfromfile( "/documents/widget/Fonts/THIN.WFE.tns" );
-    this->loadfontfromfile( "/documents/widget/Fonts/VGA.WFE.tns" );
-    this->loadfontfromfile( "/documents/widget/Fonts/SPACE.WFE.tns" );
-    this->loadfontfromfile( "/documents/widget/Fonts/TINY.WFE.tns" );
-    this->loadfontfromfile( "/documents/widget/Fonts/STANDARD.WFE.tns" );
-    this->loadfontfromfile( "/documents/widget/Fonts/FANTASY.WFE.tns" );
+    this->loadfontfromfile( (char*) "/documents/widget/Fonts/THIN.WFE.tns" );
+    this->loadfontfromfile( (char*) "/documents/widget/Fonts/VGA.WFE.tns" );
+    this->loadfontfromfile( (char*) "/documents/widget/Fonts/SPACE.WFE.tns" );
+    this->loadfontfromfile( (char*) "/documents/widget/Fonts/TINY.WFE.tns" );
+    this->loadfontfromfile( (char*) "/documents/widget/Fonts/STANDARD.WFE.tns" );
+    this->loadfontfromfile( (char*) "/documents/widget/Fonts/FANTASY.WFE.tns" );
     this->setcurrentfont( THIN_FONT );
     vspacing = 0;
     hspacing = -1;
@@ -46,9 +46,9 @@ FontData* FontEngine::loadfontfromfilepointer( char* filename )
     pFile = fopen (filename,"r");
     if (pFile!=NULL)
     {
-        bool flag = true;
+        //bool flag = true;
         char line[20];
-        int value=0;
+        //int value=0;
         int width, height, temp;
         //char p0[2], p1[2], p2[2], p3[2], p4[2], p5[2], p6[2], p7[2];
         char valstr[10];
@@ -141,9 +141,9 @@ void FontEngine::loadfontfromfile( char* filename )
     pFile = fopen (filename,"r");
     if (pFile!=NULL)
     {
-        bool flag = true;
+        //bool flag = true;
         char line[20];
-        int value=0;
+        //int value=0;
         int width, height, temp;
         //char p0[2], p1[2], p2[2], p3[2], p4[2], p5[2], p6[2], p7[2];
         char valstr[10];

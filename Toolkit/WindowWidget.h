@@ -7,8 +7,8 @@
 class WindowWidget : public Widget
 {
     public:
-        WindowWidget( ) { widgettype = "Window"; };
-        WindowWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "Window"; };
+        WindowWidget( ) { widgettype = (char*) "Window"; };
+        WindowWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Window"; };
         virtual ~WindowWidget() { };
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;

@@ -7,8 +7,8 @@
 class DesktopWidget : public Widget
 {
     public:
-        DesktopWidget() { widgettype = "Desktop"; };
-        DesktopWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = "Desktop"; };
+        DesktopWidget() { widgettype = (char*) "Desktop"; };
+        DesktopWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Desktop"; };
         virtual ~DesktopWidget() { };
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
