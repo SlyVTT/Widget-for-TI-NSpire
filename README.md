@@ -7,7 +7,7 @@ Current revision is 0.5.
 
 You can try the toolkit by simply copying the Widget folder of this repository a the root of your TI Nspire to test the program.
 
-This has only be tested on Ti NSpire CX II-T CAS using 5.2.0.711 and Ndless 5.2. If you try this toolkit with other pieces of hardware, please let me know in the issues page if it works or not. I haven't got all the corresponding machine, but maybe can I find a way to improve the code and make it works for most of you.
+This has only be tested on Ti NSpire CX II-T CAS using 5.2.0.711 and Ndless 5.2. If you try this toolkit with other pieces of hardware, please let me know in the issues page if it works or not. I haven't got all the corresponding machines, but maybe can I find a way to improve the code and make it works for most of you.
 
 Please report bugs so what they can be corrected in next revisions.
 
