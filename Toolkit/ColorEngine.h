@@ -1,26 +1,74 @@
 #ifndef COLORENGINE_H
 #define COLORENGINE_H
 
+
+/// Structure of colors manipulated by ColorEngine
+///
+/// Gives a structure for RGBA colors to be used all within the ColorEngine
 struct colorRGBA
 {
+    /// The Red component of the color to be within [0 .. 255]
     unsigned short R;
+    /// The Green component of the color to be within [0 .. 255]
     unsigned short G;
+    /// The Blue component of the color to be within [0 .. 255]
     unsigned short B;
+    /// The Alpha (Opacity) component of the color to be within [0 .. 255]
     unsigned short A;
 };
 
+
+/// ColorEngine class.
+///
+/// The class to be used for using a ColorEngine object.
+/// This object/class is not intended to be used out of th WidgetApplication 'ecosystem'
+/// BUT may become mandatory to provide a way to use Widget::render() in a proper way.
+/// @see  WidgetApplication and Widget::render( SDL_Surface*, ColorEngine*, FontEngine* )
 class ColorEngine
 {
     public:
+
+        /// Simple constructor
+        ///
+        /// Engine properties are set to default, nothing more.
+        /// Simple constructor, will need specific properties assignement later.
+        /// @param None
+        /// @returns Nothing
         ColorEngine();
+
+
+        /// Object destructor.
+        ///
+        /// Object destructor, remove all trace of the ColorEngine and free allocated memory.
+        /// @param None
+        /// @returns Nothing
         virtual ~ColorEngine();
 
+
+        /// Method for saving color shemes to file.
+        ///
+        /// To be used to save a color scheme to a file.
+        /// @note Not implemented yet.
         virtual void savecolortofile( char *filename );
+
+
+        /// Method for loading a color shemes from file.
+        ///
+        /// To be used to load a color scheme already saved in a file.
+        /// @note Not implemented yet.
         virtual void loadcolorfromfile( char *filename );
 
+
+        /// Method for assigning default color shemes to the ColorEngine.
+        ///
+        /// To be used to assign the default color scheme the ColorEngine.
         virtual void setdefaultcolorpreset( );
 
 
+        /// Default color names used by the widgets to be rendered.
+        ///
+        /// To be used only for developping new Widget and keeping a coherency with the look and feel of the other widgets.
+        /// Using these default name permits to have a global theming for an application.
         colorRGBA widget_border_enable;
         colorRGBA widget_border_disable;
         colorRGBA widget_border_cursoron;
@@ -66,8 +114,8 @@ class ColorEngine
         colorRGBA widget_progressbar_rainbow_empty;
         colorRGBA widget_progressbar_rainbow_full;
 
-    protected:
 
+    protected:
 
     private:
 };

@@ -20,20 +20,11 @@ class Widget
         Widget( char *l, int x, int y, int w, int h, Widget *p );
         virtual ~Widget();
 
-/*
-        enum Event
-        {
-            Button_Press = 0,
-            Button_Release = 1
-        };
-*/
-
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
         virtual void focus( Widget *emitter );
         virtual void unfocusup( Widget *emitter );
         virtual void unfocusdown( Widget *emitter );
         virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts );
-//        virtual void event( Widget *source, Event event ) {};
         virtual void addchild( Widget *child );
 
         //SETTERs
@@ -44,7 +35,7 @@ class Widget
         virtual void setheight( int mh ) { height=mh; };
         virtual void setlabel(char *l) { label=l; };
         virtual void setcontainerstatus( bool status ) { is_container = status; };
-        virtual void setparent( Widget *p ) { parent = p; };
+        virtual void setparent( Widget *p );
         virtual void setvisible();
         virtual void setinvisible();
         virtual void enable();
@@ -63,7 +54,7 @@ class Widget
         virtual int getuseableheight() { return height - 4; };
 
         virtual char* getlabel() { return label; };
-        virtual bool getiscontainer() { return is_container; };
+        virtual bool getcontainerstatus() { return is_container; };
         virtual Widget* getparent() { return parent; };
         virtual bool getisenabled() { return is_enabled; };
         virtual bool isvisible() { return is_visible; };

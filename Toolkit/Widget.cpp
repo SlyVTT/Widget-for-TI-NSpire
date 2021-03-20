@@ -177,6 +177,11 @@ void Widget::addchild( Widget *child )
     child->setparent( this );
 }
 
+void Widget::setparent( Widget *p )
+{
+    parent = p;
+};
+
 bool Widget::cursoron( CursorTask *mouse )
 {
     return (mouse->x >= xpos) && (mouse->y >= ypos) && (mouse->x <= xpos+width) && (mouse->y <= ypos+height);
