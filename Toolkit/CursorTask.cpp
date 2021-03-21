@@ -115,10 +115,7 @@ void CursorTask::render( SDL_Surface *screen )
     }
     if (cursor == roundclock)
     {
-        //Draw the simple mouse cursor
-        //filledTrigonRGBA( screen, x, y, x+6, y+12, x+12, y+6, 255, 255, 255, 255);
-        //trigonRGBA( screen, x, y, x+6, y+12, x+12, y+6, 255, 0, 0, 255);
-
+        //Draw the clock mouse cursor
         filledCircleRGBA( screen, x+6, y+6, 6, 255, 255, 255, 255 );
         circleRGBA( screen, x+6, y+6, 6, 255, 0, 0, 255 );
         circleRGBA( screen, x+6, y+6, 5, 255, 0, 0, 255 );

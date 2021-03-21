@@ -7,7 +7,8 @@
 
 /// Example of program using ContainerHWidget controls
 ///
-/// The following simple example demonstrate how to use the ContainerHWidget controls.
+/// The following simple example demonstrates how to use the ContainerHWidget controls.
+/// \image html ContainerHWidgetExample.jpg
 ///
 /// ### Examples of usage:
 /// ~~~~~~~~~~~~~~~~~~~~~~.cpp
@@ -22,10 +23,10 @@
 ///
 ///     DesktopWidget *desktop1 = new DesktopWidget( (char*) "First Desktop", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr );
 ///
-///    WindowWidget *window = new WindowWidget( (char*) "Examples of CommuterWidgets", 5, 5, 310, 230, desktop1 );
+///    WindowWidget *window = new WindowWidget( (char*) "Examples of ContainerHWidget", 5, 5, 310, 230, desktop1 );
 ///    ContainerVWidget *containervert = new ContainerVWidget( (char*) "container", 1, 1, 1, 1, window );
 ///
-///    LabelWidget *labelB = new LabelWidget( (char*) "Examples of CommuterWidget", 1, 1, 1, 1, containervert );
+///    LabelWidget *labelB = new LabelWidget( (char*) "Examples of ContainerHWidget", 1, 1, 1, 1, containervert );
 ///
 ///    ContainerHWidget *contH1 = new ContainerHWidget( (char*) "container", 1, 1, 1, 1, containervert );
 ///    CommuterWidget *com11 = new CommuterWidget( (char*) "St.1 Normal", 1, 1, 1, 1, contH1 );
@@ -99,7 +100,7 @@
 /// CommuterWidget* myContainerH = new ContainerHWidget();        // Simple constructor, will need specific properties assignement later
 /// ~~~~~~~~~~~~~~~~~~~~~~
 /// ~~~~~~~~~~~~~~~~~~~~~~.cpp
-/// CommuterWidget* myContainerH = new ContainerHWidget( "I am a CheckBox", 10, 50, 100, 15, parent );        // Full constructor
+/// CommuterWidget* myContainerH = new ContainerHWidget( "I am a ContainerHWidget", 10, 50, 100, 15, parent );        // Full constructor
 /// ~~~~~~~~~~~~~~~~~~~~~~
 class ContainerHWidget : public Widget
 {
@@ -133,7 +134,7 @@ class ContainerHWidget : public Widget
 
         /// Object destructor
         ///
-        /// Object destructor, remove all trace of the ButtonWidget and free allocated memory
+        /// Object destructor, remove all trace of the object and free allocated memory
         /// @param None
         /// @returns Nothing
         /// @see ~Widget()
@@ -165,7 +166,7 @@ class ContainerHWidget : public Widget
         /// @returns Nothing, but will launch the logic() method of all the Widgets belonging to chidren (vector<Widget*>)
         /// @note This method overrides Widget::logic( CursorTask*, KeyboardTask*)
         /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->logic() from the WidgetApplication class
-        /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an applicaiton that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
+        /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
         /// @warning Before calling the logic method, a mouse handler and a keyboard handler must be instancied and properly updated through their respective logic() methods. This is normally done by using the WidgetApplication class.
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
@@ -173,15 +174,15 @@ class ContainerHWidget : public Widget
         /// The ContainerHWidget render method.
         ///
         /// Widget method to be launched to draw the ContainerHWidget.
-        /// This actually do nothing cause ContainerHWidget and ContainerVWidget are jsut container and nothing is actually drawn
+        /// This actually do nothing cause ContainerHWidget and ContainerVWidget are just containers and nothing is actually drawn
         /// But this method is overriden as for all Widget and cascades the render() order to children widgets
-        /// @param screen : pointer to a SDL_Surface object where we would like to draw the button
-        /// @param colors : pointer to a ColorEngine object giving all the color options to be used (theme) for drawing the ButtonWidget
-        /// @param fonts : pointer to a FontEngine object giving all the fonts options to be used (theme) for drawing the ButtonWidget
+        /// @param screen : pointer to a SDL_Surface object where we would like to draw the widget
+        /// @param colors : pointer to a ColorEngine object giving all the color options to be used (theme) for drawing the widget
+        /// @param fonts : pointer to a FontEngine object giving all the fonts options to be used (theme) for drawing the widget
         /// @returns Nothing, but will launch the render() method of all the Widgets belonging to chidren (vector<Widget*>)
         /// @note This method overrides Widget::render( SDL_Surface*, ColorEngine*, FontEngine*)
         /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->render() from the WidgetApplication class.
-        /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an applicaiton that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
+        /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
         /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
         virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 

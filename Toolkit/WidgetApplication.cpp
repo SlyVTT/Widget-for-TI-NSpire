@@ -431,7 +431,7 @@ void WidgetApplication::logic( void )
     keyboard->logic();
 
     // if an event from mouse or from keyboard is detected, we launch the render() and the children->logic() processes
-    if (mouse->ismoouveevent() || keyboard->iskeyevent())
+    if (mouse->ismouseevent() || keyboard->iskeyevent())
     {
         render();
 
@@ -458,7 +458,7 @@ void WidgetApplication::logicwithforcedrender( void )
     render();
 
     // if an event from mouse or from keyboard is detected, we launch the children->logic() processes
-    if (mouse->ismoouveevent() || keyboard->iskeyevent())
+    if (mouse->ismouseevent() || keyboard->iskeyevent())
     {
         for (auto& c : currentdesktop->rootwidgets )
             c->logic( mouse, keyboard );

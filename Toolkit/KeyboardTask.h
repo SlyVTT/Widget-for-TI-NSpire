@@ -3,8 +3,102 @@
 
 #include <SDL/SDL.h>
 
+/// Example of program using KeyboardTask
+///
+/// The following simple example demonstrates how to use the KeyboardTask controls.
+/// \image html ButtonWidgetExample.jpg
+///
+/// ### Examples of usage:
+/// ~~~~~~~~~~~~~~~~~~~~~~.cpp
+/// #include "Toolkit/GUIToolkit.h"
+///
+/// int main ( int argc, char** argv )
+/// {
+///     bool done = false;
+///
+///     WidgetApplication *MyApp = new WidgetApplication();
+///     MyApp->setuniformbackgroundcolor(0, 0, 0);
+///
+///     DesktopWidget *desktop1 = new DesktopWidget( (char*) "First Desktop", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr );
+///
+///     WindowWidget *window = new WindowWidget( (char*) "Examples of ButtonWidgets", 20, 30, 250, 160, desktop1 );
+///
+///     ContainerVWidget *contH = new ContainerVWidget( (char*) "ContainerH", 1, 1, 1, 1, window );
+///
+///     ButtonWidget *button = new ButtonWidget();          // Simple constructor so we need to assign all the parameters
+///
+///     // First the label to be written on the button
+///     button->setlabel( (char*) "Enabled Button" );
+///
+///     // then the dimensions (one by one in that case)
+///     button->setxpos( 5 );
+///     button->setypos( 10 );
+///     button->setwidth( 150 );
+///     button->setheight( 15 );
+///     // note : we can also use the method button->setdimensions( 5, 10, 150, 15 ) instead
+///
+///     // and finally we assign the parent by adding the button as a child to conH
+///     contH->addchild( button );
+///
+///     // This is a second button with all parameters passed through the constructon
+///     ButtonWidget *button2 = new ButtonWidget( (char*) "Disabled Button", 1, 1, 1, 1, contH );
+///     // We disable the button by using the inherited method Wigdet::disable()
+///     button2->disable();
+///
+///     // the button to be clicked to quit
+///     ButtonWidget *buttonQuit = new ButtonWidget( (char*) "Quit [CTRL]+[ESC]", 1, 1, 1, 1, contH );
+///
+///     // We ask for an automatic positioning of the widgets in the grid
+///     // Note : this will fully override the dimensions given to the Widgets manually
+///     window->adjust();
+///
+///     MyApp->addchild( desktop1 );
+///
+///     KeyboardTask *keyboard = MyApp->getkeyboardhandler();
+///
+///     // We render the app for the first time so what we can see what's happening on the screen
+///     MyApp->render();
+///
+///     while (!done)
+///     {
+///
+///         MyApp->logic();
+///
+///         if ((keyboard->kbCTRL && keyboard->kbESC) || buttonQuit->ispressed()) done = true;
+///
+///     }
+///
+///     return 0;
+/// }
+/// ~~~~~~~~~~~~~~~~~~~~~~
+
+
+
+/// KeyboardTask class.
+///
+/// The class to be used for accessing the keyboard and keys information.
+///
+/// ### Examples of usage:
+/// ~~~~~~~~~~~~~~~~~~~~~~.cpp
+/// KeyboardTask* myKeys = new KeyboardTask();        // Simple constructor, will need specific properties assignement later
+/// ~~~~~~~~~~~~~~~~~~~~~~
+/// ~~~~~~~~~~~~~~~~~~~~~~.cpp
+/// WidgetApplication myApp = new WidgetApplication();
+/// KeyboardTask* myKeys = myApp->getkeyboardhandler();
+/// ~~~~~~~~~~~~~~~~~~~~~~
+/// @note WidgetApplication creates a KeyboardTask object at initialisation. It is then better to ask for a direct access to its KeyboardTask by using the WidgetApplication::getkeyboardhandler() method.
+/// @see WidgetApplication::getkeyboardhandler()
+///
+///
+/// Direct key status
+///
+/// Each key is defined by a boolean: *true* is the corresponding key is pressed and *false* overwise
+///
+/// Keynames are given as follows
+/// @image html KeyNamesLayout.jpg
 class KeyboardTask
 {
+
     public:
         KeyboardTask();
         virtual ~KeyboardTask();
@@ -21,6 +115,9 @@ class KeyboardTask
         bool keyevent = false;
         bool keyevent_arrow = false;
         bool capsonmode = false;
+
+
+
 
         // First adress block
         bool kbRET = false;
