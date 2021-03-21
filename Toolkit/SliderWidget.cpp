@@ -28,7 +28,7 @@ void SliderWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         length_pixels = width - 10;
         if (currently_pressed)
         {
-            int x=mouse->x;
+            unsigned int x=mouse->x;
             if ((x>=xpos+5) && (x<=xpos+width-5))
             {
                 position_cursor_pixels = x-(xpos+5);
@@ -46,17 +46,17 @@ void SliderWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
-                clickfunction( "test" );
+                clickfunction( (char*) "test" );
         }
         else if(!currently_pressed && is_pressed)
         {
             if (releasefunction)
-                releasefunction( "test" );
+                releasefunction( (char*) "test" );
         }
         else if(is_hovering)
         {
             if (hoverfunction)
-                hoverfunction( "test" );
+                hoverfunction( (char*) "test" );
         }
 
         is_pressed = currently_pressed;

@@ -17,7 +17,7 @@ void RadioControlWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             invert();
 
             if (clickfunction)
-                clickfunction( "test" );
+                clickfunction( (char*) "test" );
 
             mouse_hold_down = true;
         }
@@ -26,14 +26,14 @@ void RadioControlWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             invert();
 
             if (releasefunction)
-                releasefunction( "test" );
+                releasefunction( (char*) "test" );
 
             mouse_hold_down = true;
         }
         else if (is_hovering)
         {
             if (hoverfunction)
-                hoverfunction( "test" );
+                hoverfunction( (char*) "test" );
         }
 
         for (auto& c : children )
@@ -64,10 +64,9 @@ void RadioControlWidget::render( SDL_Surface *screen, ColorEngine *colors, FontE
             fonts->setcurrentfont( THIN_FONT );
             fonts->setmodifiertypo( Normal );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+15 , ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            fonts->drawstringleft( screen, label, xpos+15, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
 
 
             if (is_ticked)
@@ -85,10 +84,9 @@ void RadioControlWidget::render( SDL_Surface *screen, ColorEngine *colors, FontE
             fonts->setcurrentfont( THIN_FONT );
             fonts->setmodifiertypo( Normal );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+15 , ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            fonts->drawstringleft( screen, label, xpos+15, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
 
 
             if (is_ticked)

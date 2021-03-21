@@ -7,7 +7,7 @@ Widget::Widget( )
 
 }
 
-Widget::Widget( char *l, int x, int y, int w, int h, Widget *p )
+Widget::Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p )
 {
     label=l;
     xrel=x;
@@ -91,15 +91,15 @@ void Widget::focus( Widget *emitter)
     {
         parent->unfocusup( emitter );
     }
-/*    else //and then if parent is nullptr, we cascade down to the final leafs
-    {
-        for (auto& c : children )
+    /*    else //and then if parent is nullptr, we cascade down to the final leafs
         {
-            if (c!=emitter)
-                c->unfocusdown( emitter );
+            for (auto& c : children )
+            {
+                if (c!=emitter)
+                    c->unfocusdown( emitter );
+            }
         }
-    }
-*/
+    */
     has_focus = true;
 }
 
@@ -118,7 +118,7 @@ void Widget::unfocusup( Widget *emitter)
         for (auto& c : children )
         {
 //            if (c!=emitter)
-                c->unfocusdown( emitter );
+            c->unfocusdown( emitter );
         }
     }
 }
@@ -130,7 +130,7 @@ void Widget::unfocusdown( Widget *emitter)
     for (auto& c : children )
     {
 //        if (c!=emitter)
-            c->unfocusdown( emitter );
+        c->unfocusdown( emitter );
     }
 }
 

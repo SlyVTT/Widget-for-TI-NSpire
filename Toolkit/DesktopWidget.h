@@ -6,17 +6,23 @@
 
 class DesktopWidget : public Widget
 {
-    public:
-        DesktopWidget() { widgettype = (char*) "Desktop"; };
-        DesktopWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "Desktop"; };
-        virtual ~DesktopWidget() { };
+public:
+    DesktopWidget()
+    {
+        widgettype = (char*) "Desktop";
+    };
+    DesktopWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+    {
+        widgettype = (char*) "Desktop";
+    };
+    virtual ~DesktopWidget() { };
 
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-    protected:
+protected:
 
-    private:
+private:
 };
 
 #endif // DESKTOPWIDGET_H

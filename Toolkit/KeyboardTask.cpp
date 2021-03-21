@@ -205,7 +205,8 @@ void KeyboardTask::logic( )
         }
 
 
-        { // First adress block
+        {
+            // First adress block
             kbRET = false;
             kbENTER = false;
             kbMINUSPAR = false;
@@ -217,7 +218,8 @@ void KeyboardTask::logic( )
             kbON = false;
         }
 
-        { // Second adress block
+        {
+            // Second adress block
             kbX = false;
             kbW = false;
             kbV = false;
@@ -231,7 +233,8 @@ void KeyboardTask::logic( )
             kb10X = false;
         }
 
-        { // Third adress block
+        {
+            // Third adress block
             kbR = false;
             kbQ = false;
             kbP = false;
@@ -244,7 +247,8 @@ void KeyboardTask::logic( )
             kbX2 = false;
         }
 
-        { // Fourth adress block
+        {
+            // Fourth adress block
             kbL = false;
             kbK = false;
             kbJ = false;
@@ -257,7 +261,8 @@ void KeyboardTask::logic( )
             kbEX = false;
         }
 
-        { // Fifth adress block
+        {
+            // Fifth adress block
             kbF = false;
             kbE = false;
             kbD = false;
@@ -269,7 +274,8 @@ void KeyboardTask::logic( )
             kbPOWER = false;
         }
 
-        { // Sixth adress block
+        {
+            // Sixth adress block
             kbVAR = false;
             kbMINUS = false;
             kbPARCLOSE = false;
@@ -282,7 +288,8 @@ void KeyboardTask::logic( )
             kbSCRATCH = false;
         }
 
-        { // Seventh adress block
+        {
+            // Seventh adress block
             kbFLAG = false;
             kbPLUS = false;
             kbDOC = false;
@@ -293,7 +300,8 @@ void KeyboardTask::logic( )
             kbTAB = false;
         }
 
-        { // Eigth adress block
+        {
+            // Eigth adress block
             kbSHIFT = false;
             kbCTRL = false;
             kbCOMMA = false;

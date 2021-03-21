@@ -26,29 +26,35 @@ bool is_existing( const std::string & file )
 
 void takescreenshot( SDL_Surface* screen )
 {
-        std::string namebegin = "/documents/widget/scrsh";
-        std::string nameend = ".bmp.tns";
-        std::string namemiddle = "000";
-        bool screenshotdone = false;
-        int i=0;
+    std::string namebegin = "/documents/widget/scrsh";
+    std::string nameend = ".bmp.tns";
+    std::string namemiddle = "000";
+    bool screenshotdone = false;
+    int i=0;
 
-        do
+    do
+    {
+        std::string fullname = namebegin + namemiddle + nameend;
+        if (!is_existing( fullname ))
         {
-            std::string fullname = namebegin + namemiddle + nameend;
-            if (!is_existing( fullname ))
-            {
-                SDL_SaveBMP( screen, fullname.c_str() );
-                screenshotdone = true;
-            }
-            else
-            {
-                i++;
-                namemiddle = std::to_string( i );
-                if (namemiddle.length()==1) { namemiddle = "00" + namemiddle; };
-                if (namemiddle.length()==2) { namemiddle = "0" + namemiddle; };
-            }
+            SDL_SaveBMP( screen, fullname.c_str() );
+            screenshotdone = true;
         }
-        while (!screenshotdone);
+        else
+        {
+            i++;
+            namemiddle = std::to_string( i );
+            if (namemiddle.length()==1)
+            {
+                namemiddle = "00" + namemiddle;
+            };
+            if (namemiddle.length()==2)
+            {
+                namemiddle = "0" + namemiddle;
+            };
+        }
+    }
+    while (!screenshotdone);
 }
 
 WidgetApplication::WidgetApplication()
@@ -166,15 +172,15 @@ void WidgetApplication::removechild( Widget *root )
 
 void WidgetApplication::addchildtodesktop( Widget *root, DesktopFeatures *desktop )
 {
-        desktop->rootwidgets.push_back( root );
+    desktop->rootwidgets.push_back( root );
 }
 
 
 void WidgetApplication::adddesktop( )
 {
-        DesktopFeatures *desktoptoadd = new DesktopFeatures;
-        desktops.push_back( desktoptoadd );
-        nb_desktop++;
+    DesktopFeatures *desktoptoadd = new DesktopFeatures;
+    desktops.push_back( desktoptoadd );
+    nb_desktop++;
 }
 
 void WidgetApplication::setdrawbackground( bool setter )
@@ -184,19 +190,18 @@ void WidgetApplication::setdrawbackground( bool setter )
 
 void WidgetApplication::removedesktop( DesktopFeatures *desktoptoremove )
 {
-        // to be coded here
-        int i=0;
-        for( auto& c : desktops)
+    // to be coded here
+    int i=0;
+    for( auto& c : desktops)
+    {
+        if (c==desktoptoremove)
         {
-            if (c==desktoptoremove)
-            {
-                //delete desktops[i];
-                desktops.erase( desktops.begin()+i );
-                return;
-            }
-            i++;
+            //delete desktops[i];
+            desktops.erase( desktops.begin()+i );
+            return;
         }
-
+        i++;
+    }
 }
 
 DesktopFeatures* WidgetApplication::getcurrentdesktoppointer()
@@ -204,13 +209,12 @@ DesktopFeatures* WidgetApplication::getcurrentdesktoppointer()
     return desktops[cur_desktop];
 }
 
-void WidgetApplication::setcurrentdesktop( int ndesk )
+void WidgetApplication::setcurrentdesktop( unsigned int ndesk )
 {
-    if ((ndesk >= 0) && (ndesk < nb_desktop))
+    if (ndesk < nb_desktop)
     {
         cur_desktop = ndesk;
         currentdesktop = desktops[cur_desktop];
-
     }
 }
 
@@ -256,165 +260,165 @@ void WidgetApplication::render( void )
         if (!currentdesktop->uniform_background && currentdesktop->background_wallpaper) SDL_BlitSurface( currentdesktop->background_image, NULL, screen, &currentdesktop->position_background);
     }
 
-/*    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->drawstringleft( screen, "VGA Normal", 20, 10, 255, 255, 0, 255 );
+    /*    fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->drawstringleft( screen, "VGA Normal", 20, 10, 255, 255, 0, 255 );
 
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Italic );
-    fonts->drawstringleft( screen, "VGA Italic", 20, 20, 255, 255, 0, 255 );
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Italic );
+        fonts->drawstringleft( screen, "VGA Italic", 20, 20, 255, 255, 0, 255 );
 
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Bold );
-    fonts->drawstringleft( screen, "VGA Bold", 20, 30, 255, 255, 0, 255 );
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, "VGA Bold", 20, 30, 255, 255, 0, 255 );
 
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( ItalicBold );
-    fonts->drawstringleft( screen, "VGA Italic Bold", 20, 40, 255, 255, 0, 255 );
-
-
-
-    fonts->setcurrentfont( STAN_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->drawstringleft( screen, "STAN Normal", 170, 10, 255, 0, 0, 255 );
-
-    fonts->setcurrentfont( STAN_FONT );
-    fonts->setmodifiertypo( Italic );
-    fonts->drawstringleft( screen, "STAN Italic", 170, 20, 255, 0, 0, 255 );
-
-    fonts->setcurrentfont( STAN_FONT );
-    fonts->setmodifiertypo( Bold );
-    fonts->drawstringleft( screen, "STAN Bold", 170, 30, 255, 0, 0, 255 );
-
-    fonts->setcurrentfont( STAN_FONT );
-    fonts->setmodifiertypo( ItalicBold );
-    fonts->drawstringleft( screen, "STAN Italic Bold", 170, 40, 255, 0, 0, 255 );
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( ItalicBold );
+        fonts->drawstringleft( screen, "VGA Italic Bold", 20, 40, 255, 255, 0, 255 );
 
 
 
-    fonts->setcurrentfont( FANT_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->drawstringleft( screen, "FANT Normal", 20, 60, 0, 255, 0, 255 );
+        fonts->setcurrentfont( STAN_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->drawstringleft( screen, "STAN Normal", 170, 10, 255, 0, 0, 255 );
 
-    fonts->setcurrentfont( FANT_FONT );
-    fonts->setmodifiertypo( Italic );
-    fonts->drawstringleft( screen, "FANT Italic", 20, 70, 0, 255, 0, 255 );
+        fonts->setcurrentfont( STAN_FONT );
+        fonts->setmodifiertypo( Italic );
+        fonts->drawstringleft( screen, "STAN Italic", 170, 20, 255, 0, 0, 255 );
 
-    fonts->setcurrentfont( FANT_FONT );
-    fonts->setmodifiertypo( Bold );
-    fonts->drawstringleft( screen, "FANT Bold", 20, 80, 0, 255, 0, 255 );
+        fonts->setcurrentfont( STAN_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, "STAN Bold", 170, 30, 255, 0, 0, 255 );
 
-    fonts->setcurrentfont( FANT_FONT );
-    fonts->setmodifiertypo( ItalicBold );
-    fonts->drawstringleft( screen, "FANT Italic Bold", 20, 90, 0, 255, 0, 255 );
-
-
-
-    fonts->setcurrentfont( THIN_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->drawstringleft( screen, "THIN Normal", 170, 60, 255, 0, 255, 255 );
-
-    fonts->setcurrentfont( THIN_FONT );
-    fonts->setmodifiertypo( Italic );
-    fonts->drawstringleft( screen, "THIN Italic", 170, 70, 255, 0, 255, 255 );
-
-    fonts->setcurrentfont( THIN_FONT );
-    fonts->setmodifiertypo( Bold );
-    fonts->drawstringleft( screen, "THIN Bold", 170, 80, 255, 0, 255, 255 );
-
-    fonts->setcurrentfont( THIN_FONT );
-    fonts->setmodifiertypo( ItalicBold );
-    fonts->drawstringleft( screen, "THIN Italic Bold", 170, 90, 255, 0, 255, 255 );
-
-
-    fonts->setcurrentfont( TINY_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->drawstringleft( screen, "TINY Normal", 20, 110, 255, 255, 255, 255 );
-
-    fonts->setcurrentfont( TINY_FONT );
-    fonts->setmodifiertypo( Italic );
-    fonts->drawstringleft( screen, "TINY Italic", 20, 120, 255, 255, 255, 255 );
-
-    fonts->setcurrentfont( TINY_FONT );
-    fonts->setmodifiertypo( Bold );
-    fonts->drawstringleft( screen, "TINY Bold", 20, 130, 255, 255, 255, 255 );
-
-    fonts->setcurrentfont( TINY_FONT );
-    fonts->setmodifiertypo( ItalicBold );
-    fonts->drawstringleft( screen, "TINY Italic Bold", 20, 140, 255, 255, 255, 255 );
+        fonts->setcurrentfont( STAN_FONT );
+        fonts->setmodifiertypo( ItalicBold );
+        fonts->drawstringleft( screen, "STAN Italic Bold", 170, 40, 255, 0, 0, 255 );
 
 
 
-    fonts->setcurrentfont( SPAC_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->drawstringleft( screen, "SPAC Normal", 170, 110, 0, 255, 255, 255 );
+        fonts->setcurrentfont( FANT_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->drawstringleft( screen, "FANT Normal", 20, 60, 0, 255, 0, 255 );
 
-    fonts->setcurrentfont( SPAC_FONT );
-    fonts->setmodifiertypo( Italic );
-    fonts->drawstringleft( screen, "SPAC Italic", 170, 120, 0, 255, 255, 255 );
+        fonts->setcurrentfont( FANT_FONT );
+        fonts->setmodifiertypo( Italic );
+        fonts->drawstringleft( screen, "FANT Italic", 20, 70, 0, 255, 0, 255 );
 
-    fonts->setcurrentfont( SPAC_FONT );
-    fonts->setmodifiertypo( Bold );
-    fonts->drawstringleft( screen, "SPAC Bold", 170, 130, 0, 255, 255, 255 );
+        fonts->setcurrentfont( FANT_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, "FANT Bold", 20, 80, 0, 255, 0, 255 );
 
-    fonts->setcurrentfont( SPAC_FONT );
-    fonts->setmodifiertypo( ItalicBold );
-    fonts->drawstringleft( screen, "SPAC Italic Bold", 170, 140, 0, 255, 255, 255 );
-
-
-
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierunder( NoUnder );
-    fonts->drawstringleft( screen, "VGA No Under", 20, 160, 255, 255, 0, 255 );
-
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierunder( UnderSimple );
-    fonts->drawstringleft( screen, "VGA Simple Under", 20, 175, 255, 255, 0, 255 );
-
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierunder( UnderDouble );
-    fonts->drawstringleft( screen, "VGA Double Under", 20, 190, 255, 255, 0, 255 );
+        fonts->setcurrentfont( FANT_FONT );
+        fonts->setmodifiertypo( ItalicBold );
+        fonts->drawstringleft( screen, "FANT Italic Bold", 20, 90, 0, 255, 0, 255 );
 
 
 
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierunder( NoUnder );
-    fonts->setmodifierstrike( NoStrike );
-    fonts->drawstringleft( screen, "VGA No Strike", 170, 160, 255, 255, 0, 255 );
+        fonts->setcurrentfont( THIN_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->drawstringleft( screen, "THIN Normal", 170, 60, 255, 0, 255, 255 );
 
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierstrike( StrikeSimple );
-    fonts->drawstringleft( screen, "VGA Simple Strike", 170, 175, 255, 255, 0, 255 );
+        fonts->setcurrentfont( THIN_FONT );
+        fonts->setmodifiertypo( Italic );
+        fonts->drawstringleft( screen, "THIN Italic", 170, 70, 255, 0, 255, 255 );
 
-    fonts->setcurrentfont( VGA_FONT );
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierstrike( StrikeDouble );
-    fonts->drawstringleft( screen, "VGA Double Strike", 170, 190, 255, 255, 0, 255 );
+        fonts->setcurrentfont( THIN_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, "THIN Bold", 170, 80, 255, 0, 255, 255 );
 
-    fonts->setmodifiertypo( Normal );
-    fonts->setmodifierunder( NoUnder );
-    fonts->setmodifierstrike( NoStrike );
+        fonts->setcurrentfont( THIN_FONT );
+        fonts->setmodifiertypo( ItalicBold );
+        fonts->drawstringleft( screen, "THIN Italic Bold", 170, 90, 255, 0, 255, 255 );
 
-    fonts->setcurrentfont( STAN_FONT );
-    fonts->drawstringcenter( screen, "Hello STANDARD_FONT", 160, 160, 255, 0, 0, 255 );
 
-    fonts->setcurrentfont( FANT_FONT );
-    fonts->drawstringright( screen, "Hello FANTASY_FONT", 160, 170, 255, 255, 255, 255 );
+        fonts->setcurrentfont( TINY_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->drawstringleft( screen, "TINY Normal", 20, 110, 255, 255, 255, 255 );
 
-    fonts->setcurrentfont( THIN_FONT );
-    fonts->drawstringleft( screen, "Hello THIN_FONT", 160, 180, 255, 0, 255, 255 );
+        fonts->setcurrentfont( TINY_FONT );
+        fonts->setmodifiertypo( Italic );
+        fonts->drawstringleft( screen, "TINY Italic", 20, 120, 255, 255, 255, 255 );
 
-    fonts->setcurrentfont( TINY_FONT );
-    fonts->drawstringcenter( screen, "Hello TINY_FONT", 160, 190, 0, 255, 0, 255 );
+        fonts->setcurrentfont( TINY_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, "TINY Bold", 20, 130, 255, 255, 255, 255 );
 
-    fonts->setcurrentfont( SPAC_FONT );
-    fonts->drawstringright( screen, "Hello SPACE_FONT", 160, 200, 0, 255, 255, 255 );
-*/
+        fonts->setcurrentfont( TINY_FONT );
+        fonts->setmodifiertypo( ItalicBold );
+        fonts->drawstringleft( screen, "TINY Italic Bold", 20, 140, 255, 255, 255, 255 );
+
+
+
+        fonts->setcurrentfont( SPAC_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->drawstringleft( screen, "SPAC Normal", 170, 110, 0, 255, 255, 255 );
+
+        fonts->setcurrentfont( SPAC_FONT );
+        fonts->setmodifiertypo( Italic );
+        fonts->drawstringleft( screen, "SPAC Italic", 170, 120, 0, 255, 255, 255 );
+
+        fonts->setcurrentfont( SPAC_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, "SPAC Bold", 170, 130, 0, 255, 255, 255 );
+
+        fonts->setcurrentfont( SPAC_FONT );
+        fonts->setmodifiertypo( ItalicBold );
+        fonts->drawstringleft( screen, "SPAC Italic Bold", 170, 140, 0, 255, 255, 255 );
+
+
+
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierunder( NoUnder );
+        fonts->drawstringleft( screen, "VGA No Under", 20, 160, 255, 255, 0, 255 );
+
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierunder( UnderSimple );
+        fonts->drawstringleft( screen, "VGA Simple Under", 20, 175, 255, 255, 0, 255 );
+
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierunder( UnderDouble );
+        fonts->drawstringleft( screen, "VGA Double Under", 20, 190, 255, 255, 0, 255 );
+
+
+
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierunder( NoUnder );
+        fonts->setmodifierstrike( NoStrike );
+        fonts->drawstringleft( screen, "VGA No Strike", 170, 160, 255, 255, 0, 255 );
+
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierstrike( StrikeSimple );
+        fonts->drawstringleft( screen, "VGA Simple Strike", 170, 175, 255, 255, 0, 255 );
+
+        fonts->setcurrentfont( VGA_FONT );
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierstrike( StrikeDouble );
+        fonts->drawstringleft( screen, "VGA Double Strike", 170, 190, 255, 255, 0, 255 );
+
+        fonts->setmodifiertypo( Normal );
+        fonts->setmodifierunder( NoUnder );
+        fonts->setmodifierstrike( NoStrike );
+
+        fonts->setcurrentfont( STAN_FONT );
+        fonts->drawstringcenter( screen, "Hello STANDARD_FONT", 160, 160, 255, 0, 0, 255 );
+
+        fonts->setcurrentfont( FANT_FONT );
+        fonts->drawstringright( screen, "Hello FANTASY_FONT", 160, 170, 255, 255, 255, 255 );
+
+        fonts->setcurrentfont( THIN_FONT );
+        fonts->drawstringleft( screen, "Hello THIN_FONT", 160, 180, 255, 0, 255, 255 );
+
+        fonts->setcurrentfont( TINY_FONT );
+        fonts->drawstringcenter( screen, "Hello TINY_FONT", 160, 190, 0, 255, 0, 255 );
+
+        fonts->setcurrentfont( SPAC_FONT );
+        fonts->drawstringright( screen, "Hello SPACE_FONT", 160, 200, 0, 255, 255, 255 );
+    */
 
 
     for (auto& c : currentdesktop->rootwidgets )

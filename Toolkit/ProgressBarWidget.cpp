@@ -7,6 +7,12 @@ void ProgressBarWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
         is_hovering = cursoron( mouse );
 
+        if(is_hovering)
+        {
+            if (hoverfunction)
+                hoverfunction( (char*) "test" );
+        }
+
         for (auto& c : children )
             c->logic( mouse, keyboard );
     }
@@ -121,7 +127,7 @@ void ProgressBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEn
                 int sh = fonts->getstringheight( value );
 
                 boxRGBA( screen, xpos+(width-sl)/2-2, ypos+2, xpos+(width+sl)/2+2, ypos+height-2, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
-                fonts->drawstringleft( screen, value, xpos+(width-sl)/2 , ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                fonts->drawstringleft( screen, value, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
             }
         }
         else
@@ -213,7 +219,7 @@ void ProgressBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEn
                 int sh = fonts->getstringheight( value );
 
                 boxRGBA( screen, xpos+(width-sl)/2-2, ypos+2, xpos+(width+sl)/2+2, ypos+height-2, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
-                fonts->drawstringleft( screen, value, xpos+(width-sl)/2 , ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                fonts->drawstringleft( screen, value, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
             }
         }
 

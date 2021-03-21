@@ -7,13 +7,27 @@ void MiniButtonWidget::settype( typesymbol type )
 {
     switch(type)
     {
-            case Bottom_Arrow: label = (char*) "\u001f"; break;
-            case Up_Arrow: label = (char*) "\u001e"; break;
-            case Left_Arrow: label = (char*) "\u0011"; break;
-            case Right_Arrow: label = (char*) "\u0010"; break;
-            case Close_Symbol: label = (char*) "\u0009"; break;
-            case Question_Symbol: label = (char*) "\u003f"; break;
-            case Exclamation_Symbol: label = (char*) "\u0021"; break;
+    case Bottom_Arrow:
+        label = (char*) "\u001f";
+        break;
+    case Up_Arrow:
+        label = (char*) "\u001e";
+        break;
+    case Left_Arrow:
+        label = (char*) "\u0011";
+        break;
+    case Right_Arrow:
+        label = (char*) "\u0010";
+        break;
+    case Close_Symbol:
+        label = (char*) "\u0009";
+        break;
+    case Question_Symbol:
+        label = (char*) "\u003f";
+        break;
+    case Exclamation_Symbol:
+        label = (char*) "\u0021";
+        break;
     }
 }
 
@@ -35,17 +49,17 @@ void MiniButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
-                clickfunction( "test" );
+                clickfunction( (char*) "test" );
         }
         else if(!currently_pressed && is_pressed)
         {
             if (releasefunction)
-                releasefunction( "test" );
+                releasefunction( (char*) "test" );
         }
         else if(is_hovering)
         {
             if (hoverfunction)
-                hoverfunction( "test" );
+                hoverfunction( (char*) "test" );
         }
 
         is_pressed = currently_pressed;
@@ -80,7 +94,7 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2 , ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
         }
         else
         {
@@ -94,7 +108,7 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2 , ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
         }
 
         for (auto& c : children )

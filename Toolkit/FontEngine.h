@@ -53,46 +53,46 @@ enum fontmodifierstrike
 
 class FontEngine
 {
-    public:
-        FontEngine();
-        virtual ~FontEngine();
+public:
+    FontEngine();
+    virtual ~FontEngine();
 
-        virtual void loadfontfromfile( char *filename );
-        static FontData* loadfontfromfilepointer( char *filename );
+    virtual void loadfontfromfile( char *filename );
+    static FontData* loadfontfromfilepointer( char *filename );
 
-        virtual int getstringwidth( char *str );
-        virtual int getstringheight( char *str );
+    virtual unsigned int getstringwidth( char *str );
+    virtual unsigned int getstringheight( char *str );
 
-        virtual int getcharwidth( char str );
-        virtual int getcharheight( char str );
+    virtual unsigned int getcharwidth( char str );
+    virtual unsigned int getcharheight( char str );
 
-        virtual void setcurrentfont( fontname curfont ); // To be checked for internam parameters
-        virtual void setspacing( int hspace, int vspace );
-        virtual void setmodifiertypo( fontmodifiertypo mod );
-        virtual void setmodifierunder( fontmodifierunder mod );
-        virtual void setmodifierstrike( fontmodifierstrike mod );
+    virtual void setcurrentfont( fontname curfont ); // To be checked for internam parameters
+    virtual void setspacing( unsigned int hspace, unsigned int vspace );
+    virtual void setmodifiertypo( fontmodifiertypo mod );
+    virtual void setmodifierunder( fontmodifierunder mod );
+    virtual void setmodifierstrike( fontmodifierstrike mod );
 
-        virtual void drawstringleft( SDL_Surface *screen, char *str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
-        virtual void drawcharleft( SDL_Surface *screen, char str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+    virtual void drawstringleft( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+    virtual void drawcharleft( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
 
-        virtual void drawstringcenter( SDL_Surface *screen, char *str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
-        virtual void drawcharcenter( SDL_Surface *screen, char str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+    virtual void drawstringcenter( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+    virtual void drawcharcenter( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
 
-        virtual void drawstringright( SDL_Surface *screen, char *str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
-        virtual void drawcharright( SDL_Surface *screen, char str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+    virtual void drawstringright( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+    virtual void drawcharright( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
 
 
-    protected:
-        FontData *currentfont = nullptr;
-        fontmodifiertypo currentmodifiertypo;
-        fontmodifierunder currentmodifierunder;
-        fontmodifierstrike currentmodifierstrike;
+protected:
+    FontData *currentfont = nullptr;
+    fontmodifiertypo currentmodifiertypo;
+    fontmodifierunder currentmodifierunder;
+    fontmodifierstrike currentmodifierstrike;
 
-        std::vector <FontData*> FontCollection;
-        int vspacing = 0;
-        int hspacing = 0;
+    std::vector <FontData*> FontCollection;
+    unsigned int vspacing = 0;
+    unsigned int hspacing = 0;
 
-    private:
+private:
 };
 
 #endif // FONTENGINE_H

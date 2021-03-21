@@ -14,31 +14,52 @@ enum barstyle
 
 class ProgressBarWidget : public Widget
 {
-    public:
-        ProgressBarWidget() { widgettype = (char*) "ProgressBar"; };
-        ProgressBarWidget( char *l, int x, int y, int w, int h, Widget *p ) : Widget( l, x, y, w, h, p ) { widgettype = (char*) "ProgressBar"; };
-        ~ProgressBarWidget() { };
+public:
+    ProgressBarWidget()
+    {
+        widgettype = (char*) "ProgressBar";
+    };
+    ProgressBarWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+    {
+        widgettype = (char*) "ProgressBar";
+    };
+    ~ProgressBarWidget() { };
 
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-        virtual void setcurrentpercentage( float percent ) { percentfilled = percent; };
-        virtual float getcurrentpercentage( ) { return percentfilled; };
+    virtual void setcurrentpercentage( float percent )
+    {
+        percentfilled = percent;
+    };
+    virtual float getcurrentpercentage( )
+    {
+        return percentfilled;
+    };
 
-        virtual void setstyle( barstyle st ) { style = st; };
-        virtual void setnumberbricks( int nb ) { nbbricks = nb; };
+    virtual void setstyle( barstyle st )
+    {
+        style = st;
+    };
+    virtual void setnumberbricks( int nb )
+    {
+        nbbricks = nb;
+    };
 
-        virtual void setprintvalue( bool setter ) { drawvalue = setter; };
+    virtual void setprintvalue( bool setter )
+    {
+        drawvalue = setter;
+    };
 
 
-    protected:
-        float percentfilled = 0.0;
-        barstyle style = Continuous;
-        int nbbricks = 10;
-        bool drawvalue = false;
+protected:
+    float percentfilled = 0.0;
+    barstyle style = Continuous;
+    int nbbricks = 10;
+    bool drawvalue = false;
 
 
-    private:
+private:
 };
 
 #endif // PROGRESSBARWIDGET_H

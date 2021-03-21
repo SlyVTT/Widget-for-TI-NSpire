@@ -16,7 +16,7 @@ void CommuterWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             invert();
 
             if (clickfunction)
-                clickfunction( "test" );
+                clickfunction( (char*) "test" );
 
             mouse_hold_down = true;
         }
@@ -25,14 +25,14 @@ void CommuterWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             invert();
 
             if (releasefunction)
-                releasefunction( "test" );
+                releasefunction( (char*) "test" );
 
             mouse_hold_down = true;
         }
         else if (is_hovering)
         {
             if (hoverfunction)
-                hoverfunction( "test" );
+                hoverfunction( (char*) "test" );
         }
 
         for (auto& c : children )
@@ -42,8 +42,8 @@ void CommuterWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 void CommuterWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
-    unsigned short R,G,B,A;
-    unsigned short Rc,Gc,Bc,Ac;
+    unsigned short R=0,G=0,B=0,A=0;
+    unsigned short Rc=0,Gc=0,Bc=0,Ac=0;
 
     if (is_ticked && (typetick == style1 ))
     {
@@ -95,7 +95,7 @@ void CommuterWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
         Ac = colors->widget_commuter_inactive_cursor_style2.A;
     }
 
-        if (is_ticked && (typetick == style3 ))
+    if (is_ticked && (typetick == style3 ))
     {
         R = colors->widget_commuter_active_filling_style3.R;
         G = colors->widget_commuter_active_filling_style3.G;
@@ -190,10 +190,9 @@ void CommuterWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
             fonts->setcurrentfont( THIN_FONT );
             fonts->setmodifiertypo( Normal );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+35 , ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            fonts->drawstringleft( screen, label, xpos+35, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
 
         }
         else
@@ -217,10 +216,9 @@ void CommuterWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
             fonts->setcurrentfont( THIN_FONT );
             fonts->setmodifiertypo( Normal );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+35 , ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            fonts->drawstringleft( screen, label, xpos+35, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
 
         }
 

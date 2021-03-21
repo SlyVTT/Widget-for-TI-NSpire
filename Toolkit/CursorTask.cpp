@@ -15,7 +15,7 @@ void CursorTask::setcursortype( cursortype type )
 void CursorTask::logic()
 {
     if(!show)
-		return;
+        return;
 
     touchpad_report_t touchpad;
     touchpad_scan(&touchpad);
@@ -57,35 +57,38 @@ void CursorTask::logic()
         tp_last_x = touchpad.x;
         tp_last_y = touchpad.y;
         tp_last_contact = touchpad.contact;
-	}
+    }
     else
     {
         tp_last_contact = false;
     }
 
-    // This is the initial code from Vogtinator
-	//x = std::max<unsigned int>({0, dx + x});
-	//y = std::max<unsigned int>({0, dy + y});
-	//x = std::min<unsigned int>({x, SCREEN_WIDTH});
-	//y = std::min<unsigned int>({y, SCREEN_HEIGHT});
-
-
     // The following code allow the mouse cursor to roll from top to bottom or left to right (and vice versa) when reaching the limit of the screen
-	x+=dx;
-	y+=dy;
-	if (x<0) { x+=320; };
-	if (y<0) { y+=240; };
-	if (x>=320) { x-=320; };
-	if (y>=240) { y-=240; };
+    if ((int)(x+dx)<0)
+    {
+        x=x+dx+320;
+    };
+    if ((int)(y+dy)<0)
+    {
+        y=y+dy+240;
+    };
+    if ((int)(x+dx)>=320)
+    {
+        x=x+dx-320;
+    };
+    if ((int)(y+dy)>=240)
+    {
+        y=y+dy-240;
+    };
 
 
-	// check for mouse move
-	if ((dx != 0) || (dy !=0))
-	{
+    // check for mouse move
+    if ((dx != 0) || (dy !=0))
+    {
         mousemoveevent = true;
     }
-	else
-	{
+    else
+    {
         mousemoveevent = false;
     }
 
@@ -105,7 +108,7 @@ void CursorTask::logic()
 void CursorTask::render( SDL_Surface *screen )
 {
     if(!show)
-		return;
+        return;
 
     if (cursor == triangle)
     {

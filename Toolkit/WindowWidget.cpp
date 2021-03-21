@@ -2,27 +2,27 @@
 
 
 
-int WindowWidget::getuseablexpos()
+unsigned int WindowWidget::getuseablexpos()
 {
- return xpos + 2;
+    return xpos + 2;
 }
 
 
-int WindowWidget::getuseableypos()
+unsigned int WindowWidget::getuseableypos()
 {
- return ypos + 14;
+    return ypos + 14;
 }
 
 
-int WindowWidget::getuseablewidth()
+unsigned int WindowWidget::getuseablewidth()
 {
- return width - 4;
+    return width - 4;
 }
 
 
-int WindowWidget::getuseableheight()
+unsigned int WindowWidget::getuseableheight()
 {
- return height - 16;
+    return height - 16;
 }
 
 
@@ -30,24 +30,13 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
 
     is_hovering = cursoron( mouse );
-    bool currently_pressed = mouse->state && is_hovering;
-/*
-    if(currently_pressed && !is_pressed)
-    {
-        if (clickfunction)
-            clickfunction( "test" );
-    }
-    else if(!currently_pressed && is_pressed)
-    {
-        if (releasefunction)
-            releasefunction( "test" );
-    }
-    else if(is_hovering)
+
+    if(is_hovering)
     {
         if (hoverfunction)
-            hoverfunction( "test" );
+            hoverfunction( (char*) "test" );
     }
-*/
+
     for (auto& c : children )
         c->logic( mouse, keyboard );
 
@@ -80,7 +69,7 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2 , ypos+sh/2, colors->window_titlebartext_enable.R, colors->window_titlebartext_enable.G, colors->window_titlebartext_enable.B, colors->window_titlebartext_enable.A );
+            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+sh/2, colors->window_titlebartext_enable.R, colors->window_titlebartext_enable.G, colors->window_titlebartext_enable.B, colors->window_titlebartext_enable.A );
         }
         else
         {
@@ -94,7 +83,7 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2 , ypos+sh/2, colors->window_titlebartext_disable.R, colors->window_titlebartext_disable.G, colors->window_titlebartext_disable.B, colors->window_titlebartext_disable.A );
+            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+sh/2, colors->window_titlebartext_disable.R, colors->window_titlebartext_disable.G, colors->window_titlebartext_disable.B, colors->window_titlebartext_disable.A );
         }
 
         for (auto& c : children )

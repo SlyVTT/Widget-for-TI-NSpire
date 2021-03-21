@@ -16,20 +16,26 @@ enum typesymbol
 
 class MiniButtonWidget : public ButtonWidget
 {
-    public:
-        MiniButtonWidget()  { widgettype = (char*) "MiniButton"; };
-        MiniButtonWidget( char *l, int x, int y, int w, int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p ) { widgettype = (char*) "MiniButton"; };
-        virtual ~MiniButtonWidget() { };
+public:
+    MiniButtonWidget()
+    {
+        widgettype = (char*) "MiniButton";
+    };
+    MiniButtonWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
+    {
+        widgettype = (char*) "MiniButton";
+    };
+    virtual ~MiniButtonWidget() { };
 
-        virtual bool ispressed() override;
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    virtual bool ispressed() override;
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-        virtual void settype( typesymbol type );
+    virtual void settype( typesymbol type );
 
-    protected:
+protected:
 
-    private:
+private:
 };
 
 #endif // MINIBUTTONWIDGET_H

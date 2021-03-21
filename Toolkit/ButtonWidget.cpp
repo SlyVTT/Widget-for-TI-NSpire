@@ -19,17 +19,17 @@ void ButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
-                clickfunction( "test" );
+                clickfunction( (char*) "test" );
         }
         else if(!currently_pressed && is_pressed)
         {
             if (releasefunction)
-                releasefunction( "test" );
+                releasefunction( (char*) "test" );
         }
         else if(is_hovering)
         {
             if (hoverfunction)
-                hoverfunction( "test" );
+                hoverfunction( (char*) "test" );
         }
 
         is_pressed = currently_pressed;
@@ -63,7 +63,7 @@ void ButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2 , ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
         }
         else
         {
@@ -77,7 +77,7 @@ void ButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2 , ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
         }
 
         for (auto& c : children )

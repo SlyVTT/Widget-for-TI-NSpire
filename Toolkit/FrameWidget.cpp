@@ -2,27 +2,27 @@
 
 
 
-int FrameWidget::getuseablexpos()
+unsigned int FrameWidget::getuseablexpos()
 {
- return xpos + 2;
+    return xpos + 2;
 }
 
 
-int FrameWidget::getuseableypos()
+unsigned int FrameWidget::getuseableypos()
 {
- return ypos + 14;
+    return ypos + 14;
 }
 
 
-int FrameWidget::getuseablewidth()
+unsigned int FrameWidget::getuseablewidth()
 {
- return width - 4;
+    return width - 4;
 }
 
 
-int FrameWidget::getuseableheight()
+unsigned int FrameWidget::getuseableheight()
 {
- return height - 16;
+    return height - 16;
 }
 
 
@@ -38,17 +38,17 @@ void FrameWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
-                clickfunction( "test" );
+                clickfunction( (char*) "test" );
         }
         else if(!currently_pressed && is_pressed)
         {
             if (releasefunction)
-                releasefunction( "test" );
+                releasefunction( (char*) "test" );
         }
         else if(is_hovering)
         {
             if (hoverfunction)
-                hoverfunction( "test" );
+                hoverfunction( (char*) "test" );
         }
 
         is_pressed = currently_pressed;
@@ -86,7 +86,7 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
 
             boxRGBA( screen, xpos+3, ypos, xpos+3+sl, ypos+sh, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
 
-            fonts->drawstringleft( screen, label, xpos+3 , ypos+sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            fonts->drawstringleft( screen, label, xpos+3, ypos+sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
 
         }
         else
@@ -104,7 +104,7 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
 
             boxRGBA( screen, xpos+3, ypos, xpos+3+sl, ypos+sh, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
 
-            fonts->drawstringleft( screen, label, xpos+3 , ypos+sh/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            fonts->drawstringleft( screen, label, xpos+3, ypos+sh/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
         }
 
         for (auto& c : children )

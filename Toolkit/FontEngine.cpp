@@ -95,25 +95,57 @@ FontData* FontEngine::loadfontfromfilepointer( char* filename )
                         int digitint=0;
                         switch(digit)
                         {
-                            case '0' : digitint=0; break;
-                            case '1' : digitint=1; break;
-                            case '2' : digitint=2; break;
-                            case '3' : digitint=3; break;
+                        case '0' :
+                            digitint=0;
+                            break;
+                        case '1' :
+                            digitint=1;
+                            break;
+                        case '2' :
+                            digitint=2;
+                            break;
+                        case '3' :
+                            digitint=3;
+                            break;
 
-                            case '4' : digitint=4; break;
-                            case '5' : digitint=5; break;
-                            case '6' : digitint=6; break;
-                            case '7' : digitint=7; break;
+                        case '4' :
+                            digitint=4;
+                            break;
+                        case '5' :
+                            digitint=5;
+                            break;
+                        case '6' :
+                            digitint=6;
+                            break;
+                        case '7' :
+                            digitint=7;
+                            break;
 
-                            case '8' : digitint=8; break;
-                            case '9' : digitint=9; break;
-                            case 'A' : digitint=10; break;
-                            case 'B' : digitint=11; break;
+                        case '8' :
+                            digitint=8;
+                            break;
+                        case '9' :
+                            digitint=9;
+                            break;
+                        case 'A' :
+                            digitint=10;
+                            break;
+                        case 'B' :
+                            digitint=11;
+                            break;
 
-                            case 'C' : digitint=12; break;
-                            case 'D' : digitint=13; break;
-                            case 'E' : digitint=14; break;
-                            case 'F' : digitint=15; break;
+                        case 'C' :
+                            digitint=12;
+                            break;
+                        case 'D' :
+                            digitint=13;
+                            break;
+                        case 'E' :
+                            digitint=14;
+                            break;
+                        case 'F' :
+                            digitint=15;
+                            break;
                         }
 
                         nbvalue += (digitint << ((length-k-1)*4));
@@ -131,6 +163,8 @@ FontData* FontEngine::loadfontfromfilepointer( char* filename )
 
         return tempFont;
     }
+
+    return nullptr;
 
 }
 
@@ -190,25 +224,57 @@ void FontEngine::loadfontfromfile( char* filename )
                         int digitint=0;
                         switch(digit)
                         {
-                            case '0' : digitint=0; break;
-                            case '1' : digitint=1; break;
-                            case '2' : digitint=2; break;
-                            case '3' : digitint=3; break;
+                        case '0' :
+                            digitint=0;
+                            break;
+                        case '1' :
+                            digitint=1;
+                            break;
+                        case '2' :
+                            digitint=2;
+                            break;
+                        case '3' :
+                            digitint=3;
+                            break;
 
-                            case '4' : digitint=4; break;
-                            case '5' : digitint=5; break;
-                            case '6' : digitint=6; break;
-                            case '7' : digitint=7; break;
+                        case '4' :
+                            digitint=4;
+                            break;
+                        case '5' :
+                            digitint=5;
+                            break;
+                        case '6' :
+                            digitint=6;
+                            break;
+                        case '7' :
+                            digitint=7;
+                            break;
 
-                            case '8' : digitint=8; break;
-                            case '9' : digitint=9; break;
-                            case 'A' : digitint=10; break;
-                            case 'B' : digitint=11; break;
+                        case '8' :
+                            digitint=8;
+                            break;
+                        case '9' :
+                            digitint=9;
+                            break;
+                        case 'A' :
+                            digitint=10;
+                            break;
+                        case 'B' :
+                            digitint=11;
+                            break;
 
-                            case 'C' : digitint=12; break;
-                            case 'D' : digitint=13; break;
-                            case 'E' : digitint=14; break;
-                            case 'F' : digitint=15; break;
+                        case 'C' :
+                            digitint=12;
+                            break;
+                        case 'D' :
+                            digitint=13;
+                            break;
+                        case 'E' :
+                            digitint=14;
+                            break;
+                        case 'F' :
+                            digitint=15;
+                            break;
                         }
 
                         nbvalue += (digitint << ((length-k-1)*4));
@@ -230,7 +296,7 @@ void FontEngine::loadfontfromfile( char* filename )
 }
 
 
-int FontEngine::getstringwidth( char *str )
+unsigned int FontEngine::getstringwidth( char *str )
 {
     int length = (int) strlen( str );
     int posx = 0;
@@ -246,7 +312,7 @@ int FontEngine::getstringwidth( char *str )
 
 
 // this is for monoline text, does not take into consideration \n character yet
-int FontEngine::getstringheight( char *str )
+unsigned int FontEngine::getstringheight( char *str )
 {
     int length = (int) strlen( str );
     int posy = 0;
@@ -254,7 +320,7 @@ int FontEngine::getstringheight( char *str )
 
     for(int i=0; i< length; i++)
     {
-         if( currentfont->Font[str[i]]->charheight > posy)
+        if( currentfont->Font[str[i]]->charheight > posy)
             posy = currentfont->Font[str[i]]->charheight;
     }
 
@@ -262,13 +328,13 @@ int FontEngine::getstringheight( char *str )
 
 }
 
-int FontEngine::getcharwidth( char str )
+unsigned int FontEngine::getcharwidth( char str )
 {
     return currentfont->Font[str]->charwidth;
 }
 
 
-int FontEngine::getcharheight( char str )
+unsigned int FontEngine::getcharheight( char str )
 {
     return currentfont->Font[str]->charheight;
 }
@@ -279,7 +345,7 @@ void FontEngine::setcurrentfont( fontname curfont ) // To be checked for interna
     currentfont = FontCollection[ curfont ];
 }
 
-void FontEngine::setspacing( int hspace, int vspace )
+void FontEngine::setspacing( unsigned int hspace, unsigned int vspace )
 {
     hspacing = hspace;
     vspacing = vspace;
@@ -301,7 +367,7 @@ void FontEngine::setmodifierstrike( fontmodifierstrike mod )
 }
 
 
-void FontEngine::drawstringleft( SDL_Surface *screen, char *str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+void FontEngine::drawstringleft( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
 
     int length = (int) strlen( str );
@@ -315,7 +381,7 @@ void FontEngine::drawstringleft( SDL_Surface *screen, char *str, int x, int y, u
     }
 }
 
-void FontEngine::drawcharleft( SDL_Surface *screen, char str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+void FontEngine::drawcharleft( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     FontChar *temp = currentfont->Font[str];
 
@@ -394,25 +460,25 @@ void FontEngine::drawcharleft( SDL_Surface *screen, char str, int x, int y, unsi
 
 }
 
-void FontEngine::drawstringcenter( SDL_Surface *screen, char *str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+void FontEngine::drawstringcenter( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     int dx = (int) (getstringwidth( str ) / 2);
     drawstringleft( screen, str, x-dx, y, R, G, B, A);
 }
 
-void FontEngine::drawcharcenter( SDL_Surface *screen, char str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+void FontEngine::drawcharcenter( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     int dx = (int) (getcharwidth( str ) / 2);
     drawcharleft( screen, str, x-dx, y, R, G, B, A);
 }
 
-void FontEngine::drawstringright( SDL_Surface *screen, char *str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+void FontEngine::drawstringright( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     int dx = (int) getstringwidth( str );
     drawstringleft( screen, str, x-dx, y, R, G, B, A);
 }
 
-void FontEngine::drawcharright( SDL_Surface *screen, char str, int x, int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+void FontEngine::drawcharright( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     int dx = (int) getcharwidth( str );
     drawcharleft( screen, str, x-dx, y, R, G, B, A);

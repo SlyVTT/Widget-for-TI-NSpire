@@ -38,6 +38,11 @@ void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         mousey=mouse->y;
         mouses=mouse->state;
 
+        if(is_hovering)
+        {
+            if (hoverfunction)
+                hoverfunction( (char*) "test" );
+        }
 
         if ( is_hovering && mouses && !has_focus )
         {
@@ -48,13 +53,13 @@ void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         {
             nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
 
-            int x_rel = mousex - xpos - 2;
+            unsigned int x_rel = mousex - xpos - 2;
             const char *str = text.c_str() + scroll;
             unsigned int pos = scroll;
 
             while(x_rel > 0 && *str)
             {
-                int temp = getwidthfont( tempfont, (char) *str++);
+                unsigned int temp = getwidthfont( tempfont, (char) *str++);
                 x_rel -= temp;
                 ++pos;
             }
@@ -160,18 +165,18 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B);
 
             int sh = nSDL_GetStringHeight( tempfont, text.c_str() );
-            int dx = 0;
+            //int dx = 0;
 
 
 
             while(*str && x1 - xpos + getwidthfont( tempfont, (char) *str) < width)
             {
                 if(has_focus && str == cursor)
-                    {
-                        vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                        vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                        x1+=2;
-                    }
+                {
+                    vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    x1+=2;
+                }
                 //fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
                 nSDL_DrawString( screen, tempfont, x1, ypos + height/2 - sh/2, "%c", *str );
                 x1 += getwidthfont( tempfont, (char) *str );
@@ -205,18 +210,18 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B);
 
             int sh = nSDL_GetStringHeight( tempfont, text.c_str() );
-            int dx = 0;
+            //int dx = 0;
 
 
 
             while(*str && x1 - xpos + getwidthfont( tempfont, (char) *str) < width)
             {
                 if(has_focus && str == cursor)
-                    {
-                        vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                        vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                        x1+=2;
-                    }
+                {
+                    vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    x1+=2;
+                }
                 //fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
                 nSDL_DrawString( screen, tempfont, x1, ypos + height/2 - sh/2, "%c", *str );
                 x1 += getwidthfont( tempfont, (char) *str );
@@ -236,11 +241,11 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
 
         }
 
-/*        if (has_focus)
-        {
-            roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_hasfocus.R, colors->widget_border_hasfocus.G, colors->widget_border_hasfocus.B, colors->widget_border_hasfocus.A);
-        }
-*/
+        /*        if (has_focus)
+                {
+                    roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_hasfocus.R, colors->widget_border_hasfocus.G, colors->widget_border_hasfocus.B, colors->widget_border_hasfocus.A);
+                }
+        */
 
 
         for (auto& c : children )
