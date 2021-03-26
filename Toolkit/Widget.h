@@ -26,6 +26,9 @@ public:
     virtual void unfocusdown( Widget *emitter );
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts );
     virtual void addchild( Widget *child );
+    virtual void addpopupchild( Widget *child );
+    //virtual void escape() {};
+    //virtual void validate() {};
 
     //SETTERs
     virtual void setdimensions( unsigned int mx, unsigned int my, unsigned int mw, unsigned int mh )
@@ -168,6 +171,7 @@ protected:
     Widget *parent = nullptr;
     int nbchildren;
     std::vector< Widget* > children;
+    std::vector< Widget* > popupchildren;
 
     void(*clickfunction)(char*) = nullptr;
     void(*releasefunction)(char*) = nullptr;

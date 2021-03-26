@@ -1,86 +1,103 @@
-#include "MiniButtonWidget.h"
+#include "DropBoxWidget.h"
 
 
 
-
-void MiniButtonWidget::settype( typesymbol type )
+DropBoxWidget::DropBoxWidget() : Widget()
 {
-    switch(type)
-    {
-    case Bottom_Arrow:
-        label = (char*) "\u001f";
-        break;
-    case Up_Arrow:
-        label = (char*) "\u001e";
-        break;
-    case Left_Arrow:
-        label = (char*) "\u0011";
-        break;
-    case Right_Arrow:
-        label = (char*) "\u0010";
-        break;
-    case Close_Symbol:
-        label = (char*) "\u0009";
-        break;
-    case Question_Symbol:
-        label = (char*) "\u003f";
-        break;
-    case Exclamation_Symbol:
-        label = (char*) "\u0021";
-        break;
-    }
-}
+    widgettype = (char*) "DropBox";
+
+    dropbutton = new MiniButtonWidget();
+    dropbutton->settype( Bottom_Arrow );
+
+    listbox = new ListBoxWidget();
+
+    listbox->setparent( this );
+
+    listbox->setlabel( (char*) "Hello Listbox" );
+    listbox->setinvisible();
+
+    parent->addpopupchild( listbox );
+};
+
+DropBoxWidget::DropBoxWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+{
+    widgettype = (char*) "DropBox";
+
+    this->setdimensions( x, y, w-h, h );
+
+    MiniButtonWidget *tempbutton = new MiniButtonWidget();
+    dropbutton = tempbutton;
+    dropbutton->setdimensions( x+w, y, h, h );
+    dropbutton->settype( Bottom_Arrow );
+
+    ListBoxWidget *templist = new ListBoxWidget();
+    listbox = templist;
+    listbox->setdimensions( x, y+h, w+h, 5*h );
+
+    listbox->setparent( this );
+
+    listbox->setlabel( (char*) "Hello Listbox" );
+    listbox->setinvisible();
+
+    parent->addpopupchild( listbox );
+};
 
 
-bool MiniButtonWidget::ispressed()
+bool DropBoxWidget::ispressed()
 {
     return is_pressed;
 }
 
-void MiniButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
+void DropBoxWidget::validate()
+{
+    this->selected_item = this->listbox->getselected();
+    this->selected_item_value = this->listbox->getselecteditem();
+
+    this->setlabel( (char*) selected_item_value );
+
+    //this->dropbutton->settype( Bottom_Arrow );
+    this->dropbutton->invert();
+    //this->listbox->setinvisible();
+    this->undrop();
+
+    SDL_Delay( 300 );
+}
+
+void DropBoxWidget::escape()
+{
+    this->selected_item = -1;
+    this->selected_item_value = (char *) " ";
+
+    this->setlabel( (char*) " " );
+
+    //this->dropbutton->settype( Bottom_Arrow );
+    this->dropbutton->invert();
+    //this->listbox->setinvisible();
+    this->undrop();
+
+    SDL_Delay( 300 );
+}
+
+void DropBoxWidget::adjust()
+{
+
+    this->setdimensions( xpos, ypos, width-height, height );
+
+    dropbutton->setdimensions( xpos+width, ypos, height, height );
+
+    listbox->setdimensions( xpos, ypos+height, width+height, 5*height );
+
+    for (auto& c : children )
+        c->adjust();
+}
+
+void DropBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
     if (is_enabled && is_visible)
     {
-        is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
-
-        if(mouse_hold_down)
-        {
-            mouse_hold_down = currently_pressed;
-        }
-        else if (currently_pressed && !is_ticked )
-        {
-            invert();
-
-            if (clickfunction)
-                clickfunction( (char*) "test" );
-
-            mouse_hold_down = true;
-        }
-        else if (currently_pressed && is_ticked )
-        {
-            invert();
-
-            if (releasefunction)
-                releasefunction( (char*) "test" );
-
-            mouse_hold_down = true;
-        }
-        else if (is_hovering)
-        {
-            if (hoverfunction)
-                hoverfunction( (char*) "test" );
-        }
-
-        for (auto& c : children )
-            c->logic( mouse, keyboard );
-    }
-
-/*    if (is_enabled && is_visible)
-    {
 
         is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
+        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
 
         if(currently_pressed && !is_pressed)
@@ -101,14 +118,31 @@ void MiniButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         is_pressed = currently_pressed;
 
+        dropbutton->logic( mouse, keyboard );
+
+
+
+
+        //if (dropbutton->ispressed() && !is_dropped )
+        //if ((is_pressed && !is_dropped) || (dropbutton->ispressed() && !is_dropped ))
+        if (dropbutton->isticked())
+        {
+            dropbutton->settype( Up_Arrow );
+            this->drop();
+        }
+        else //if ((is_pressed && is_dropped) || (dropbutton->ispressed() && is_dropped ))
+        {
+            dropbutton->settype( Bottom_Arrow );
+            this->undrop();
+        }
+
         for (auto& c : children )
             c->logic( mouse, keyboard );
+
     }
-*/
 }
 
-
-void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
+void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
     if (is_visible)
     {
@@ -120,10 +154,6 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
             if (!is_hovering)
             {
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-            }
-            else if (is_pressed)
-            {
-                roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, 0, 0, 255, 0);
             }
             else
             {
@@ -152,6 +182,8 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
 
             fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
         }
+
+        dropbutton->render( screen, colors, fonts );
 
         for (auto& c : children )
             c->render( screen, colors, fonts );

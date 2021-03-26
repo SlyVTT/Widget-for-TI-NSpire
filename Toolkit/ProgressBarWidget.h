@@ -19,19 +19,23 @@ public:
     {
         widgettype = (char*) "ProgressBar";
     };
+
     ProgressBarWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
         widgettype = (char*) "ProgressBar";
     };
+
     ~ProgressBarWidget() { };
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
     virtual void setcurrentpercentage( float percent )
     {
         percentfilled = percent;
     };
+
     virtual float getcurrentpercentage( )
     {
         return percentfilled;
@@ -41,6 +45,7 @@ public:
     {
         style = st;
     };
+
     virtual void setnumberbricks( int nb )
     {
         nbbricks = nb;

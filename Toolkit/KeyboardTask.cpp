@@ -7,6 +7,11 @@
 KeyboardTask::KeyboardTask()
 {
     base=(unsigned short *)0x900E0010;
+    if (is_cx2)
+        specialON=(unsigned short *)0x90140810;
+    else
+        specialON=(unsigned short *)0x900B0028;
+
 }
 
 KeyboardTask::~KeyboardTask()
@@ -19,7 +24,7 @@ bool KeyboardTask::iskeypressed()
 {
     //unsigned short *base=(unsigned short *)0x900E0010;
     uint16_t temp = base[0]+base[1]+base[2]+base[3]+base[4]+base[5]+base[6]+base[7];
-    if (temp==0) return false;
+    if ((temp==0) && ((specialON[0] & 256) != 0)) return false;
     else return true;
 }
 
@@ -43,6 +48,18 @@ void KeyboardTask::logic( )
             keyreleaseevent = false;
         }
 
+
+        //The ON/HOME Key has a special treatment in the TI nSpire CX and CX II
+        //And is not mapped as it should be
+        if ( is_cx2 )
+        {
+            if ((specialON[0] & 256) == 0 ) kbON = true;
+        }
+        else
+        {
+            if ((specialON[0] & 16) == 0 ) kbON = true;
+        }
+
         // check if keys are pressed
         temp=base[0];
         if ( temp != 0 )
@@ -58,7 +75,10 @@ void KeyboardTask::logic( )
             if ( (temp & 64) != 0 ) kbY = true;
             if ( (temp & 128) != 0 ) kb0 = true;
             if ( (temp & 256) != 0 ) kbQUESTION = true;
-            if ( (temp & 512) != 0 ) kbON = true; // NOTE : this seems to be a particular case, does not work ??
+            //if ( (temp & 512) != 0 ) kbON = true; // NOTE : this seems to be a particular case, does not work ??
+
+
+
             if ( (temp & 1024) != 0 ) {}; // No key assigned to this bit
         }
 

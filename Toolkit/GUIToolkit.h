@@ -47,8 +47,8 @@
 #include "LabelWidget.h"
 #include "ProgressBarWidget.h"
 
-
-
+#include "ListBoxWidget.h"
+#include "DropBoxWidget.h"
 
 
 

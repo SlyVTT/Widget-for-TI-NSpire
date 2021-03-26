@@ -230,6 +230,7 @@ public:
 
 private:
     unsigned short *base;
+    unsigned short *specialON;
 };
 
 #endif // KEYBOARDTASK_H

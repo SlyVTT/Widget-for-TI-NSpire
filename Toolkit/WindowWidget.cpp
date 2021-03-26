@@ -40,6 +40,12 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     for (auto& c : children )
         c->logic( mouse, keyboard );
 
+    for (auto& d : popupchildren )
+    {
+        if (d->isvisible())
+            d->logic( mouse, keyboard );
+    }
+
 }
 
 
@@ -89,6 +95,11 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
         for (auto& c : children )
             c->render( screen, colors, fonts );
 
+        for (auto& d : popupchildren )
+        {
+            if (d->isvisible())
+                d->render( screen, colors, fonts );
+        }
     }
 
 }

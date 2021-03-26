@@ -177,6 +177,20 @@ void Widget::addchild( Widget *child )
     child->setparent( this );
 }
 
+
+void Widget::addpopupchild( Widget *child )
+{
+    if (getwidgettype() == (char*) "Window")
+    {
+        popupchildren.push_back( child );
+    }
+    else if (parent)
+    {
+        parent->addpopupchild( child );
+    }
+}
+
+
 void Widget::setparent( Widget *p )
 {
     parent = p;

@@ -21,21 +21,43 @@ public:
     {
         widgettype = (char*) "MiniButton";
     };
+
     MiniButtonWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
     {
         widgettype = (char*) "MiniButton";
     };
+
     virtual ~MiniButtonWidget() { };
 
     virtual bool ispressed() override;
+
+    virtual bool isticked( void )
+    {
+        return is_ticked;
+    };
+
+    virtual void invert( void )
+    {
+        is_ticked = !is_ticked;
+    };
+
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
     virtual void settype( typesymbol type );
 
+
+
 protected:
 
 private:
+
+    friend class DropBoxWidget;
+
+    bool is_ticked = false;
+    bool mouse_hold_down = false;
+
 };
 
 #endif // MINIBUTTONWIDGET_H

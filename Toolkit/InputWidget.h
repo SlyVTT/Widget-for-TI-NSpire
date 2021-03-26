@@ -49,6 +49,8 @@ private:
     bool mouses;
     nSDL_Font *fontwidget;
 
+    FontEngine *nfontwidget = nullptr;
+
     bool key_hold_down = false;
 };
 

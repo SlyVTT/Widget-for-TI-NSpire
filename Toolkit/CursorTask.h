@@ -171,7 +171,7 @@ public:
     /// Gives direct access to the X coordinate of the cursor on the screen
     /// @note value should be between 0 and 320
     /// @see CursorTask::y CursorTask::state
-    unsigned int x = 0;
+    int x = SCREEN_WIDTH / 2;
 
 
     /// Cursor Y coordinate in the screen
@@ -179,7 +179,7 @@ public:
     /// Gives direct access to the Y coordinate of the cursor on the screen
     /// @note value should be between 0 and 240
     /// @see CursorTask::x CursorTask::state
-    unsigned int y = 0;
+    int y = SCREEN_HEIGHT / 2;
 
 
     /// Cursor click status

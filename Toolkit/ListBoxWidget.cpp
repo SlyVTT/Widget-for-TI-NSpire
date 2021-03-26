@@ -1,83 +1,41 @@
-#include "MiniButtonWidget.h"
+#include "ListBoxWidget.h"
+#include "DropBoxWidget.h"
+
+//#include <math.h>
 
 
-
-
-void MiniButtonWidget::settype( typesymbol type )
-{
-    switch(type)
-    {
-    case Bottom_Arrow:
-        label = (char*) "\u001f";
-        break;
-    case Up_Arrow:
-        label = (char*) "\u001e";
-        break;
-    case Left_Arrow:
-        label = (char*) "\u0011";
-        break;
-    case Right_Arrow:
-        label = (char*) "\u0010";
-        break;
-    case Close_Symbol:
-        label = (char*) "\u0009";
-        break;
-    case Question_Symbol:
-        label = (char*) "\u003f";
-        break;
-    case Exclamation_Symbol:
-        label = (char*) "\u0021";
-        break;
-    }
-}
-
-
-bool MiniButtonWidget::ispressed()
+bool ListBoxWidget::ispressed()
 {
     return is_pressed;
 }
 
-void MiniButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
+void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
     if (is_enabled && is_visible)
     {
-        is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
 
-        if(mouse_hold_down)
+        if (keyboard->kbESC)
         {
-            mouse_hold_down = currently_pressed;
-        }
-        else if (currently_pressed && !is_ticked )
-        {
-            invert();
+            DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
+            temp->escape();
 
-            if (clickfunction)
-                clickfunction( (char*) "test" );
+            //parent->escape();
 
-            mouse_hold_down = true;
-        }
-        else if (currently_pressed && is_ticked )
-        {
-            invert();
-
-            if (releasefunction)
-                releasefunction( (char*) "test" );
-
-            mouse_hold_down = true;
-        }
-        else if (is_hovering)
-        {
-            if (hoverfunction)
-                hoverfunction( (char*) "test" );
+            is_visible = false;
+            return;
         }
 
-        for (auto& c : children )
-            c->logic( mouse, keyboard );
-    }
+        if (keyboard->kbRET || keyboard->kbENTER)
+        {
+            DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
+            temp->validate();
 
-/*    if (is_enabled && is_visible)
-    {
+            //parent->validate;
+
+            is_visible = false;
+            return;
+        }
+
 
         is_hovering = cursoron( mouse );
         bool currently_pressed = mouse->state && is_hovering;
@@ -101,14 +59,52 @@ void MiniButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         is_pressed = currently_pressed;
 
+        if (keyboard->kbDOWN && keyboard->iskeypressevent())
+        {
+            if ( selected < this->getnbitem()-1)
+            {
+                selected++;
+            }
+
+            if ((selected>=0) && (selected<=nbvisible-1))
+            {
+                scroll=0;
+            }
+            else //((selected>=nbvisible) && (selected<=getnbitem()-1))
+            {
+                scroll=selected-nbvisible+1;
+            }
+
+            SDL_Delay( 300 );
+        }
+
+        if (keyboard->kbUP && keyboard->iskeypressevent())
+        {
+            if (selected>0)
+            {
+                selected--;
+            }
+
+            if ((selected>=0) && (selected<=nbvisible-1))
+            {
+                scroll=0;
+            }
+            else //((selected>=nbvisible) && (selected<=getnbitem()-1))
+            {
+                scroll=selected-nbvisible+1;
+            }
+
+            SDL_Delay( 300 );
+        }
+
+
+
         for (auto& c : children )
             c->logic( mouse, keyboard );
     }
-*/
 }
 
-
-void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
+void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
     if (is_visible)
     {
@@ -121,10 +117,6 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
             {
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
             }
-            else if (is_pressed)
-            {
-                roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, 0, 0, 255, 0);
-            }
             else
             {
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
@@ -136,7 +128,22 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            nbvisible = (unsigned int) ((height-10) / (sh*2));
+
+            for(int i=scroll; i<=scroll+nbvisible-1; i++)
+            {
+                //Ongoing - to be optimised
+                if (i!=selected)
+                {
+                    fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                }
+                else
+                {
+                    roundedBoxRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, 255, 0, 125, 255);
+                    fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), 255, 255, 255, 255 );
+                }
+
+            }
         }
         else
         {

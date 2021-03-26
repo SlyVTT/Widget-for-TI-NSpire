@@ -8,7 +8,7 @@
 extern "C" char nio_ascii_get(int *a);
 
 
-int getwidthfont( nSDL_Font *font, char c )
+/*int getwidthfont( nSDL_Font *font, char c )
 {
     char text[2];
     sprintf( text, "%c", c );
@@ -26,7 +26,7 @@ int drawchar( SDL_Surface * screen, int x, int y, nSDL_Font *font, char c )
 
     return width;
 }
-
+*/
 
 void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
@@ -51,7 +51,10 @@ void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         if( mouses && is_hovering )
         {
-            nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
+            //nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
+            nfontwidget->setcurrentfont( THIN_FONT );
+            nfontwidget->setmodifiertypo( Normal );
+
 
             unsigned int x_rel = mousex - xpos - 2;
             const char *str = text.c_str() + scroll;
@@ -59,14 +62,14 @@ void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
             while(x_rel > 0 && *str)
             {
-                unsigned int temp = getwidthfont( tempfont, (char) *str++);
+                unsigned int temp = nfontwidget->getcharwidth( (char) *str++ );
                 x_rel -= temp;
                 ++pos;
             }
 
             cursor_pos = pos;
 
-            nSDL_FreeFont( tempfont );
+            //nSDL_FreeFont( tempfont );
 
         }
 
@@ -145,6 +148,10 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
     if (is_visible)
     {
 
+        // if the current font has not been defined for the widget, we use the current fontengine
+        if (nfontwidget ==nullptr)
+            nfontwidget = fonts;
+
         if (is_enabled)
         {
             roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
@@ -162,14 +169,12 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             const char *cursor = text.c_str() + cursor_pos;
             unsigned int x1 = xpos + 5;
 
-            nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B);
+            fonts->setcurrentfont( THIN_FONT );
+            fonts->setmodifiertypo( Normal );
+            char* tpstr = (char*) str;
+            int sh = fonts->getstringheight( tpstr );
 
-            int sh = nSDL_GetStringHeight( tempfont, text.c_str() );
-            //int dx = 0;
-
-
-
-            while(*str && x1 - xpos + getwidthfont( tempfont, (char) *str) < width)
+            while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
             {
                 if(has_focus && str == cursor)
                 {
@@ -177,9 +182,9 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
                     vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
                     x1+=2;
                 }
-                //fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
-                nSDL_DrawString( screen, tempfont, x1, ypos + height/2 - sh/2, "%c", *str );
-                x1 += getwidthfont( tempfont, (char) *str );
+
+                fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                x1 += fonts->getcharwidth( (char) *str );
 
                 ++str;
             }
@@ -190,9 +195,6 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
                 vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
                 x1+=2;
             }
-
-            nSDL_FreeFont( tempfont );
-
 
 
         }
@@ -207,36 +209,33 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             const char *cursor = text.c_str() + cursor_pos;
             unsigned int x1 = xpos + 5;
 
-            nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B);
+            fonts->setcurrentfont( THIN_FONT );
+            fonts->setmodifiertypo( Normal );
+            char* tpstr = (char*) str;
+            int sh = fonts->getstringheight( tpstr );
 
-            int sh = nSDL_GetStringHeight( tempfont, text.c_str() );
-            //int dx = 0;
 
-
-
-            while(*str && x1 - xpos + getwidthfont( tempfont, (char) *str) < width)
+            while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
             {
                 if(has_focus && str == cursor)
                 {
-                    vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                    vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+                    vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
                     x1+=2;
                 }
-                //fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
-                nSDL_DrawString( screen, tempfont, x1, ypos + height/2 - sh/2, "%c", *str );
-                x1 += getwidthfont( tempfont, (char) *str );
+
+                fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                x1 += fonts->getcharwidth( (char) *str );
 
                 ++str;
             }
 
             if(str == cursor)
             {
-                vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+                vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
                 x1+=2;
             }
-
-            nSDL_FreeFont( tempfont );
 
 
         }
@@ -264,16 +263,20 @@ void InputWidget::updateScroll()
     if(cursor_pos <= scroll)
         return;
 
-    nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
+    //nSDL_Font *tempfont = nSDL_LoadFont(NSDL_FONT_THIN, 0, 0, 0);
+    nfontwidget->setcurrentfont( THIN_FONT );
+    nfontwidget->setmodifiertypo( Normal );
+
 
     const char *str = text.c_str() + scroll;
     unsigned int cur_x = 0, len = cursor_pos - scroll;
 
     while(len--)
-        cur_x += getwidthfont( tempfont, *str++);
+        //cur_x += getwidthfont( tempfont, *str++);
+            cur_x += nfontwidget->getcharwidth( *str++ );
 
     if(cur_x >= width - 5)
         ++scroll;
 
-    nSDL_FreeFont( tempfont );
+    //nSDL_FreeFont( tempfont );
 }
