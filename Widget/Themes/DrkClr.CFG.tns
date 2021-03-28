@@ -1,0 +1,107 @@
+[WIDGET_BORDER]
+enable
+48 54 61
+disable
+0 0 0
+cursoron
+138 148 158
+hasfocus
+0 0 255
+
+[WIDGET_TICKMARK]
+enable
+170 178 186
+disable
+0 0 0
+
+[WIDGET_FILL]
+enable
+13 17 23
+disable
+13 17 23
+selected
+88 166 255
+
+[WIDGET_TEXT]
+enable
+200 210 220
+disable
+110 120 130
+selected
+255 255 255
+
+[WINDOW_TITLEBAR]
+enable
+4 91 98
+disable
+48 54 61
+
+[WINDOW_TITLEBARTEXT]
+enable
+255 255 255
+disable
+110 120 130
+
+[COMMUTER_STYLE1]
+activefill
+88 166 255
+inactivefill
+48 54 61
+activecur
+48 54 61
+inactivecur
+48 54 61
+
+[COMMUTER_STYLE2]
+activefill
+255 255 255
+inactivefill
+255 255 255
+activecur
+255 255 255
+inactivecur
+255 191 191
+
+[COMMUTER_STYLE3]
+activefill
+191 255 191
+inactivefill
+255 191 191
+activecur
+255 255 255
+inactivecur
+255 255 255
+
+[COMMUTER_STYLE4]
+activefill
+255 255 255
+inactivefill
+255 255 255
+activecur
+ 191 255 191
+inactivecur
+255 191 191
+
+[PROGRESS_BAR]
+enablefill
+88 166 255
+disablefill
+110 120 130
+rainbowempty
+88 166 255
+rainbowfull
+88 166 255
+
+[WIDGET_FONT]
+enable
+0 1 1 1
+disable
+0 1 1 1
+selected
+0 1 1 1
+
+[WINDOW_FONT]
+enable
+0 4 1 1
+disable
+0 4 1 1

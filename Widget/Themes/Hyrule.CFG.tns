@@ -1,0 +1,107 @@
+[WIDGET_BORDER]
+enable
+255 255 255
+disable
+170 170 170
+cursoron
+0 0 0
+hasfocus
+0 0 0
+
+[WIDGET_TICKMARK]
+enable
+255 255 255
+disable
+170 170 170
+
+[WIDGET_FILL]
+enable
+50 50 50
+disable
+0 0 0
+selected
+0 255 55
+
+[WIDGET_TEXT]
+enable
+255 255 255
+disable
+100 100 100
+selected
+200 200 200
+
+[WINDOW_TITLEBAR]
+enable
+0 255 55
+disable
+0 100 0
+
+[WINDOW_TITLEBARTEXT]
+enable
+255 0 255
+disable
+100 100 100
+
+[COMMUTER_STYLE1]
+activefill
+255 255 255
+inactivefill
+255 191 191
+activecur
+255 255 255
+inactivecur
+255 255 255
+
+[COMMUTER_STYLE2]
+activefill
+255 255 255
+inactivefill
+255 255 255
+activecur
+255 255 255
+inactivecur
+255 191 191
+
+[COMMUTER_STYLE3]
+activefill
+191 255 191
+inactivefill
+255 191 191
+activecur
+255 255 255
+inactivecur
+255 255 255
+
+[COMMUTER_STYLE4]
+activefill
+255 255 255
+inactivefill
+255 255 255
+activecur
+ 191 255 191
+inactivecur
+255 191 191
+
+[PROGRESS_BAR]
+enablefill
+0 155 255
+disablefill
+170 170 170
+rainbowempty
+127 127 0
+rainbowfull
+0 255 0
+
+[WIDGET_FONT]
+enable
+3 2 1 1
+disable
+3 2 1 1
+selected
+3 2 1 1
+
+[WINDOW_FONT]
+enable
+5 8 1 1
+disable
+5 8 1 1
