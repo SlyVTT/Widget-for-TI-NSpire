@@ -169,7 +169,6 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
             if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
@@ -185,7 +184,6 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierunder( fonts->widget_text_disable.under );
             fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
             if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );

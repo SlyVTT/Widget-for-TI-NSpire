@@ -17,12 +17,12 @@
 ///
 /// int main ( int argc, char** argv )
 /// {
-///     bool done = false;
+///    bool done = false;
 ///
-///     WidgetApplication *MyApp = new WidgetApplication();
-///     MyApp->setuniformbackgroundcolor(0, 0, 0);
+///    WidgetApplication *MyApp = new WidgetApplication();
+///    MyApp->setuniformbackgroundcolor(0, 0, 0);
 ///
-///     DesktopWidget *desktop1 = new DesktopWidget( (char*) "First Desktop", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr );
+///    DesktopWidget *desktop1 = new DesktopWidget( (char*) "First Desktop", 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, nullptr );
 ///
 ///    WindowWidget *window = new WindowWidget( (char*) "Examples of CommuterWidgets", 5, 5, 310, 230, desktop1 );
 ///    ContainerVWidget *containervert = new ContainerVWidget( (char*) "container", 1, 1, 1, 1, window );

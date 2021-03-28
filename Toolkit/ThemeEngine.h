@@ -9,21 +9,31 @@
 
 class ThemeEngine
 {
-    public:
-        ThemeEngine();
-        virtual ~ThemeEngine();
+public:
+    ThemeEngine();
+    virtual ~ThemeEngine();
 
-        virtual void loadthemefromfile( char* filename );
+    virtual void loadthemefromfile( char* filename );
 
-        virtual void assigncolorhandler( ColorEngine* handler ) { colorhandler = handler; };
-        virtual void assignfonthandler( FontEngine* handler ) { fonthandler = handler; };
+    virtual void assigncolorhandler( ColorEngine* handler )
+    {
+        colorhandler = handler;
+    };
+    virtual void assignfonthandler( FontEngine* handler )
+    {
+        fonthandler = handler;
+    };
 
-        virtual void setdefaulttheme() {  colorhandler->setdefaultcolorpreset();  fonthandler->setdefaultfontpreset(); };
+    virtual void setdefaulttheme()
+    {
+        colorhandler->setdefaultcolorpreset();
+        fonthandler->setdefaultfontpreset();
+    };
 
-        virtual void applytheme();
+    virtual void applytheme();
 
 
-    protected:
+protected:
 
     ColorEngine *colorhandler;
     FontEngine *fonthandler;
@@ -92,7 +102,7 @@ class ThemeEngine
     fontset font_window_titlebartext_disable;
 
 
-    private:
+private:
 };
 
 #endif // THEMEENGINE_H

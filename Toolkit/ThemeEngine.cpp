@@ -487,66 +487,66 @@ void ThemeEngine::loadthemefromfile(char *filename)
 
                 switch (N)
                 {
-                    case 0:
-                        font_widget_text_enable.name = THIN_FONT;
-                        break;
-                    case 1:
-                        font_widget_text_enable.name = VGA_FONT;
-                        break;
-                    case 2:
-                        font_widget_text_enable.name = SPAC_FONT;
-                        break;
-                    case 3:
-                        font_widget_text_enable.name = TINY_FONT;
-                        break;
-                    case 4:
-                        font_widget_text_enable.name = STAN_FONT;
-                        break;
-                    case 5:
-                        font_widget_text_enable.name = FANT_FONT;
-                        break;
+                case 0:
+                    font_widget_text_enable.name = THIN_FONT;
+                    break;
+                case 1:
+                    font_widget_text_enable.name = VGA_FONT;
+                    break;
+                case 2:
+                    font_widget_text_enable.name = SPAC_FONT;
+                    break;
+                case 3:
+                    font_widget_text_enable.name = TINY_FONT;
+                    break;
+                case 4:
+                    font_widget_text_enable.name = STAN_FONT;
+                    break;
+                case 5:
+                    font_widget_text_enable.name = FANT_FONT;
+                    break;
                 }
 
                 switch (T)
                 {
-                    case 1:
-                        font_widget_text_enable.typo = Normal;
-                        break;
-                    case 2:
-                        font_widget_text_enable.typo = Italic;
-                        break;
-                    case 4:
-                        font_widget_text_enable.typo = Bold;
-                        break;
-                    case 8:
-                        font_widget_text_enable.typo = ItalicBold;
-                        break;
+                case 1:
+                    font_widget_text_enable.typo = Normal;
+                    break;
+                case 2:
+                    font_widget_text_enable.typo = Italic;
+                    break;
+                case 4:
+                    font_widget_text_enable.typo = Bold;
+                    break;
+                case 8:
+                    font_widget_text_enable.typo = ItalicBold;
+                    break;
                 }
 
                 switch (U)
                 {
-                    case 1:
-                        font_widget_text_enable.under = NoUnder;
-                        break;
-                    case 2:
-                        font_widget_text_enable.under = UnderSimple;
-                        break;
-                    case 4:
-                        font_widget_text_enable.under = UnderDouble;
-                        break;
+                case 1:
+                    font_widget_text_enable.under = NoUnder;
+                    break;
+                case 2:
+                    font_widget_text_enable.under = UnderSimple;
+                    break;
+                case 4:
+                    font_widget_text_enable.under = UnderDouble;
+                    break;
                 }
 
                 switch (S)
                 {
-                    case 1:
-                        font_widget_text_enable.strike = NoStrike;
-                        break;
-                    case 2:
-                        font_widget_text_enable.strike = StrikeSimple;
-                        break;
-                    case 4:
-                        font_widget_text_enable.strike = StrikeDouble;
-                        break;
+                case 1:
+                    font_widget_text_enable.strike = NoStrike;
+                    break;
+                case 2:
+                    font_widget_text_enable.strike = StrikeSimple;
+                    break;
+                case 4:
+                    font_widget_text_enable.strike = StrikeDouble;
+                    break;
                 }
             }
 
@@ -557,66 +557,66 @@ void ThemeEngine::loadthemefromfile(char *filename)
 
                 switch (N)
                 {
-                    case 0:
-                        font_widget_text_disable.name = THIN_FONT;
-                        break;
-                    case 1:
-                        font_widget_text_disable.name = VGA_FONT;
-                        break;
-                    case 2:
-                        font_widget_text_disable.name = SPAC_FONT;
-                        break;
-                    case 3:
-                        font_widget_text_disable.name = TINY_FONT;
-                        break;
-                    case 4:
-                        font_widget_text_disable.name = STAN_FONT;
-                        break;
-                    case 5:
-                        font_widget_text_disable.name = FANT_FONT;
-                        break;
+                case 0:
+                    font_widget_text_disable.name = THIN_FONT;
+                    break;
+                case 1:
+                    font_widget_text_disable.name = VGA_FONT;
+                    break;
+                case 2:
+                    font_widget_text_disable.name = SPAC_FONT;
+                    break;
+                case 3:
+                    font_widget_text_disable.name = TINY_FONT;
+                    break;
+                case 4:
+                    font_widget_text_disable.name = STAN_FONT;
+                    break;
+                case 5:
+                    font_widget_text_disable.name = FANT_FONT;
+                    break;
                 }
 
                 switch (T)
                 {
-                    case 1:
-                        font_widget_text_disable.typo = Normal;
-                        break;
-                    case 2:
-                        font_widget_text_disable.typo = Italic;
-                        break;
-                    case 4:
-                        font_widget_text_disable.typo = Bold;
-                        break;
-                    case 8:
-                        font_widget_text_disable.typo = ItalicBold;
-                        break;
+                case 1:
+                    font_widget_text_disable.typo = Normal;
+                    break;
+                case 2:
+                    font_widget_text_disable.typo = Italic;
+                    break;
+                case 4:
+                    font_widget_text_disable.typo = Bold;
+                    break;
+                case 8:
+                    font_widget_text_disable.typo = ItalicBold;
+                    break;
                 }
 
                 switch (U)
                 {
-                    case 1:
-                        font_widget_text_disable.under = NoUnder;
-                        break;
-                    case 2:
-                        font_widget_text_disable.under = UnderSimple;
-                        break;
-                    case 4:
-                        font_widget_text_disable.under = UnderDouble;
-                        break;
+                case 1:
+                    font_widget_text_disable.under = NoUnder;
+                    break;
+                case 2:
+                    font_widget_text_disable.under = UnderSimple;
+                    break;
+                case 4:
+                    font_widget_text_disable.under = UnderDouble;
+                    break;
                 }
 
                 switch (S)
                 {
-                    case 1:
-                        font_widget_text_disable.strike = NoStrike;
-                        break;
-                    case 2:
-                        font_widget_text_disable.strike = StrikeSimple;
-                        break;
-                    case 4:
-                        font_widget_text_disable.strike = StrikeDouble;
-                        break;
+                case 1:
+                    font_widget_text_disable.strike = NoStrike;
+                    break;
+                case 2:
+                    font_widget_text_disable.strike = StrikeSimple;
+                    break;
+                case 4:
+                    font_widget_text_disable.strike = StrikeDouble;
+                    break;
                 }
             }
 
@@ -627,66 +627,66 @@ void ThemeEngine::loadthemefromfile(char *filename)
 
                 switch (N)
                 {
-                    case 0:
-                        font_widget_text_selected.name = THIN_FONT;
-                        break;
-                    case 1:
-                        font_widget_text_selected.name = VGA_FONT;
-                        break;
-                    case 2:
-                        font_widget_text_selected.name = SPAC_FONT;
-                        break;
-                    case 3:
-                        font_widget_text_selected.name = TINY_FONT;
-                        break;
-                    case 4:
-                        font_widget_text_selected.name = STAN_FONT;
-                        break;
-                    case 5:
-                        font_widget_text_selected.name = FANT_FONT;
-                        break;
+                case 0:
+                    font_widget_text_selected.name = THIN_FONT;
+                    break;
+                case 1:
+                    font_widget_text_selected.name = VGA_FONT;
+                    break;
+                case 2:
+                    font_widget_text_selected.name = SPAC_FONT;
+                    break;
+                case 3:
+                    font_widget_text_selected.name = TINY_FONT;
+                    break;
+                case 4:
+                    font_widget_text_selected.name = STAN_FONT;
+                    break;
+                case 5:
+                    font_widget_text_selected.name = FANT_FONT;
+                    break;
                 }
 
                 switch (T)
                 {
-                    case 1:
-                        font_widget_text_selected.typo = Normal;
-                        break;
-                    case 2:
-                        font_widget_text_selected.typo = Italic;
-                        break;
-                    case 4:
-                        font_widget_text_selected.typo = Bold;
-                        break;
-                    case 8:
-                        font_widget_text_selected.typo = ItalicBold;
-                        break;
+                case 1:
+                    font_widget_text_selected.typo = Normal;
+                    break;
+                case 2:
+                    font_widget_text_selected.typo = Italic;
+                    break;
+                case 4:
+                    font_widget_text_selected.typo = Bold;
+                    break;
+                case 8:
+                    font_widget_text_selected.typo = ItalicBold;
+                    break;
                 }
 
                 switch (U)
                 {
-                    case 1:
-                        font_widget_text_selected.under = NoUnder;
-                        break;
-                    case 2:
-                        font_widget_text_selected.under = UnderSimple;
-                        break;
-                    case 4:
-                        font_widget_text_selected.under = UnderDouble;
-                        break;
+                case 1:
+                    font_widget_text_selected.under = NoUnder;
+                    break;
+                case 2:
+                    font_widget_text_selected.under = UnderSimple;
+                    break;
+                case 4:
+                    font_widget_text_selected.under = UnderDouble;
+                    break;
                 }
 
                 switch (S)
                 {
-                    case 1:
-                        font_widget_text_selected.strike = NoStrike;
-                        break;
-                    case 2:
-                        font_widget_text_selected.strike = StrikeSimple;
-                        break;
-                    case 4:
-                        font_widget_text_selected.strike = StrikeDouble;
-                        break;
+                case 1:
+                    font_widget_text_selected.strike = NoStrike;
+                    break;
+                case 2:
+                    font_widget_text_selected.strike = StrikeSimple;
+                    break;
+                case 4:
+                    font_widget_text_selected.strike = StrikeDouble;
+                    break;
                 }
             }
 
@@ -703,66 +703,66 @@ void ThemeEngine::loadthemefromfile(char *filename)
 
                 switch (N)
                 {
-                    case 0:
-                        font_window_titlebartext_enable.name = THIN_FONT;
-                        break;
-                    case 1:
-                        font_window_titlebartext_enable.name = VGA_FONT;
-                        break;
-                    case 2:
-                        font_window_titlebartext_enable.name = SPAC_FONT;
-                        break;
-                    case 3:
-                        font_window_titlebartext_enable.name = TINY_FONT;
-                        break;
-                    case 4:
-                        font_window_titlebartext_enable.name = STAN_FONT;
-                        break;
-                    case 5:
-                        font_window_titlebartext_enable.name = FANT_FONT;
-                        break;
+                case 0:
+                    font_window_titlebartext_enable.name = THIN_FONT;
+                    break;
+                case 1:
+                    font_window_titlebartext_enable.name = VGA_FONT;
+                    break;
+                case 2:
+                    font_window_titlebartext_enable.name = SPAC_FONT;
+                    break;
+                case 3:
+                    font_window_titlebartext_enable.name = TINY_FONT;
+                    break;
+                case 4:
+                    font_window_titlebartext_enable.name = STAN_FONT;
+                    break;
+                case 5:
+                    font_window_titlebartext_enable.name = FANT_FONT;
+                    break;
                 }
 
                 switch (T)
                 {
-                    case 1:
-                        font_window_titlebartext_enable.typo = Normal;
-                        break;
-                    case 2:
-                        font_window_titlebartext_enable.typo = Italic;
-                        break;
-                    case 4:
-                        font_window_titlebartext_enable.typo = Bold;
-                        break;
-                    case 8:
-                        font_window_titlebartext_enable.typo = ItalicBold;
-                        break;
+                case 1:
+                    font_window_titlebartext_enable.typo = Normal;
+                    break;
+                case 2:
+                    font_window_titlebartext_enable.typo = Italic;
+                    break;
+                case 4:
+                    font_window_titlebartext_enable.typo = Bold;
+                    break;
+                case 8:
+                    font_window_titlebartext_enable.typo = ItalicBold;
+                    break;
                 }
 
                 switch (U)
                 {
-                    case 1:
-                        font_window_titlebartext_enable.under = NoUnder;
-                        break;
-                    case 2:
-                        font_window_titlebartext_enable.under = UnderSimple;
-                        break;
-                    case 4:
-                        font_window_titlebartext_enable.under = UnderDouble;
-                        break;
+                case 1:
+                    font_window_titlebartext_enable.under = NoUnder;
+                    break;
+                case 2:
+                    font_window_titlebartext_enable.under = UnderSimple;
+                    break;
+                case 4:
+                    font_window_titlebartext_enable.under = UnderDouble;
+                    break;
                 }
 
                 switch (S)
                 {
-                    case 1:
-                        font_window_titlebartext_enable.strike = NoStrike;
-                        break;
-                    case 2:
-                        font_window_titlebartext_enable.strike = StrikeSimple;
-                        break;
-                    case 4:
-                        font_window_titlebartext_enable.strike = StrikeDouble;
-                        break;
+                case 1:
+                    font_window_titlebartext_enable.strike = NoStrike;
+                    break;
+                case 2:
+                    font_window_titlebartext_enable.strike = StrikeSimple;
+                    break;
+                case 4:
+                    font_window_titlebartext_enable.strike = StrikeDouble;
+                    break;
                 }
             }
 
@@ -773,66 +773,66 @@ void ThemeEngine::loadthemefromfile(char *filename)
 
                 switch (N)
                 {
-                    case 0:
-                        font_window_titlebartext_disable.name = THIN_FONT;
-                        break;
-                    case 1:
-                        font_window_titlebartext_disable.name = VGA_FONT;
-                        break;
-                    case 2:
-                        font_window_titlebartext_disable.name = SPAC_FONT;
-                        break;
-                    case 3:
-                        font_window_titlebartext_disable.name = TINY_FONT;
-                        break;
-                    case 4:
-                        font_window_titlebartext_disable.name = STAN_FONT;
-                        break;
-                    case 5:
-                        font_window_titlebartext_disable.name = FANT_FONT;
-                        break;
+                case 0:
+                    font_window_titlebartext_disable.name = THIN_FONT;
+                    break;
+                case 1:
+                    font_window_titlebartext_disable.name = VGA_FONT;
+                    break;
+                case 2:
+                    font_window_titlebartext_disable.name = SPAC_FONT;
+                    break;
+                case 3:
+                    font_window_titlebartext_disable.name = TINY_FONT;
+                    break;
+                case 4:
+                    font_window_titlebartext_disable.name = STAN_FONT;
+                    break;
+                case 5:
+                    font_window_titlebartext_disable.name = FANT_FONT;
+                    break;
                 }
 
                 switch (T)
                 {
-                    case 1:
-                        font_window_titlebartext_disable.typo = Normal;
-                        break;
-                    case 2:
-                        font_window_titlebartext_disable.typo = Italic;
-                        break;
-                    case 4:
-                        font_window_titlebartext_disable.typo = Bold;
-                        break;
-                    case 8:
-                        font_window_titlebartext_disable.typo = ItalicBold;
-                        break;
+                case 1:
+                    font_window_titlebartext_disable.typo = Normal;
+                    break;
+                case 2:
+                    font_window_titlebartext_disable.typo = Italic;
+                    break;
+                case 4:
+                    font_window_titlebartext_disable.typo = Bold;
+                    break;
+                case 8:
+                    font_window_titlebartext_disable.typo = ItalicBold;
+                    break;
                 }
 
                 switch (U)
                 {
-                    case 1:
-                        font_window_titlebartext_disable.under = NoUnder;
-                        break;
-                    case 2:
-                        font_window_titlebartext_disable.under = UnderSimple;
-                        break;
-                    case 4:
-                        font_window_titlebartext_disable.under = UnderDouble;
-                        break;
+                case 1:
+                    font_window_titlebartext_disable.under = NoUnder;
+                    break;
+                case 2:
+                    font_window_titlebartext_disable.under = UnderSimple;
+                    break;
+                case 4:
+                    font_window_titlebartext_disable.under = UnderDouble;
+                    break;
                 }
 
                 switch (S)
                 {
-                    case 1:
-                        font_window_titlebartext_disable.strike = NoStrike;
-                        break;
-                    case 2:
-                        font_window_titlebartext_disable.strike = StrikeSimple;
-                        break;
-                    case 4:
-                        font_window_titlebartext_disable.strike = StrikeDouble;
-                        break;
+                case 1:
+                    font_window_titlebartext_disable.strike = NoStrike;
+                    break;
+                case 2:
+                    font_window_titlebartext_disable.strike = StrikeSimple;
+                    break;
+                case 4:
+                    font_window_titlebartext_disable.strike = StrikeDouble;
+                    break;
                 }
             }
 

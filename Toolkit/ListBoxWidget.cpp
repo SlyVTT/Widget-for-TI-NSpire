@@ -66,11 +66,13 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 selected++;
             }
 
-            if ((selected>=0) && (selected<=nbvisible-1))
+            // selected is an unsigned int so always>=0
+            //if ((selected>=0) && (selected<=nbvisible-1))
+            if (selected<=nbvisible-1)
             {
                 scroll=0;
             }
-            else //((selected>=nbvisible) && (selected<=getnbitem()-1))
+            else
             {
                 scroll=selected-nbvisible+1;
             }
@@ -85,11 +87,13 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 selected--;
             }
 
-            if ((selected>=0) && (selected<=nbvisible-1))
+            // selected is an unsigned int so always>=0
+            //if ((selected>=0) && (selected<=nbvisible-1))
+            if (selected<=nbvisible-1)
             {
                 scroll=0;
             }
-            else //((selected>=nbvisible) && (selected<=getnbitem()-1))
+            else
             {
                 scroll=selected-nbvisible+1;
             }
@@ -127,12 +131,11 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
             nbvisible = (unsigned int) ((height-10) / (sh*2));
 
-            for(int i=scroll; i<=scroll+nbvisible-1; i++)
+            for(unsigned int i=scroll; i<=scroll+nbvisible-1; i++)
             {
                 //Ongoing - to be optimised
                 if(i<nbitem)
@@ -144,8 +147,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierunder( fonts->widget_text_enable.under );
                         fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-                        int sl = fonts->getstringwidth( label );
-                        int sh = fonts->getstringheight( label );
+                        int sh = fonts->getstringheight( (char*) listitems[i] );
 
                         fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
                     }
@@ -156,8 +158,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierunder( fonts->widget_text_selected.under );
                         fonts->setmodifierstrike( fonts->widget_text_selected.strike );
 
-                        int sl = fonts->getstringwidth( label );
-                        int sh = fonts->getstringheight( label );
+                        int sh = fonts->getstringheight( (char*) listitems[i] );
 
                         roundedBoxRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
                         fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A );
@@ -176,10 +177,40 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierunder( fonts->widget_text_disable.under );
             fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
-            int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            nbvisible = (unsigned int) ((height-10) / (sh*2));
+
+            for(unsigned int i=scroll; i<=scroll+nbvisible-1; i++)
+            {
+                //Ongoing - to be optimised and to be tested when using ListBoxWidget as a standalone Widget
+                if(i<nbitem)
+                {
+                    if (i!=selected)
+                    {
+                        fonts->setcurrentfont( fonts->widget_text_enable.name );
+                        fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+                        fonts->setmodifierunder( fonts->widget_text_enable.under );
+                        fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+
+                        int sh = fonts->getstringheight( (char*) listitems[i] );
+
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                    }
+                    else
+                    {
+                        fonts->setcurrentfont( fonts->widget_text_selected.name );
+                        fonts->setmodifiertypo( fonts->widget_text_selected.typo );
+                        fonts->setmodifierunder( fonts->widget_text_selected.under );
+                        fonts->setmodifierstrike( fonts->widget_text_selected.strike );
+
+                        int sh = fonts->getstringheight( (char*) listitems[i] );
+
+                        roundedRectangleRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                    }
+                }
+            }
         }
 
         for (auto& c : children )

@@ -64,12 +64,24 @@ void CursorTask::logic()
     }
 
     // The following code allow the mouse cursor to roll from top to bottom or left to right (and vice versa) when reaching the limit of the screen
-	x+=dx;
-	y+=dy;
-	if (x<0) { x+=320; };
-	if (y<0) { y+=240; };
-	if (x>=320) { x-=320; };
-	if (y>=240) { y-=240; };
+    x+=dx;
+    y+=dy;
+    if (x<0)
+    {
+        x+=320;
+    };
+    if (y<0)
+    {
+        y+=240;
+    };
+    if (x>=320)
+    {
+        x-=320;
+    };
+    if (y>=240)
+    {
+        y-=240;
+    };
 
 
     // check for mouse move

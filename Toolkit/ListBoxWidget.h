@@ -8,27 +8,49 @@
 
 class ListBoxWidget : public Widget
 {
-    public:
-        ListBoxWidget() : Widget() { widgettype = (char*) "ListBox"; };
-        ListBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )    { widgettype = (char*) "ListBox"; };
+public:
+    ListBoxWidget() : Widget()
+    {
+        widgettype = (char*) "ListBox";
+    };
+    ListBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+    {
+        widgettype = (char*) "ListBox";
+    };
 
-        virtual ~ListBoxWidget() {};
+    virtual ~ListBoxWidget() {};
 
-        virtual bool ispressed();
+    virtual bool ispressed();
 
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-        virtual void additem( char *item ) { listitems.push_back( item ); nbitem++; };
+    virtual void additem( char *item )
+    {
+        listitems.push_back( item );
+        nbitem++;
+    };
 
-        virtual int getnbitem() { return listitems.size(); };
+    virtual unsigned int getnbitem()
+    {
+        return listitems.size();
+    };
 
-        virtual char* getitem( int itemnumber ) { return listitems[itemnumber]; };
+    virtual char* getitem( int itemnumber )
+    {
+        return listitems[itemnumber];
+    };
 
-        virtual int getselected() { return selected; };
+    virtual int getselected()
+    {
+        return selected;
+    };
 
-        virtual char* getselecteditem() { return listitems[selected]; };
+    virtual char* getselecteditem()
+    {
+        return listitems[selected];
+    };
 
 protected:
 

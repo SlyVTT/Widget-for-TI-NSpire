@@ -8,52 +8,85 @@
 
 class DropBoxWidget : public Widget
 {
-    public:
-        DropBoxWidget();
-        DropBoxWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+public:
 
-        virtual void adjust() override;
+    DropBoxWidget();
 
-        virtual ~DropBoxWidget() {};
 
-        virtual bool ispressed();
+    DropBoxWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
 
-        virtual void drop() { is_dropped = true; this->listbox->setvisible(); has_been_updated = false; };
-        virtual void undrop() { is_dropped = false; this->listbox->setinvisible(); };
 
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual ~DropBoxWidget() {};
 
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-        virtual void additem( char *item ) { listbox->additem( item ); };
+    virtual void adjust() override;
 
-        virtual int getnbitem() { return listbox->getnbitem(); };
 
-        virtual char* getitem( int itemnumber ) { return listbox->getitem( itemnumber ); };
+    virtual bool ispressed();
 
-        virtual int getselected() { return listbox->getselected(); };
+    virtual void drop()
+    {
+        is_dropped = true;
+        this->listbox->setvisible();
+        has_been_updated = false;
+    };
+    virtual void undrop()
+    {
+        is_dropped = false;
+        this->listbox->setinvisible();
+    };
 
-        virtual char* getselecteditem() { return listbox->getselecteditem(); };
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
-        virtual void validate();
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-        virtual void escape();
+    virtual void additem( char *item )
+    {
+        listbox->additem( item );
+    };
 
-        virtual bool isupdated() { return has_been_updated; };
+    virtual int getnbitem()
+    {
+        return listbox->getnbitem();
+    };
 
-    protected:
+    virtual char* getitem( int itemnumber )
+    {
+        return listbox->getitem( itemnumber );
+    };
 
-        MiniButtonWidget *dropbutton;
-        ListBoxWidget *listbox;
+    virtual int getselected()
+    {
+        return listbox->getselected();
+    };
 
-        int selected_item = -1;     // -1 means no selection have been made yet
-        char* selected_item_value;
+    virtual char* getselecteditem()
+    {
+        return listbox->getselecteditem();
+    };
 
-    private:
+    virtual void validate();
 
-        bool is_pressed = false;
-        bool is_dropped = false;
-        bool has_been_updated = false;
+    virtual void escape();
+
+    virtual bool isupdated()
+    {
+        return has_been_updated;
+    };
+
+protected:
+
+    MiniButtonWidget *dropbutton;
+    ListBoxWidget *listbox;
+
+    int selected_item = -1;     // -1 means no selection have been made yet
+    char* selected_item_value;
+
+private:
+
+    bool is_pressed = false;
+    bool is_dropped = false;
+    bool has_been_updated = false;
 
 };
 
