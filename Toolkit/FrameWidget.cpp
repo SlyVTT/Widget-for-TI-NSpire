@@ -69,8 +69,10 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
         {
             roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
@@ -93,8 +95,10 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
         {
             roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );

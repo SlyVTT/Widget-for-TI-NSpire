@@ -122,8 +122,10 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
@@ -133,16 +135,34 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             for(int i=scroll; i<=scroll+nbvisible-1; i++)
             {
                 //Ongoing - to be optimised
-                if (i!=selected)
+                if(i<nbitem)
                 {
-                    fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
-                }
-                else
-                {
-                    roundedBoxRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, 255, 0, 125, 255);
-                    fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), 255, 255, 255, 255 );
-                }
+                    if (i!=selected)
+                    {
+                        fonts->setcurrentfont( fonts->widget_text_enable.name );
+                        fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+                        fonts->setmodifierunder( fonts->widget_text_enable.under );
+                        fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
+                        int sl = fonts->getstringwidth( label );
+                        int sh = fonts->getstringheight( label );
+
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                    }
+                    else
+                    {
+                        fonts->setcurrentfont( fonts->widget_text_selected.name );
+                        fonts->setmodifiertypo( fonts->widget_text_selected.typo );
+                        fonts->setmodifierunder( fonts->widget_text_selected.under );
+                        fonts->setmodifierstrike( fonts->widget_text_selected.strike );
+
+                        int sl = fonts->getstringwidth( label );
+                        int sh = fonts->getstringheight( label );
+
+                        roundedBoxRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A );
+                    }
+                }
             }
         }
         else
@@ -151,8 +171,10 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             //Border of the button is black cause it is disabled
             roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );

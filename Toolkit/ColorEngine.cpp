@@ -46,7 +46,7 @@ void ColorEngine::setdefaultcolorpreset( )
     widget_text_enable = { 200, 210, 220, 255 }; //PALE WHITE
     widget_text_disable = { 190, 180, 170, 255 }; //GREYISH
 
-    window_titlebar_enable = { 245 , 75, 1255, 255 }; //PINK
+    window_titlebar_enable = { 245 , 75, 125, 255 }; //PINK
     window_titlebar_disable = { 100, 100, 100, 255 }; // GREY
 
     window_titlebartext_enable = { 255, 255, 255, 255 }; //WHITE
@@ -91,9 +91,11 @@ void ColorEngine::setdefaultcolorpreset( )
 
     widget_filling_enable = { 255, 255, 255, 255 }; //WHITE
     widget_filling_disable = { 255, 255, 255, 255 }; //WHITE
+    widget_selection = { 255, 0, 125, 255 }; // PURPLEISH
 
     widget_text_enable = { 0, 0, 0, 255 }; //BLACK
     widget_text_disable = { 170, 170, 170, 255 }; // GREY
+    widget_text_selected = { 255, 255, 255, 255 }; //WHITE
 
     window_titlebar_enable = { 0, 155, 255, 255 }; //LIGHT BLUE/CYAN
     window_titlebar_disable = { 170, 170, 170, 255 }; // GREY
@@ -125,6 +127,8 @@ void ColorEngine::setdefaultcolorpreset( )
     widget_progressbar_disable_filling = { 170, 170, 170, 255 }; // GREY
     widget_progressbar_rainbow_empty = { 127, 127, 0, 255 };
     widget_progressbar_rainbow_full = { 0, 255, 0, 255 };
+
+
 
 
     // the Following colorset is used for the Link_SDL / GUI Toolkit interaction

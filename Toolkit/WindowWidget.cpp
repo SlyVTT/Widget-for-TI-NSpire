@@ -69,8 +69,10 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Bold );
+            fonts->setcurrentfont( fonts->window_titlebartext_enable.name );
+            fonts->setmodifiertypo( fonts->window_titlebartext_enable.typo );
+            fonts->setmodifierunder( fonts->window_titlebartext_enable.under );
+            fonts->setmodifierstrike( fonts->window_titlebartext_enable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
@@ -83,8 +85,11 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+12, 3, colors->window_titlebar_disable.R, colors->window_titlebar_disable.G, colors->window_titlebar_disable.B, colors->window_titlebar_disable.A);
             roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Bold );
+            fonts->setcurrentfont( fonts->window_titlebartext_disable.name );
+            fonts->setmodifiertypo( fonts->window_titlebartext_disable.typo );
+            fonts->setmodifierunder( fonts->window_titlebartext_disable.under );
+            fonts->setmodifierstrike( fonts->window_titlebartext_disable.strike );
+
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );

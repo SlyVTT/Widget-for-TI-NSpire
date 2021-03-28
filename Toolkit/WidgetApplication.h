@@ -7,6 +7,8 @@
 
 #include "ColorEngine.h"
 #include "FontEngine.h"
+#include "ThemeEngine.h"
+
 
 #include <vector>
 
@@ -35,27 +37,30 @@ public:
     WidgetApplication();
     virtual ~WidgetApplication();
 
-    virtual void adddesktop( );
-    virtual void removedesktop( DesktopFeatures *desktoptoremove);
-
     virtual void addchild( Widget *root );
     virtual void removechild( Widget *root );
     virtual void addchildtodesktop( Widget *root, DesktopFeatures *desktop );
 
+    virtual void adddesktop( );
+    virtual void removedesktop( DesktopFeatures *desktoptoremove);
     virtual DesktopFeatures* getcurrentdesktoppointer();
     virtual void setcurrentdesktop( unsigned int ndesk );
     virtual int getcurrentdesktop();
-
     virtual void setnextdesktop();
     virtual void setpreviousdesktop();
 
     virtual void render( void );
+
     virtual void logic( void );
     virtual void logicwithforcedrender( void );
 
     virtual void setuniformbackgroundcolor( Uint8 r, Uint8 g, Uint8 b);
     virtual void setbackgroundpicture( char *filename );
     virtual void setdrawbackground( bool setter );
+
+    virtual void initthemeengine();
+    virtual void setdefaulttheme();
+    virtual void loadtheme( char* filename );
 
     // To handle the mouse and keyboard events
     virtual KeyboardTask* getkeyboardhandler();
@@ -78,6 +83,7 @@ protected:
 
     ColorEngine *colors = nullptr;
     FontEngine *fonts = nullptr;
+    ThemeEngine *theme = nullptr;
 
     SDL_Surface *screen = nullptr;
 

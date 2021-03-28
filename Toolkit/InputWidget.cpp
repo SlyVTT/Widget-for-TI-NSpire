@@ -169,8 +169,10 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             const char *cursor = text.c_str() + cursor_pos;
             unsigned int x1 = xpos + 5;
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
             char* tpstr = (char*) str;
             int sh = fonts->getstringheight( tpstr );
 
@@ -209,8 +211,10 @@ void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             const char *cursor = text.c_str() + cursor_pos;
             unsigned int x1 = xpos + 5;
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
             char* tpstr = (char*) str;
             int sh = fonts->getstringheight( tpstr );
 

@@ -83,6 +83,7 @@ WidgetApplication::WidgetApplication()
     colors->setdefaultcolorpreset();
 
     fonts = new FontEngine();
+    fonts->setdefaultfontpreset();
 
     DesktopFeatures *maindesktop = new DesktopFeatures;
     desktops.push_back( maindesktop );
@@ -501,4 +502,38 @@ void WidgetApplication::setbackgroundpicture( char *filename )
     currentdesktop->position_background.h = 240;
 
     currentdesktop->background_image = IMG_Load( filename );
+}
+
+
+void WidgetApplication::initthemeengine()
+{
+
+    theme = new ThemeEngine();
+    theme->assigncolorhandler( colors );
+    theme->assignfonthandler( fonts );
+
+}
+
+void WidgetApplication::setdefaulttheme()
+{
+
+    if (theme)
+    {
+        theme->setdefaulttheme();
+    }
+    else
+    {
+        colors->setdefaultcolorpreset();
+        fonts->setdefaultfontpreset();
+    }
+}
+
+
+void WidgetApplication::loadtheme( char* filename )
+{
+    if (theme)
+    {
+        theme->loadthemefromfile( filename );
+        theme->applytheme();
+    }
 }

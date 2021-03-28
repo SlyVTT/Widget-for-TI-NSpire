@@ -1,55 +1,32 @@
-#ifndef COLORENGINE_H
-#define COLORENGINE_H
+#ifndef THEMEENGINE_H
+#define THEMEENGINE_H
 
 
-/// Structure of colors manipulated by ColorEngine
-///
-/// Gives a structure for RGBA colors to be used all within the ColorEngine
-struct colorRGBA
+#include "ColorEngine.h"
+#include "FontEngine.h"
+
+
+
+class ThemeEngine
 {
-    /// The Red component of the color to be within [0 .. 255]
-    unsigned short R;
-    /// The Green component of the color to be within [0 .. 255]
-    unsigned short G;
-    /// The Blue component of the color to be within [0 .. 255]
-    unsigned short B;
-    /// The Alpha (Opacity) component of the color to be within [0 .. 255]
-    unsigned short A;
-};
+    public:
+        ThemeEngine();
+        virtual ~ThemeEngine();
+
+        virtual void loadthemefromfile( char* filename );
+
+        virtual void assigncolorhandler( ColorEngine* handler ) { colorhandler = handler; };
+        virtual void assignfonthandler( FontEngine* handler ) { fonthandler = handler; };
+
+        virtual void setdefaulttheme() {  colorhandler->setdefaultcolorpreset();  fonthandler->setdefaultfontpreset(); };
+
+        virtual void applytheme();
 
 
-/// ColorEngine class.
-///
-/// The class to be used for using a ColorEngine object.
-/// This object/class is not intended to be used out of th WidgetApplication 'ecosystem'
-/// BUT may become mandatory to provide a way to use Widget::render() in a proper way.
-/// @see  WidgetApplication and Widget::render( SDL_Surface*, ColorEngine*, FontEngine* )
-class ColorEngine
-{
-public:
+    protected:
 
-    /// Simple constructor
-    ///
-    /// Engine properties are set to default, nothing more.
-    /// Simple constructor, will need specific properties assignement later.
-    /// @param None
-    /// @returns Nothing
-    ColorEngine();
-
-
-    /// Object destructor.
-    ///
-    /// Object destructor, remove all trace of the ColorEngine and free allocated memory.
-    /// @param None
-    /// @returns Nothing
-    virtual ~ColorEngine();
-
-
-    /// Method for assigning default color shemes to the ColorEngine.
-    ///
-    /// To be used to assign the default color scheme the ColorEngine.
-    virtual void setdefaultcolorpreset( );
-
+    ColorEngine *colorhandler;
+    FontEngine *fonthandler;
 
     /// Default color names used by the widgets to be rendered.
     ///
@@ -103,10 +80,19 @@ public:
     colorRGBA widget_progressbar_rainbow_full;
 
 
+    /// Default font names used by the widgets to be rendered.
+    ///
+    /// To be used only for developping new Widget and keeping a coherency with the look and feel of the other widgets.
+    /// Using these default name permits to have a global theming for an application.
+    fontset font_widget_text_enable;
+    fontset font_widget_text_disable;
+    fontset font_widget_text_selected;
 
-protected:
+    fontset font_window_titlebartext_enable;
+    fontset font_window_titlebartext_disable;
 
-private:
+
+    private:
 };
 
-#endif // COLORENGINE_H
+#endif // THEMEENGINE_H

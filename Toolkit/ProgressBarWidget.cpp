@@ -120,8 +120,10 @@ void ProgressBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEn
 
                 sprintf( value, "%d", (int) percentfilled);
 
-                fonts->setcurrentfont( THIN_FONT );
-                fonts->setmodifiertypo( Normal );
+                fonts->setcurrentfont( fonts->widget_text_enable.name );
+                fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+                fonts->setmodifierunder( fonts->widget_text_enable.under );
+                fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
                 int sl = fonts->getstringwidth( value );
                 int sh = fonts->getstringheight( value );
@@ -212,8 +214,10 @@ void ProgressBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEn
 
                 sprintf( value, "%d", (int) percentfilled);
 
-                fonts->setcurrentfont( THIN_FONT );
-                fonts->setmodifiertypo( Normal );
+                fonts->setcurrentfont( fonts->widget_text_disable.name );
+                fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+                fonts->setmodifierunder( fonts->widget_text_disable.under );
+                fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
                 int sl = fonts->getstringwidth( value );
                 int sh = fonts->getstringheight( value );

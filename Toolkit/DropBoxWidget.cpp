@@ -60,6 +60,8 @@ void DropBoxWidget::validate()
     //this->listbox->setinvisible();
     this->undrop();
 
+    has_been_updated = true;
+
     SDL_Delay( 300 );
 }
 
@@ -74,6 +76,8 @@ void DropBoxWidget::escape()
     this->dropbutton->invert();
     //this->listbox->setinvisible();
     this->undrop();
+
+    has_been_updated = false;
 
     SDL_Delay( 300 );
 }
@@ -97,7 +101,7 @@ void DropBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
 
         is_hovering = cursoron( mouse );
-        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
+        bool currently_pressed = mouse->state && is_hovering;
 
 
         if(currently_pressed && !is_pressed)
@@ -160,13 +164,15 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
         }
         else
         {
@@ -174,13 +180,15 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             //Border of the button is black cause it is disabled
             roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
         }
 
         dropbutton->render( screen, colors, fonts );

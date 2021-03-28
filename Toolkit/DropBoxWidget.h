@@ -18,7 +18,7 @@ class DropBoxWidget : public Widget
 
         virtual bool ispressed();
 
-        virtual void drop() { is_dropped = true; this->listbox->setvisible(); };
+        virtual void drop() { is_dropped = true; this->listbox->setvisible(); has_been_updated = false; };
         virtual void undrop() { is_dropped = false; this->listbox->setinvisible(); };
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
@@ -31,9 +31,15 @@ class DropBoxWidget : public Widget
 
         virtual char* getitem( int itemnumber ) { return listbox->getitem( itemnumber ); };
 
+        virtual int getselected() { return listbox->getselected(); };
+
+        virtual char* getselecteditem() { return listbox->getselecteditem(); };
+
         virtual void validate();
 
         virtual void escape();
+
+        virtual bool isupdated() { return has_been_updated; };
 
     protected:
 
@@ -47,6 +53,7 @@ class DropBoxWidget : public Widget
 
         bool is_pressed = false;
         bool is_dropped = false;
+        bool has_been_updated = false;
 
 };
 

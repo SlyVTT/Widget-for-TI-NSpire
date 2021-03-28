@@ -20,6 +20,7 @@
 
 #include "ColorEngine.h"
 #include "FontEngine.h"
+#include "ThemeEngine.h"
 
 
 // These #include files gives the definition of the different Widgets classes and associated methods
@@ -31,6 +32,7 @@
 #include "FrameWidget.h"
 #include "ContainerHWidget.h"
 #include "ContainerVWidget.h"
+#include "SpacerWidget.h"
 
 #include "DesktopWidget.h"
 

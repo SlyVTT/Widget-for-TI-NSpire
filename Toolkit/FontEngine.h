@@ -51,6 +51,15 @@ enum fontmodifierstrike
     StrikeDouble = 4,
 };
 
+struct fontset
+{
+    fontname name;
+    fontmodifiertypo typo;
+    fontmodifierunder under;
+    fontmodifierstrike strike;
+};
+
+
 class FontEngine
 {
 public:
@@ -80,6 +89,25 @@ public:
 
     virtual void drawstringright( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
     virtual void drawcharright( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A );
+
+
+    /// Method for assigning default font shemes to the FontEngine.
+    ///
+    /// To be used to assign the default font scheme the FontEngine.
+    virtual void setdefaultfontpreset( );
+
+
+    /// Default font names used by the widgets to be rendered.
+    ///
+    /// To be used only for developping new Widget and keeping a coherency with the look and feel of the other widgets.
+    /// Using these default name permits to have a global theming for an application.
+    fontset widget_text_enable;
+    fontset widget_text_disable;
+    fontset widget_text_selected;
+
+    fontset window_titlebartext_enable;
+    fontset window_titlebartext_disable;
+
 
 
 protected:

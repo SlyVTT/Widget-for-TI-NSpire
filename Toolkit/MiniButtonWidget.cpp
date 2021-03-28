@@ -130,8 +130,10 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );
@@ -144,8 +146,10 @@ void MiniButtonWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEng
             //Border of the button is black cause it is disabled
             roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
             int sl = fonts->getstringwidth( label );
             int sh = fonts->getstringheight( label );

@@ -60,8 +60,10 @@ void CheckBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
             }
 
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
             int sh = fonts->getstringheight( label );
 
@@ -89,8 +91,10 @@ void CheckBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
             roundedRectangleRGBA( screen, xpos, ypos+height/2-6, xpos+12, ypos+height/2+6, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
-            fonts->setcurrentfont( THIN_FONT );
-            fonts->setmodifiertypo( Normal );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
             int sh = fonts->getstringheight( label );
 

@@ -42,7 +42,7 @@ FontEngine::~FontEngine()
 FontData* FontEngine::loadfontfromfilepointer( char* filename )
 {
 
-    FILE * pFile;
+    FILE* pFile;
     pFile = fopen (filename,"r");
     if (pFile!=NULL)
     {
@@ -159,7 +159,7 @@ FontData* FontEngine::loadfontfromfilepointer( char* filename )
             }
         }
 
-        fclose (pFile);
+        fclose(pFile);
 
         return tempFont;
     }
@@ -171,7 +171,7 @@ FontData* FontEngine::loadfontfromfilepointer( char* filename )
 void FontEngine::loadfontfromfile( char* filename )
 {
 
-    FILE * pFile;
+    FILE* pFile;
     pFile = fopen (filename,"r");
     if (pFile!=NULL)
     {
@@ -288,7 +288,7 @@ void FontEngine::loadfontfromfile( char* filename )
             }
         }
 
-        fclose (pFile);
+        fclose(pFile);
 
         FontCollection.push_back( tempFont );
     }
@@ -482,4 +482,17 @@ void FontEngine::drawcharright( SDL_Surface *screen, char str, unsigned int x, u
 {
     int dx = (int) getcharwidth( str );
     drawcharleft( screen, str, x-dx, y, R, G, B, A);
+}
+
+
+void FontEngine::setdefaultfontpreset( )
+{
+
+    widget_text_enable = { THIN_FONT, Normal, NoUnder, NoStrike };
+    widget_text_disable = { THIN_FONT, Normal, NoUnder, NoStrike };
+    widget_text_selected = { THIN_FONT, Normal, NoUnder, NoStrike };
+
+    window_titlebartext_enable = { THIN_FONT, Bold, NoUnder, NoStrike };
+    window_titlebartext_disable = { THIN_FONT, Bold, NoUnder, NoStrike };
+
 }
