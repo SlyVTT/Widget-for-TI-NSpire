@@ -26,6 +26,36 @@ unsigned int WindowWidget::getuseableheight()
 }
 
 
+bool WindowWidget::ismouseatleftborder(CursorTask *mouse)
+{
+    return ((unsigned int) mouse->x >= xpos-2) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+2) && ((unsigned int) mouse->y <= ypos+height-2);
+}
+
+
+bool WindowWidget::ismouseatrightborder(CursorTask *mouse)
+{
+    return ((unsigned int) mouse->x >= xpos+width-2) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width+2) && ((unsigned int) mouse->y <= ypos+height-2);
+}
+
+
+bool WindowWidget::ismouseattopborder(CursorTask *mouse)
+{
+    return ((unsigned int) mouse->x >= xpos+2) && ((unsigned int) mouse->y >= ypos-2) && ((unsigned int) mouse->x <= xpos+width-2) && ((unsigned int) mouse->y <= ypos+2);
+}
+
+
+bool WindowWidget::ismouseatbottomborder(CursorTask *mouse)
+{
+    return ((unsigned int) mouse->x >= xpos+2) && ((unsigned int) mouse->y >= ypos+height-2) && ((unsigned int) mouse->x <= xpos+width-2) && ((unsigned int) mouse->y <= ypos+height+2);
+}
+
+
+bool WindowWidget::ismouseontitlebar(CursorTask *mouse)
+{
+    return ((unsigned int) mouse->x >= xpos+2) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-2) && ((unsigned int) mouse->y <= ypos+12);
+}
+
+
 void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
 
@@ -37,8 +67,116 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             hoverfunction( (char*) "test" );
     }
 
+    bool atborder = false;
+    bool ontitle = false;
+
+    if (ismouseatleftborder( mouse ))
+    {
+        mouse->setcursortype( CursorTask::leftrightresize );
+        atborder = true;
+    }
+    else if (ismouseatrightborder( mouse ))
+    {
+        mouse->setcursortype( CursorTask::leftrightresize );
+        atborder = true;
+    }
+    else if (ismouseattopborder( mouse ))
+    {
+        mouse->setcursortype( CursorTask::topbottomresize );
+        atborder = true;
+    }
+    else if (ismouseatbottomborder( mouse ))
+    {
+        mouse->setcursortype( CursorTask::topbottomresize );
+        atborder = true;
+    }
+    else if (ismouseontitlebar( mouse ))
+    {
+        mouse->setcursortype( CursorTask::roundclock );
+        ontitle = true;
+    }
+    else
+    {
+        mouse->setcursortype( CursorTask::triangle );
+    }
+
+
+    if (atborder && keyboard->kbSCRATCH)
+    {
+        resizemode = true;
+    }
+    else
+    {
+        resizemode = false;
+    }
+
+    if (ontitle && keyboard->kbSCRATCH && !startmove)
+    {
+        movemode = true;
+        startmove = true;
+        clickX = mouse->x;
+        clickY = mouse->y;
+    }
+    else if (ontitle && keyboard->kbSCRATCH && startmove)
+    {
+        movemode = true;
+    }
+    else
+    {
+        movemode = false;
+        startmove = false;
+    }
+
+
+    if (resizemode && ismouseatleftborder( mouse ))
+    {
+        unsigned int xposold = xpos;
+        mouse->logic();
+        xpos = mouse->x;
+        width += (xposold - xpos);
+        adjust();
+    }
+
+    if (resizemode && ismouseatrightborder( mouse ))
+    {
+        mouse->logic();
+        width = mouse->x - xpos;
+        adjust();
+    }
+
+    if (resizemode && ismouseattopborder( mouse ))
+    {
+        unsigned int yposold = ypos;
+        mouse->logic();
+        ypos = mouse->y;
+        height += (yposold - ypos);
+        adjust();
+    }
+
+    if (resizemode && ismouseatbottomborder( mouse ))
+    {
+        height = mouse->y - ypos;
+        mouse->logic();
+        adjust();
+    }
+
+
+    // Here comes the move logic ...
+    // How can we
+    if (movemode && ismouseontitlebar( mouse ))
+    {
+        mouse->logic();
+        xpos += mouse->x - clickX;
+        ypos += mouse->y - clickY;
+        adjust();
+    }
+
+
+
+
     for (auto& c : children )
         c->logic( mouse, keyboard );
+
 
     for (auto& d : popupchildren )
     {

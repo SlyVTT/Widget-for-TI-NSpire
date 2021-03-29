@@ -153,7 +153,9 @@ public:
     enum cursortype
     {
         triangle = 0,
-        roundclock = 1
+        roundclock = 1,
+        leftrightresize = 2,
+        topbottomresize = 3
     };
 
 

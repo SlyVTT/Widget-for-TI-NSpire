@@ -77,7 +77,7 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 scroll=selected-nbvisible+1;
             }
 
-            SDL_Delay( 300 );
+            SDL_Delay( 150 );
         }
 
         if (keyboard->kbUP && keyboard->iskeypressevent())
@@ -98,10 +98,8 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 scroll=selected-nbvisible+1;
             }
 
-            SDL_Delay( 300 );
+            SDL_Delay( 150 );
         }
-
-
 
         for (auto& c : children )
             c->logic( mouse, keyboard );
@@ -133,7 +131,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
             int sh = fonts->getstringheight( label );
 
-            nbvisible = (unsigned int) ((height-10) / (sh*2));
+            nbvisible = (unsigned int) ((height-0) / (sh*2));
 
             for(unsigned int i=scroll; i<=scroll+nbvisible-1; i++)
             {
@@ -149,7 +147,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
                         int sh = fonts->getstringheight( (char*) listitems[i] );
 
-                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
                     }
                     else
                     {
@@ -160,9 +158,29 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
                         int sh = fonts->getstringheight( (char*) listitems[i] );
 
-                        roundedBoxRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
-                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A );
+                        // if we can see all the item, no need for space for the escalator on the right
+                        if (nbvisible>=nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
+                        //else we draw the selection line a bit shorter not to cover the escalator
+                        if (nbvisible<nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
+
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A );
                     }
+                }
+            }
+
+            if (nbvisible<nbitem)
+            {
+                unsigned int escalator = (height-12)*selected/nbitem;
+
+                if (!is_hovering)
+                {
+                    roundedRectangleRGBA( screen, xpos+width-15, ypos+3, xpos+width-3, ypos+height-3, 3, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    filledCircleRGBA( screen, xpos+width-9, ypos+9+escalator, 4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                }
+                else
+                {
+                    roundedRectangleRGBA( screen, xpos+width-15, ypos+3, xpos+width-3, ypos+height-3, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
+                    filledCircleRGBA( screen, xpos+width-9, ypos+9+escalator, 4, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
                 }
             }
         }
@@ -195,7 +213,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
                         int sh = fonts->getstringheight( (char*) listitems[i] );
 
-                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
                     }
                     else
                     {
@@ -206,12 +224,25 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
                         int sh = fonts->getstringheight( (char*) listitems[i] );
 
-                        roundedRectangleRGBA( screen, xpos, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+                        // if we can see all the item, no need for space for the escalator on the right
+                        if (nbvisible>=nbitem) roundedRectangleRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+                        //else we draw the selection line a bit shorter not to cover the escalator
+                        if (nbvisible<nbitem) roundedRectangleRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+
                         fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
                     }
                 }
             }
-        }
+
+            if (nbvisible<nbitem)
+            {
+                unsigned int escalator = (height-12)*selected/nbitem;
+
+                roundedRectangleRGBA( screen, xpos+width-15, ypos+3, xpos+width-3, ypos+height-3, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+                filledCircleRGBA( screen, xpos+width-9, ypos+9+escalator, 4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+            }
+
+         }
 
         for (auto& c : children )
             c->render( screen, colors, fonts );

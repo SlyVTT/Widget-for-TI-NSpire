@@ -61,8 +61,6 @@ void DropBoxWidget::validate()
     this->undrop();
 
     has_been_updated = true;
-
-    SDL_Delay( 300 );
 }
 
 void DropBoxWidget::escape()
@@ -78,8 +76,6 @@ void DropBoxWidget::escape()
     this->undrop();
 
     has_been_updated = false;
-
-    SDL_Delay( 300 );
 }
 
 void DropBoxWidget::adjust()

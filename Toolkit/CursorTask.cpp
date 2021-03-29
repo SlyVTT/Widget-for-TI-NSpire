@@ -128,5 +128,31 @@ void CursorTask::render( SDL_Surface *screen )
         lineRGBA( screen, x+6, y+6, x+6, y+1, 255, 0, 0, 255 );
         lineRGBA( screen, x+6, y+6, x+8, y+4, 255, 0, 0, 255 );
     }
+    if (cursor == leftrightresize)
+    {
+        //Draw a double arrow cursor oriented left/right
+        filledTrigonRGBA( screen, x-6, y, x-3, y-5, x-3, y+5, 255, 255, 255, 255);
+        trigonRGBA( screen, x-6, y, x-3, y-5, x-3, y+5, 255, 0, 0, 255);
+
+        filledTrigonRGBA( screen, x+6, y, x+3, y-5,  x+3, y+5, 255, 255, 255, 255);
+        trigonRGBA( screen, x+6, y, x+3, y-5,  x+3, y+5, 255, 0, 0, 255);
+
+        boxRGBA( screen, x-3, y-2, x+3, y+2, 255, 255, 255, 255);
+        lineRGBA( screen, x-3, y-2, x+3, y-2, 255, 0, 0, 255);
+        lineRGBA( screen, x-3, y+2, x+3, y+2, 255, 0, 0, 255);
+    }
+    if (cursor == topbottomresize)
+    {
+        //Draw a double arrow cursor oriented top/bottom
+        filledTrigonRGBA( screen, x-5, y-3, x, y-6, x+5, y-3, 255, 255, 255, 255);
+        trigonRGBA( screen, x-5, y-3, x, y-6, x+5, y-3, 255, 0, 0, 255);
+
+        filledTrigonRGBA( screen, x-5, y+3, x, y+6, x+5, y+3, 255, 255, 255, 255);
+        trigonRGBA( screen, x-5, y+3, x, y+6, x+5, y+3, 255, 0, 0, 255);
+
+        boxRGBA( screen, x-2, y-3, x+2, y+3, 255, 255, 255, 255);
+        lineRGBA( screen, x-2, y-3, x-2, y+3, 255, 0, 0, 255);
+        lineRGBA( screen, x+2, y-3, x+2, y+3, 255, 0, 0, 255);
+    }
 
 }
