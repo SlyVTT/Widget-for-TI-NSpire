@@ -4,6 +4,47 @@
 #include <algorithm>
 
 #include <SDL/SDL_gfxPrimitives.h>
+#include "cursors.h"
+
+
+CursorTask::CursorTask()
+{
+    // the transparent color is define as red (note that the sprite of the cursor are defined with this convention
+    Uint32 transparency = SDL_MapRGB(SDL_GetVideoSurface()->format, 255, 0, 0);
+
+    cursor_pointer = nSDL_LoadImage(image_Arrow);
+    SDL_SetColorKey(cursor_pointer, SDL_SRCCOLORKEY, transparency);
+
+    cursor_triangle = nSDL_LoadImage(image_Triangle);
+    SDL_SetColorKey(cursor_triangle, SDL_SRCCOLORKEY, transparency);
+
+    cursor_roundclock = nSDL_LoadImage(image_Clock);
+    SDL_SetColorKey(cursor_roundclock, SDL_SRCCOLORKEY, transparency);
+
+    cursor_hourglass = nSDL_LoadImage(image_Hourglass);
+    SDL_SetColorKey(cursor_hourglass, SDL_SRCCOLORKEY, transparency);
+
+    cursor_topbottom = nSDL_LoadImage(image_TopBottomResize);
+    SDL_SetColorKey(cursor_topbottom, SDL_SRCCOLORKEY, transparency);
+
+    cursor_leftright = nSDL_LoadImage(image_LeftRightResize);
+    SDL_SetColorKey(cursor_leftright, SDL_SRCCOLORKEY, transparency);
+
+    cursor_handfinger = nSDL_LoadImage(image_HandFinger);
+    SDL_SetColorKey(cursor_handfinger, SDL_SRCCOLORKEY, transparency);
+}
+
+
+CursorTask::~CursorTask()
+{
+    SDL_FreeSurface( cursor_pointer );
+    SDL_FreeSurface( cursor_triangle );
+    SDL_FreeSurface( cursor_roundclock );
+    SDL_FreeSurface( cursor_hourglass );
+    SDL_FreeSurface( cursor_topbottom );
+    SDL_FreeSurface( cursor_leftright );
+    SDL_FreeSurface( cursor_handfinger );
+}
 
 
 void CursorTask::setcursortype( cursortype type )
@@ -63,10 +104,32 @@ void CursorTask::logic()
         tp_last_contact = false;
     }
 
-    // The following code allow the mouse cursor to roll from top to bottom or left to right (and vice versa) when reaching the limit of the screen
+
     x+=dx;
     y+=dy;
+
+    // this block the cursor at the side of the screen
     if (x<0)
+    {
+        x=0;
+    };
+    if (y<0)
+    {
+        y=0;
+    };
+    if (x>=320)
+    {
+        x=320;
+    };
+    if (y>=240)
+    {
+        y=240;
+    };
+
+
+    // The following code allow the mouse cursor to roll from top to bottom or left to right (and vice versa) when reaching the limit of the screen
+    // this creates bug when we are resizing a window, so we need to skip this feature
+    /*if (x<0)
     {
         x+=320;
     };
@@ -82,6 +145,8 @@ void CursorTask::logic()
     {
         y-=240;
     };
+*/
+
 
 
     // check for mouse move
@@ -111,6 +176,67 @@ void CursorTask::render( SDL_Surface *screen )
 {
     if(!show)
         return;
+
+    SDL_Rect src_rect, screen_pos;
+    src_rect.x = 0;
+    src_rect.y = 0;
+    src_rect.w = 20;
+    src_rect.h = 20;
+
+
+    if (cursor == pointer)
+    {
+        screen_pos.x = x;
+        screen_pos.y = y;
+        SDL_BlitSurface(cursor_pointer, &src_rect, screen, &screen_pos);
+    }
+
+    if (cursor == triangle)
+    {
+        screen_pos.x = x;
+        screen_pos.y = y;
+        SDL_BlitSurface(cursor_triangle, &src_rect, screen, &screen_pos);
+    }
+
+    if (cursor == roundclock)
+    {
+        screen_pos.x = x-10;
+        screen_pos.y = y-10;
+        SDL_BlitSurface(cursor_roundclock, &src_rect, screen, &screen_pos);
+    }
+
+    if (cursor == hourglass)
+    {
+        screen_pos.x = x-10;
+        screen_pos.y = y-10;
+        SDL_BlitSurface(cursor_hourglass, &src_rect, screen, &screen_pos);
+    }
+
+    if (cursor == leftrightresize)
+    {
+        screen_pos.x = x-10;
+        screen_pos.y = y-10;
+        SDL_BlitSurface(cursor_leftright, &src_rect, screen, &screen_pos);
+    }
+
+    if (cursor == topbottomresize)
+    {
+        screen_pos.x = x-10;
+        screen_pos.y = y-10;
+        SDL_BlitSurface(cursor_topbottom, &src_rect, screen, &screen_pos);
+    }
+
+    if (cursor == handfinger)
+    {
+        screen_pos.x = x-5;
+        screen_pos.y = y-5;
+        SDL_BlitSurface(cursor_handfinger, &src_rect, screen, &screen_pos);
+    }
+
+
+}
+
+/*
 
     if (cursor == triangle)
     {
@@ -156,3 +282,4 @@ void CursorTask::render( SDL_Surface *screen )
     }
 
 }
+*/

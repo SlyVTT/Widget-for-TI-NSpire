@@ -29,7 +29,7 @@ public:
     /// Simple constructor, will need specific properties assignement later.
     /// @param None
     /// @returns Nothing
-    CursorTask() {};
+    CursorTask();
 
 
     /// Object destructor.
@@ -37,7 +37,7 @@ public:
     /// Object destructor, remove all trace of the object and free allocated memory.
     /// @param None
     /// @returns Nothing
-    virtual ~CursorTask() {};
+    virtual ~CursorTask();
 
 
     /// The CursorTask logic mechanism
@@ -152,10 +152,13 @@ public:
     /// *rounclock* style represents the simple clock cursor (not animated)
     enum cursortype
     {
-        triangle = 0,
-        roundclock = 1,
-        leftrightresize = 2,
-        topbottomresize = 3
+        pointer = 0,
+        triangle = 1,
+        roundclock = 2,
+        hourglass = 3,
+        leftrightresize = 4,
+        topbottomresize = 5,
+        handfinger = 6
     };
 
 
@@ -201,7 +204,15 @@ private:
     bool mouseclickevent = false;
     bool mousereleaseevent = false;
 
-    cursortype cursor = triangle;
+    cursortype cursor = pointer;
+
+    SDL_Surface *cursor_pointer = nullptr;
+    SDL_Surface *cursor_triangle = nullptr;
+    SDL_Surface *cursor_roundclock = nullptr;
+    SDL_Surface *cursor_hourglass = nullptr;
+    SDL_Surface *cursor_topbottom = nullptr;
+    SDL_Surface *cursor_leftright = nullptr;
+    SDL_Surface *cursor_handfinger = nullptr;
 };
 
 #endif // CURSORTASK_H
