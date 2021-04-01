@@ -75,6 +75,8 @@ public:
     virtual unsigned int getcharwidth( char str );
     virtual unsigned int getcharheight( char str );
 
+    virtual unsigned int assertstringlength( char *str, unsigned int width );
+
     virtual void setcurrentfont( fontname curfont ); // To be checked for internam parameters
     virtual void setspacing( unsigned int hspace, unsigned int vspace );
     virtual void setmodifiertypo( fontmodifiertypo mod );

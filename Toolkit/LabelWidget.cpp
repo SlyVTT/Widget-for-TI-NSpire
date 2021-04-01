@@ -8,7 +8,7 @@ void LabelWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
 
         is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
+        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
 
         if(currently_pressed && !is_pressed)
@@ -48,14 +48,25 @@ void LabelWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            int sl = fonts->getstringwidth( label );
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
+            drawablecharlabel = fonts->assertstringlength( label, width-2-2 );
 
-            if (alignment==centered) fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
-            if (alignment==left) fonts->drawstringleft( screen, label, xpos, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            if (drawablecharlabel!=0)
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
 
-            if (alignment==right) fonts->drawstringleft( screen, label, xpos+(width-sl), ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                if (alignment==centered) fonts->drawstringleft( screen, drawablelabel, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+
+                if (alignment==left) fonts->drawstringleft( screen, drawablelabel, xpos, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+
+                if (alignment==right) fonts->drawstringleft( screen, drawablelabel, xpos+(width-sl), ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            }
+
         }
         else
         {
@@ -66,14 +77,24 @@ void LabelWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             fonts->setmodifierunder( fonts->widget_text_disable.under );
             fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
-            int sl = fonts->getstringwidth( label );
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
+            drawablecharlabel = fonts->assertstringlength( label, width-2-2 );
 
-            if (alignment==centered) fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
-            if (alignment==left) fonts->drawstringleft( screen, label, xpos, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            if (drawablecharlabel!=0)
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
 
-            if (alignment==right) fonts->drawstringleft( screen, label, xpos+(width-sl), ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                if (alignment==centered) fonts->drawstringleft( screen, drawablelabel, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+
+                if (alignment==left) fonts->drawstringleft( screen, drawablelabel, xpos, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+
+                if (alignment==right) fonts->drawstringleft( screen, drawablelabel, xpos+(width-sl), ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            }
 
         }
 

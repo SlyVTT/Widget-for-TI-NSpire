@@ -38,7 +38,7 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 
         is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
+        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
 
         if(currently_pressed && !is_pressed)
@@ -145,9 +145,25 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierunder( fonts->widget_text_enable.under );
                         fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-                        int sh = fonts->getstringheight( (char*) listitems[i] );
+                        //We check if the titel can be written in the titlebar (with 5px on each side of the title
+                        if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
+                        if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
 
-                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                        strcpy( drawablelabel, (char*) listitems[i] );
+                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+
+                        if (drawablecharlabel!=0)
+                        {
+                            int sl = fonts->getstringwidth( drawablelabel );
+                            int sh = fonts->getstringheight( drawablelabel );
+                            fonts->drawstringleft( screen, drawablelabel, xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                        }
+
+
+                        //int sh = fonts->getstringheight( (char*) listitems[i] );
+
+                        //fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
                     }
                     else
                     {
@@ -156,14 +172,41 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierunder( fonts->widget_text_selected.under );
                         fonts->setmodifierstrike( fonts->widget_text_selected.strike );
 
+
+                        //We check if the titel can be written in the titlebar (with 5px on each side of the title
+                        if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
+                        if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
+
+                        strcpy( drawablelabel, (char*) listitems[i] );
+                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+
+                        if (drawablecharlabel!=0)
+                        {
+                            int sl = fonts->getstringwidth( drawablelabel );
+                            int sh = fonts->getstringheight( drawablelabel );
+
+                            // if we can see all the item, no need for space for the escalator on the right
+                            if (nbvisible>=nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
+                            //else we draw the selection line a bit shorter not to cover the escalator
+                            if (nbvisible<nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
+
+
+                            fonts->drawstringleft( screen, drawablelabel, xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A );
+                        }
+
+
+
+                        /*
                         int sh = fonts->getstringheight( (char*) listitems[i] );
 
-                        // if we can see all the item, no need for space for the escalator on the right
+                       // if we can see all the item, no need for space for the escalator on the right
                         if (nbvisible>=nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
                         //else we draw the selection line a bit shorter not to cover the escalator
                         if (nbvisible<nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
 
                         fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A );
+                        */
                     }
                 }
             }

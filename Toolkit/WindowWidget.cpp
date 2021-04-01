@@ -52,19 +52,13 @@ bool WindowWidget::ismouseatbottomborder(CursorTask *mouse)
 
 bool WindowWidget::ismouseontitlebar(CursorTask *mouse)
 {
-    return ((unsigned int) mouse->x >= xpos+12) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-22) && ((unsigned int) mouse->y <= ypos+12);
-}
-
-
-bool WindowWidget::ismouseonmaximisebutton(CursorTask *mouse)
-{
-    return ((unsigned int) mouse->x >= xpos+2) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+12) && ((unsigned int) mouse->y <= ypos+12);
+    return ((unsigned int) mouse->x >= xpos+2) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-32) && ((unsigned int) mouse->y <= ypos+12);
 }
 
 
 bool WindowWidget::ismouseonminimisebutton(CursorTask *mouse)
 {
-    return ((unsigned int) mouse->x >= xpos+width-12) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-2) && ((unsigned int) mouse->y <= ypos+12);
+    return ((unsigned int) mouse->x >= xpos+width-32) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-22) && ((unsigned int) mouse->y <= ypos+12);
 }
 
 
@@ -72,6 +66,14 @@ bool WindowWidget::ismouseonrestorebutton(CursorTask *mouse)
 {
     return ((unsigned int) mouse->x >= xpos+width-22) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-12) && ((unsigned int) mouse->y <= ypos+12);
 }
+
+
+bool WindowWidget::ismouseonmaximisebutton(CursorTask *mouse)
+{
+    return ((unsigned int) mouse->x >= xpos+width-12) && ((unsigned int) mouse->y >= ypos+2) && ((unsigned int) mouse->x <= xpos+width-2) && ((unsigned int) mouse->y <= ypos+12);
+}
+
+
 
 void WindowWidget::maximize()
 {
@@ -89,6 +91,10 @@ void WindowWidget::maximize()
         isminimized = false;
 
         adjust();
+    }
+    else if (isminimized)
+    {
+        restore();
     }
     else
     {
@@ -128,6 +134,10 @@ void WindowWidget::minimize()
         isminimized = false;
 
         adjust();
+    }
+    else if (ismaximized)
+    {
+        restore();
     }
     else
     {
@@ -289,7 +299,7 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
         unsigned int xposold = xpos;
         mouse->logic();
-        if (mouse->x > 2) xpos = mouse->x;
+        if ((mouse->x > 2) && (width + xposold - mouse->x >= minwidth)) xpos = mouse->x;
         width += (xposold - xpos);
         adjust();
     }
@@ -297,7 +307,7 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     if (resizemode && ismouseatrightborder( mouse ))
     {
         mouse->logic();
-        if (mouse->x < SCREEN_WIDTH-2) width = mouse->x - xpos;
+        if ((mouse->x < SCREEN_WIDTH-2) && (mouse->x - xpos >= minwidth)) width = mouse->x - xpos;
         adjust();
     }
 
@@ -305,15 +315,15 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
         unsigned int yposold = ypos;
         mouse->logic();
-        if (mouse->y > 2) ypos = mouse->y;
+        if ((mouse->y > 2) && (height + yposold - mouse->y >= minheight)) ypos = mouse->y;
         height += (yposold - ypos);
         adjust();
     }
 
     if (resizemode && ismouseatbottomborder( mouse ))
     {
-        height = mouse->y - ypos;
-        if (mouse->y < SCREEN_HEIGHT-2) mouse->logic();
+        mouse->logic();
+        if ((mouse->y < SCREEN_HEIGHT-2) && (mouse->y - ypos >= minheight)) height = mouse->y - ypos;
         adjust();
     }
 
@@ -391,19 +401,31 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
                 roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
 
-            filledCircleRGBA( screen, xpos+7, ypos+6, 4, 0, 255, 0, 255 );
-            filledCircleRGBA( screen, xpos+width-7, ypos+6, 4, 255, 0, 0, 255 );
-            filledCircleRGBA( screen, xpos+width-17, ypos+6, 4, 255, 125, 0, 255 );
+            // Draw the minimize round button
+            filledCircleRGBA( screen, xpos+width-27, ypos+6, 3, colors->window_titlebar_minimize.R, colors->window_titlebar_minimize.G, colors->window_titlebar_minimize.B, colors->window_titlebar_minimize.A);
+            // Draw the restore round button
+            filledCircleRGBA( screen, xpos+width-17, ypos+6, 3, colors->window_titlebar_restore.R, colors->window_titlebar_restore.G, colors->window_titlebar_restore.B, colors->window_titlebar_restore.A);
+            // Draw the maximize round button
+            filledCircleRGBA( screen, xpos+width-7, ypos+6, 3, colors->window_titlebar_maximize.R, colors->window_titlebar_maximize.G, colors->window_titlebar_maximize.B, colors->window_titlebar_maximize.A);
 
             fonts->setcurrentfont( fonts->window_titlebartext_enable.name );
             fonts->setmodifiertypo( fonts->window_titlebartext_enable.typo );
             fonts->setmodifierunder( fonts->window_titlebartext_enable.under );
             fonts->setmodifierstrike( fonts->window_titlebartext_enable.strike );
 
-            int sl = fonts->getstringwidth( label );
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
+            drawablecharlabel = fonts->assertstringlength( label, width-5-5-30 );
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+sh/2, colors->window_titlebartext_enable.R, colors->window_titlebartext_enable.G, colors->window_titlebartext_enable.B, colors->window_titlebartext_enable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+
+            if (drawablecharlabel!=0)
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
+                fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+sh/2, colors->window_titlebartext_enable.R, colors->window_titlebartext_enable.G, colors->window_titlebartext_enable.B, colors->window_titlebartext_enable.A );
+            }
         }
         else
         {
@@ -416,11 +438,19 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             fonts->setmodifierunder( fonts->window_titlebartext_disable.under );
             fonts->setmodifierstrike( fonts->window_titlebartext_disable.strike );
 
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
+            drawablecharlabel = fonts->assertstringlength( label, width-5-5-30 );
 
-            int sl = fonts->getstringwidth( label );
-            int sh = fonts->getstringheight( label );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
-            fonts->drawstringleft( screen, label, xpos+(width-sl)/2, ypos+sh/2, colors->window_titlebartext_disable.R, colors->window_titlebartext_disable.G, colors->window_titlebartext_disable.B, colors->window_titlebartext_disable.A );
+            if (drawablecharlabel!=0)
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
+                fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+sh/2, colors->window_titlebartext_disable.R, colors->window_titlebartext_disable.G, colors->window_titlebartext_disable.B, colors->window_titlebartext_disable.A );
+            }
         }
 
         for (auto& c : children )

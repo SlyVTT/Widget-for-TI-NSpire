@@ -29,6 +29,8 @@ public:
     virtual void minimize();
     virtual void restore();
 
+    virtual void setminimaldimensions( unsigned int widmin, unsigned int heimin) { minwidth = widmin; minheight = heimin; };
+
     // These methods must be override cause window geometry is a bit different with the title bar
     virtual unsigned int getuseablexpos() override;
     virtual unsigned int getuseableypos() override;
@@ -63,6 +65,9 @@ private:
     unsigned int yposback = 0;
     unsigned int widthback = 0;
     unsigned int heightback = 0;
+
+    unsigned int minwidth;
+    unsigned int minheight;
 
 };
 

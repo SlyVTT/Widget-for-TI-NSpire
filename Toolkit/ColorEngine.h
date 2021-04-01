@@ -73,6 +73,9 @@ public:
 
     colorRGBA window_titlebar_enable;
     colorRGBA window_titlebar_disable;
+    colorRGBA window_titlebar_minimize;
+    colorRGBA window_titlebar_maximize;
+    colorRGBA window_titlebar_restore;
 
     colorRGBA window_titlebartext_enable;
     colorRGBA window_titlebartext_disable;

@@ -6,7 +6,7 @@ void RadioControlWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     if (is_enabled && is_visible)
     {
         is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
+        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
         if(mouse_hold_down)
         {
@@ -66,10 +66,19 @@ void RadioControlWidget::render( SDL_Surface *screen, ColorEngine *colors, FontE
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 2px on each side of the title + 15 pixels for the buttons on the left
+            drawablecharlabel = fonts->assertstringlength( label, width-17-2 );
 
-            fonts->drawstringleft( screen, label, xpos+15, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
+            if (drawablecharlabel!=0)
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
+                fonts->drawstringleft( screen, drawablelabel, xpos+15, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            }
 
             if (is_ticked)
             {
@@ -89,9 +98,19 @@ void RadioControlWidget::render( SDL_Surface *screen, ColorEngine *colors, FontE
             fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
 
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 2px on each side of the title + 15 pixels for the buttons on the left
+            drawablecharlabel = fonts->assertstringlength( label, width-17-2 );
 
-            fonts->drawstringleft( screen, label, xpos+15, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+
+            if (drawablecharlabel!=0)
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
+                fonts->drawstringleft( screen, drawablelabel, xpos+15, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            }
 
 
             if (is_ticked)

@@ -295,7 +295,6 @@ void FontEngine::loadfontfromfile( char* filename )
 
 }
 
-
 unsigned int FontEngine::getstringwidth( char *str )
 {
     int length = (int) strlen( str );
@@ -309,7 +308,6 @@ unsigned int FontEngine::getstringwidth( char *str )
 
     return posx;
 }
-
 
 // this is for monoline text, does not take into consideration \n character yet
 unsigned int FontEngine::getstringheight( char *str )
@@ -333,10 +331,36 @@ unsigned int FontEngine::getcharwidth( char str )
     return currentfont->Font[str]->charwidth;
 }
 
-
 unsigned int FontEngine::getcharheight( char str )
 {
     return currentfont->Font[str]->charheight;
+}
+
+
+unsigned int FontEngine::assertstringlength( char *str, unsigned int width )
+{
+
+    unsigned int lengthstr = getstringwidth( str );
+    char returnstr[100];
+
+    unsigned int nbchartotal = (unsigned int) strlen( str );
+
+    if (width >= lengthstr)
+    {
+        return nbchartotal;
+    }
+    else
+    {
+        strcpy( returnstr, str );
+        for( unsigned int i=nbchartotal; i>1; i-- )
+        {
+            returnstr[i-1]='\0';
+            lengthstr = getstringwidth( returnstr );
+            if (width >= lengthstr) return i;
+        }
+    }
+
+    return 0;
 }
 
 
@@ -365,7 +389,6 @@ void FontEngine::setmodifierstrike( fontmodifierstrike mod )
 {
     currentmodifierstrike = mod;
 }
-
 
 void FontEngine::drawstringleft( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
@@ -483,7 +506,6 @@ void FontEngine::drawcharright( SDL_Surface *screen, char str, unsigned int x, u
     int dx = (int) getcharwidth( str );
     drawcharleft( screen, str, x-dx, y, R, G, B, A);
 }
-
 
 void FontEngine::setdefaultfontpreset( )
 {

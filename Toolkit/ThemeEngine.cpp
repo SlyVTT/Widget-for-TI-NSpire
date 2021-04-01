@@ -202,6 +202,40 @@ void ThemeEngine::loadthemefromfile(char *filename)
                 window_titlebar_disable.B = B;
                 window_titlebar_disable.A = 255;
             }
+
+            fscanf( pFile, "%s", line );
+            //if (line == (char*) "maximize")
+            {
+                fscanf( pFile, "%d %d %d", &R, &G, &B );
+
+                window_titlebar_maximize.R = R;
+                window_titlebar_maximize.G = G;
+                window_titlebar_maximize.B = B;
+                window_titlebar_maximize.A = 255;
+            }
+
+            fscanf( pFile, "%s", line );
+            //if (line == (char*) "minimize")
+            {
+                fscanf( pFile, "%d %d %d", &R, &G, &B );
+
+                window_titlebar_minimize.R = R;
+                window_titlebar_minimize.G = G;
+                window_titlebar_minimize.B = B;
+                window_titlebar_minimize.A = 255;
+            }
+
+            fscanf( pFile, "%s", line );
+            //if (line == (char*) "restore")
+            {
+                fscanf( pFile, "%d %d %d", &R, &G, &B );
+
+                window_titlebar_restore.R = R;
+                window_titlebar_restore.G = G;
+                window_titlebar_restore.B = B;
+                window_titlebar_restore.A = 255;
+            }
+
         }
 
 
@@ -868,6 +902,9 @@ void ThemeEngine::applytheme()
 
         colorhandler->window_titlebar_enable = window_titlebar_enable;
         colorhandler->window_titlebar_disable = window_titlebar_disable;
+        colorhandler->window_titlebar_minimize = window_titlebar_minimize;
+        colorhandler->window_titlebar_maximize = window_titlebar_maximize;
+        colorhandler->window_titlebar_restore  = window_titlebar_restore;
 
         colorhandler->window_titlebartext_enable = window_titlebartext_enable;
         colorhandler->window_titlebartext_disable = window_titlebartext_disable;

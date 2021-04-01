@@ -97,7 +97,7 @@ void DropBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
 
         is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
+        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
 
         if(currently_pressed && !is_pressed)
@@ -165,9 +165,21 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title
+            drawablecharlabel = fonts->assertstringlength( label, width-5-5 );
 
-            if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+
+            if ((drawablecharlabel!=0) && (selected_item!=-1))
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
+                fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+            }
+
+            //if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
         }
         else
         {
@@ -180,9 +192,22 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierunder( fonts->widget_text_disable.under );
             fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
-            int sh = fonts->getstringheight( label );
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title
+            drawablecharlabel = fonts->assertstringlength( label, width-5-5 );
 
-            if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            strcpy( drawablelabel, label );
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+
+            if ((drawablecharlabel!=0) && (selected_item!=-1))
+            {
+                int sl = fonts->getstringwidth( drawablelabel );
+                int sh = fonts->getstringheight( drawablelabel );
+                fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+            }
+
+
+            //if (selected_item!=-1) fonts->drawstringleft( screen, label, xpos+5, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
         }
 
         dropbutton->render( screen, colors, fonts );

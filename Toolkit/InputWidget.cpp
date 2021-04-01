@@ -25,12 +25,12 @@ void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 hoverfunction( (char*) "test" );
         }
 
-        if ( is_hovering && mouses && !has_focus )
+        if ( is_hovering && (mouse->state || keyboard->kbSCRATCH) && !has_focus )
         {
             focus( this );
         }
 
-        if( mouses && is_hovering )
+        if( (mouse->state || keyboard->kbSCRATCH) && is_hovering )
         {
             nfontwidget->setcurrentfont( nfontwidget->widget_text_disable.name );
             nfontwidget->setmodifiertypo( nfontwidget->widget_text_disable.typo );

@@ -151,7 +151,9 @@ protected:
 
     char *widgettype;
 
-    char *label;
+    char *label;                // text content of the label
+    char drawablelabel[100];    // text content that can be drawn (may be shorter that full label depending on size of the widget and on the used font
+    unsigned int drawablecharlabel;
 
     unsigned int xpos; // absolute coordinate vs screen
     unsigned int xrel; // relative coodinate to parent
