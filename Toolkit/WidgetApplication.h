@@ -2,6 +2,8 @@
 #define WIDGETAPPLICATION_H
 
 #include "Widget.h"
+#include "DesktopWidget.h"
+
 #include "CursorTask.h"
 #include "KeyboardTask.h"
 
@@ -11,7 +13,6 @@
 
 
 #include <vector>
-
 
 
 struct DesktopFeatures
@@ -24,6 +25,8 @@ struct DesktopFeatures
     Uint8 b_background = 0;
     Uint32 rgb_background = 0;
     SDL_Surface *background_image=nullptr;
+    SDL_Surface *screen = nullptr;
+    SDL_Surface *depthbuffer = nullptr;
     SDL_Rect position_background;
 
     // This allows having multiple desktops/screens in future revisions
@@ -50,6 +53,7 @@ public:
     virtual void setpreviousdesktop();
 
     virtual void render( void );
+    virtual void renderdepth( void );
 
     virtual void logic( void );
     virtual void logicwithforcedrender( void );
@@ -69,6 +73,7 @@ public:
     virtual FontEngine* getfonthandler();
     virtual SDL_Surface* getscreenhandler();
 
+    bool AskForClose = false;
 
 protected:
     unsigned int cur_desktop = 0;
@@ -85,7 +90,7 @@ protected:
     FontEngine *fonts = nullptr;
     ThemeEngine *theme = nullptr;
 
-    SDL_Surface *screen = nullptr;
+    //SDL_Surface *screen = nullptr;
 
     bool backgroundtobedrawn = true;
 

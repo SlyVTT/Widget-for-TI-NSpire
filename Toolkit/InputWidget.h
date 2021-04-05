@@ -31,14 +31,14 @@ public:
         cursor_pos = 0;
         scroll = 0;
     }
-    virtual void setfont( nSDL_Font *font )
-    {
-        fontwidget = font;
-    };
-    virtual nSDL_Font* getfont()
-    {
-        return fontwidget;
-    };
+    //virtual void setfont( nSDL_Font *font )
+    //{
+    //    fontwidget = font;
+    //};
+    //virtual nSDL_Font* getfont()
+    //{
+    //    return fontwidget;
+    //};
 
 private:
     void updateScroll();
@@ -47,7 +47,7 @@ private:
     unsigned int scroll = 0;
     unsigned int mousex,mousey;
     bool mouses;
-    nSDL_Font *fontwidget;
+    //nSDL_Font *fontwidget;
 
     FontEngine *nfontwidget = nullptr;
 

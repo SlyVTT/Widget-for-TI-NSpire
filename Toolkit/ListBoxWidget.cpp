@@ -59,6 +59,9 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         is_pressed = currently_pressed;
 
+
+
+
         if (keyboard->kbDOWN && keyboard->iskeypressevent())
         {
             if ( selected < this->getnbitem()-1)

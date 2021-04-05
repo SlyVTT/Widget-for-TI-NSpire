@@ -31,6 +31,11 @@ public:
 
     virtual void setminimaldimensions( unsigned int widmin, unsigned int heimin) { minwidth = widmin; minheight = heimin; };
 
+    virtual void setmenubar() { hasmenubar = true; };
+    virtual void seticonbar() { hasiconbar = true; };
+    virtual bool getmenubar() { return hasmenubar; };
+    virtual bool geticonbar() { return hasiconbar; };
+
     // These methods must be override cause window geometry is a bit different with the title bar
     virtual unsigned int getuseablexpos() override;
     virtual unsigned int getuseableypos() override;
@@ -50,6 +55,9 @@ private:
     virtual bool ismouseonmaximisebutton(CursorTask *mouse);
     virtual bool ismouseonminimisebutton(CursorTask *mouse);
     virtual bool ismouseonrestorebutton(CursorTask *mouse);
+
+    bool hasmenubar=false;
+    bool hasiconbar=false;
 
     int clickX = 0;
     int clickY = 0;

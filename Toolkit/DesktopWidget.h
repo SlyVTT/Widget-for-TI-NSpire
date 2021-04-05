@@ -138,9 +138,14 @@ public:
     DesktopWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
         widgettype = (char*) "Desktop";
+        fonttemp = new FontEngine();
     };
 
 
+    virtual void setmenubar() { hasmenubar = true; };
+    virtual void seticonbar() { hasiconbar = true; };
+    virtual bool getmenubar() { return hasmenubar; };
+    virtual bool geticonbar() { return hasiconbar; };
 
     /// Object destructor
     ///
@@ -178,9 +183,20 @@ public:
     /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
+    SDL_Surface *screen = nullptr;
+    SDL_Surface *depthbuffer = nullptr;
+
+
 protected:
+    virtual void putontop( unsigned int widgetidsearched );
+
+
 
 private:
+    bool hasmenubar=false;
+    bool hasiconbar=false;
+    FontEngine *fonttemp = nullptr;
+
 };
 
 #endif // DESKTOPWIDGET_H

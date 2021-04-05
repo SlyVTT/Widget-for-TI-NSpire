@@ -1,9 +1,13 @@
 #include "Widget.h"
 
 
+extern unsigned int GlobalWdidgetIDCounter;
+
 
 Widget::Widget( )
 {
+
+
 
 }
 
@@ -15,6 +19,10 @@ Widget::Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigne
     widrel=w;
     heirel=h;
     parent=p;
+
+    WidgetID = GlobalWdidgetIDCounter;
+    GlobalWdidgetIDCounter++;
+
 
     if (parent)
     {
@@ -141,6 +149,43 @@ void Widget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts
     for (auto& c : children )
         c->render( screen, colors, fonts );
 }
+
+
+void Widget::renderdepth( SDL_Surface *depthbuffer )
+{
+
+    //if the widget is a window, then we plot the corresponding zone in the depth buttfer with a color representing its ID
+    if ((this->getwidgettype() == (char*) "Window") || ((this->getwidgettype() == (char*) "MenuBar") && (this->parent->getwidgettype() == (char*) "Desktop")))
+    {
+        //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
+        //It assumes a maximum number of widget limited to 249 per desktop
+
+        //The number of units codes the BB component
+        unsigned int B=0;
+        unsigned int u = WidgetID % 10;
+        B = u*25;
+
+        //The number of tens codes the GG component
+        unsigned int G=0;
+        unsigned int d=((WidgetID-u)/10) % 10;
+        G = d*25;
+
+        //The number of hundreds codes the RR component
+        unsigned int R=0;
+        unsigned int c=(WidgetID-u-10*d) / 100;
+        R = c*25;
+
+
+        //Draw the corresponding shape in the Depth Buffer Image
+        roundedBoxRGBA( depthbuffer, xpos, ypos, xpos+width, ypos+height, 3, R, G, B, 255 );
+
+    }
+
+    for (auto& c : children )
+        c->renderdepth( depthbuffer );
+}
+
+
 
 void Widget::enable( )
 {

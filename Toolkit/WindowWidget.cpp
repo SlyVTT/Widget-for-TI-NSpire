@@ -151,7 +151,7 @@ void WindowWidget::minimize()
         width = SCREEN_WIDTH;
         height = 12;
 
-         for (auto& c : children )
+        for (auto& c : children )
             c->setinvisible();
 
         ismaximized = false;
@@ -172,7 +172,7 @@ void WindowWidget::restore()
     }
     else
     {
-            xpos = xposback;
+        xpos = xposback;
         ypos = yposback;
         width = widthback;
         height = heightback;
@@ -189,195 +189,195 @@ void WindowWidget::restore()
 
 void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
+    if (is_activated)
+    {
 
-    is_hovering = cursoron( mouse );
+        is_hovering = cursoron( mouse );
 
-    if(is_hovering)
-    {
-        if (hoverfunction)
-            hoverfunction( (char*) "test" );
-    }
-
-    bool atborder = false;
-    bool ontitle = false;
-    bool onmax = false;
-    bool onmin = false;
-    bool onres = false;
-
-    if (ismouseatleftborder( mouse ))
-    {
-        mouse->setcursortype( CursorTask::leftrightresize );
-        atborder = true;
-    }
-    else if (ismouseatrightborder( mouse ))
-    {
-        mouse->setcursortype( CursorTask::leftrightresize );
-        atborder = true;
-    }
-    else if (ismouseattopborder( mouse ))
-    {
-        mouse->setcursortype( CursorTask::topbottomresize );
-        atborder = true;
-    }
-    else if (ismouseatbottomborder( mouse ))
-    {
-        mouse->setcursortype( CursorTask::topbottomresize );
-        atborder = true;
-    }
-    else if (ismouseontitlebar( mouse ))
-    {
-        mouse->setcursortype( CursorTask::handfinger );
-        ontitle = true;
-    }
-    else if (ismouseonmaximisebutton( mouse ))
-    {
-        mouse->setcursortype( CursorTask::triangle );
-        onmax = true;
-    }
-    else if (ismouseonminimisebutton( mouse ))
-    {
-        mouse->setcursortype( CursorTask::triangle );
-        onmin = true;
-    }
-    else if (ismouseonrestorebutton( mouse ))
-    {
-        mouse->setcursortype( CursorTask::triangle );
-        onres = true;
-    }
-    else
-    {
-        mouse->setcursortype( CursorTask::pointer );
-    }
-
-
-    if (atborder && keyboard->kbSCRATCH)
-    {
-        resizemode = true;
-    }
-    else
-    {
-        resizemode = false;
-    }
-
-    if (onmax && keyboard->kbSCRATCH)
-    {
-        maximize();
-        onmax = false;
-    }
-
-    if (onmin && keyboard->kbSCRATCH)
-    {
-        minimize();
-        onmin = false;
-    }
-
-    if (onres && keyboard->kbSCRATCH)
-    {
-        restore();
-        onres = false;
-    }
-
-    if (ontitle && keyboard->kbSCRATCH && !startmove)
-    {
-        movemode = true;
-        startmove = true;
-        clickX = mouse->x;
-        clickY = mouse->y;
-    }
-    else if (ontitle && keyboard->kbSCRATCH && startmove)
-    {
-        movemode = true;
-    }
-    else
-    {
-        movemode = false;
-        startmove = false;
-    }
-
-
-    if (resizemode && ismouseatleftborder( mouse ))
-    {
-        unsigned int xposold = xpos;
-        mouse->logic();
-        if ((mouse->x > 2) && (width + xposold - mouse->x >= minwidth)) xpos = mouse->x;
-        width += (xposold - xpos);
-        adjust();
-    }
-
-    if (resizemode && ismouseatrightborder( mouse ))
-    {
-        mouse->logic();
-        if ((mouse->x < SCREEN_WIDTH-2) && (mouse->x - xpos >= minwidth)) width = mouse->x - xpos;
-        adjust();
-    }
-
-    if (resizemode && ismouseattopborder( mouse ))
-    {
-        unsigned int yposold = ypos;
-        mouse->logic();
-        if ((mouse->y > 2) && (height + yposold - mouse->y >= minheight)) ypos = mouse->y;
-        height += (yposold - ypos);
-        adjust();
-    }
-
-    if (resizemode && ismouseatbottomborder( mouse ))
-    {
-        mouse->logic();
-        if ((mouse->y < SCREEN_HEIGHT-2) && (mouse->y - ypos >= minheight)) height = mouse->y - ypos;
-        adjust();
-    }
-
-
-    // Here comes the move logic ...
-    if (movemode && ismouseontitlebar( mouse ))
-    {
-        mouse->logic();
-
-        int deltax = (int) mouse->x - (int) clickX;
-        int deltay = (int) mouse->y - (int) clickY;
-
-        //we go left
-        if (deltax < 0)
+        if(is_hovering)
         {
-            if ((int) xpos > (int) (-1 * deltax))   xpos += deltax;
-        }
-        //we go up
-        if (deltay < 0)
-        {
-            if ((int) ypos > (int) (-1 * deltay))   ypos += deltay;
+            if (hoverfunction)
+                hoverfunction( (char*) "test" );
         }
 
-        //we go right
-        if (deltax > 0)
+        bool atborder = false;
+        bool ontitle = false;
+        bool onmax = false;
+        bool onmin = false;
+        bool onres = false;
+
+        if (ismouseatleftborder( mouse ))
         {
-            if ((int) (SCREEN_WIDTH - xpos - width) > (int) (deltax))   xpos += deltax;
+            mouse->setcursortype( CursorTask::leftrightresize );
+            atborder = true;
         }
-        //we go down
-        if (deltay > 0)
+        else if (ismouseatrightborder( mouse ))
         {
-            if ((int) (SCREEN_HEIGHT - ypos - height) > (int) (deltay))   ypos += deltay;
+            mouse->setcursortype( CursorTask::leftrightresize );
+            atborder = true;
+        }
+        else if (ismouseattopborder( mouse ))
+        {
+            mouse->setcursortype( CursorTask::topbottomresize );
+            atborder = true;
+        }
+        else if (ismouseatbottomborder( mouse ))
+        {
+            mouse->setcursortype( CursorTask::topbottomresize );
+            atborder = true;
+        }
+        else if (ismouseontitlebar( mouse ))
+        {
+            mouse->setcursortype( CursorTask::handfinger );
+            ontitle = true;
+        }
+        else if (ismouseonmaximisebutton( mouse ))
+        {
+            mouse->setcursortype( CursorTask::triangle );
+            onmax = true;
+        }
+        else if (ismouseonminimisebutton( mouse ))
+        {
+            mouse->setcursortype( CursorTask::triangle );
+            onmin = true;
+        }
+        else if (ismouseonrestorebutton( mouse ))
+        {
+            mouse->setcursortype( CursorTask::triangle );
+            onres = true;
+        }
+        else
+        {
+            mouse->setcursortype( CursorTask::pointer );
         }
 
-        adjust();
 
-        clickX = mouse->x;
-        clickY = mouse->y;
+        if (atborder && keyboard->kbSCRATCH)
+        {
+            resizemode = true;
+        }
+        else
+        {
+            resizemode = false;
+        }
 
+        if (onmax && keyboard->kbSCRATCH)
+        {
+            maximize();
+            onmax = false;
+        }
+
+        if (onmin && keyboard->kbSCRATCH)
+        {
+            minimize();
+            onmin = false;
+        }
+
+        if (onres && keyboard->kbSCRATCH)
+        {
+            restore();
+            onres = false;
+        }
+
+        if (ontitle && keyboard->kbSCRATCH && !startmove)
+        {
+            movemode = true;
+            startmove = true;
+            clickX = mouse->x;
+            clickY = mouse->y;
+        }
+        else if (ontitle && keyboard->kbSCRATCH && startmove)
+        {
+            movemode = true;
+        }
+        else
+        {
+            movemode = false;
+            startmove = false;
+        }
+
+
+        if (resizemode && ismouseatleftborder( mouse ))
+        {
+            unsigned int xposold = xpos;
+            mouse->logic();
+            if ((mouse->x > 2) && (width + xposold - mouse->x >= minwidth)) xpos = mouse->x;
+            width += (xposold - xpos);
+            adjust();
+        }
+
+        if (resizemode && ismouseatrightborder( mouse ))
+        {
+            mouse->logic();
+            if ((mouse->x < SCREEN_WIDTH-2) && (mouse->x - xpos >= minwidth)) width = mouse->x - xpos;
+            adjust();
+        }
+
+        if (resizemode && ismouseattopborder( mouse ))
+        {
+            unsigned int yposold = ypos;
+            mouse->logic();
+            if ((mouse->y > 2) && (height + yposold - mouse->y >= minheight)) ypos = mouse->y;
+            height += (yposold - ypos);
+            adjust();
+        }
+
+        if (resizemode && ismouseatbottomborder( mouse ))
+        {
+            mouse->logic();
+            if ((mouse->y < SCREEN_HEIGHT-2) && (mouse->y - ypos >= minheight)) height = mouse->y - ypos;
+            adjust();
+        }
+
+
+        // Here comes the move logic ...
+        if (movemode && ismouseontitlebar( mouse ))
+        {
+            mouse->logic();
+
+            int deltax = (int) mouse->x - (int) clickX;
+            int deltay = (int) mouse->y - (int) clickY;
+
+            //we go left
+            if (deltax < 0)
+            {
+                if ((int) xpos > (int) (-1 * deltax))   xpos += deltax;
+            }
+            //we go up
+            if (deltay < 0)
+            {
+                if ((int) ypos > (int) (-1 * deltay))   ypos += deltay;
+            }
+
+            //we go right
+            if (deltax > 0)
+            {
+                if ((int) (SCREEN_WIDTH - xpos - width) > (int) (deltax))   xpos += deltax;
+            }
+            //we go down
+            if (deltay > 0)
+            {
+                if ((int) (SCREEN_HEIGHT - ypos - height) > (int) (deltay))   ypos += deltay;
+            }
+
+            adjust();
+
+            clickX = mouse->x;
+            clickY = mouse->y;
+
+        }
+
+
+        for (auto& c : children )
+            c->logic( mouse, keyboard );
+
+
+        for (auto& d : popupchildren )
+        {
+            if (d->isvisible())
+                d->logic( mouse, keyboard );
+        }
     }
-
-
-
-
-    for (auto& c : children )
-        c->logic( mouse, keyboard );
-
-
-    for (auto& d : popupchildren )
-    {
-        if (d->isvisible())
-            d->logic( mouse, keyboard );
-    }
-
 }
 
 
@@ -412,6 +412,7 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             fonts->setmodifiertypo( fonts->window_titlebartext_enable.typo );
             fonts->setmodifierunder( fonts->window_titlebartext_enable.under );
             fonts->setmodifierstrike( fonts->window_titlebartext_enable.strike );
+
 
             //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
             drawablecharlabel = fonts->assertstringlength( label, width-5-5-30 );
@@ -452,6 +453,14 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
                 fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+sh/2, colors->window_titlebartext_disable.R, colors->window_titlebartext_disable.G, colors->window_titlebartext_disable.B, colors->window_titlebartext_disable.A );
             }
         }
+
+        // THIS IS FOR DEBUGGING THE DEPTH BUFFER PORTION OF THE CODE
+        char* tempID;
+        sprintf( tempID, "ID = %d", WidgetID );
+        fonts->setcurrentfont( THIN_FONT );
+        fonts->setmodifiertypo( Bold );
+        fonts->drawstringleft( screen, tempID, xpos+2, ypos+4, 255, 0, 0, 255 );
+
 
         for (auto& c : children )
             c->render( screen, colors, fonts );

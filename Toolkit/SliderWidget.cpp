@@ -24,7 +24,8 @@ void SliderWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
 
         is_hovering = cursoron( mouse );
-        bool currently_pressed = mouse->state && is_hovering;
+        bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
+
         length_pixels = width - 10;
         if (currently_pressed)
         {

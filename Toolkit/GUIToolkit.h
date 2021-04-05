@@ -10,6 +10,7 @@
 \*************************************/
 
 
+
 // These two #include files to be used for Touchpad (Mouse/Cursor) handling and Keyboard handling respectively
 
 #include "CursorTask.h"
@@ -52,6 +53,9 @@
 #include "ListBoxWidget.h"
 #include "DropBoxWidget.h"
 
+#include "MenuBarWidget.h"
+#include "MenuItemWidget.h"
+#include "MenuPaneWidget.h"
 
 
 

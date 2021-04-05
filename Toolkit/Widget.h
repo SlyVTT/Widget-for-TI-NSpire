@@ -20,15 +20,25 @@ public:
     Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
     virtual ~Widget();
 
+    Uint32 WidgetID = -1;
+
+
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
     virtual void focus( Widget *emitter );
     virtual void unfocusup( Widget *emitter );
     virtual void unfocusdown( Widget *emitter );
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts );
+    virtual void renderdepth( SDL_Surface *depthbuffer );
     virtual void addchild( Widget *child );
     virtual void addpopupchild( Widget *child );
-    //virtual void escape() {};
-    //virtual void validate() {};
+
+    virtual void activate() { is_activated = true; };
+    virtual void desactivate() { is_activated = false; };
+    virtual bool isactivated() {return is_activated; };
+
+    virtual void lock() { is_locked = true; }
+    virtual void unlock() { is_locked = false; };
+    virtual bool islocked() {return is_locked; };
 
     //SETTERs
     virtual void setdimensions( unsigned int mx, unsigned int my, unsigned int mw, unsigned int mh )
@@ -148,6 +158,8 @@ protected:
     bool has_focus = false;
     bool is_enabled = true;
     bool is_visible = true;
+    bool is_activated = false;
+    bool is_locked = false;
 
     char *widgettype;
 
