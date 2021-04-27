@@ -6,16 +6,18 @@
 
 class MenuItemWidget : public ButtonWidget
 {
-    public:
+public:
 
     MenuItemWidget()
     {
-        widgettype = (char*) "MenuItem";
+        //widgettype = (char*) "MenuItem";
+        strcpy( widgettype, (char*) "MenuItem");
     };
 
     MenuItemWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "MenuItem";
+        //widgettype = (char*) "MenuItem";
+        strcpy( widgettype, (char*) "MenuItem");
     };
 
     virtual ~MenuItemWidget();
@@ -30,10 +32,10 @@ class MenuItemWidget : public ButtonWidget
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
 
-    protected:
+protected:
 
-    private:
-        bool is_pressed = false;
+private:
+    bool is_pressed = false;
 
 };
 

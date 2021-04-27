@@ -6,13 +6,20 @@
 
 class MenuPaneWidget : public ContainerVWidget
 {
-    public:
-        MenuPaneWidget();
-        virtual ~MenuPaneWidget();
+public:
+    MenuPaneWidget();
+    MenuPaneWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~MenuPaneWidget();
 
-    protected:
+    virtual void adjust() override;
 
-    private:
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+
+protected:
+
+private:
 };
 
 #endif // MENUPANEWIDGET_H

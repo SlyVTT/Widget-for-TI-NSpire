@@ -117,7 +117,9 @@ public:
     /// @see Widget()
     DesktopWidget()
     {
-        widgettype = (char*) "Desktop";
+        //widgettype = (char*) "Desktop";
+        strcpy( widgettype, (char*) "Desktop");
+        fonttemp = new FontEngine();
     };
 
 
@@ -137,15 +139,35 @@ public:
     /// @see Widget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
     DesktopWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Desktop";
+        //widgettype = (char*) "Desktop";
+        strcpy( widgettype, (char*) "Desktop");
         fonttemp = new FontEngine();
     };
 
 
-    virtual void setmenubar() { hasmenubar = true; };
-    virtual void seticonbar() { hasiconbar = true; };
-    virtual bool getmenubar() { return hasmenubar; };
-    virtual bool geticonbar() { return hasiconbar; };
+    virtual void setmenubar()
+    {
+        hasmenubar = true;
+    };
+    virtual void seticonbar()
+    {
+        hasiconbar = true;
+    };
+    virtual bool getmenubar()
+    {
+        return hasmenubar;
+    };
+    virtual bool geticonbar()
+    {
+        return hasiconbar;
+    };
+
+
+    // These methods must be override cause Desktop geometry is a bit different with the menubar/icon bar
+    virtual unsigned int getuseablexpos() override;
+    virtual unsigned int getuseableypos() override;
+    virtual unsigned int getuseablewidth() override;
+    virtual unsigned int getuseableheight() override;
 
     /// Object destructor
     ///

@@ -116,7 +116,8 @@ public:
     /// @see Widget()
     ContainerVWidget()
     {
-        widgettype = (char*) "ContainerV";
+        //widgettype = (char*) "ContainerV";
+        strcpy( widgettype, (char*) "ContainerV");
     };
 
 
@@ -135,7 +136,8 @@ public:
     /// @see Widget( char*, int, int, int, int, Widget* )
     ContainerVWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "ContainerV";
+        //widgettype = (char*) "ContainerV";
+        strcpy( widgettype, (char*) "ContainerV");
     };
 
 

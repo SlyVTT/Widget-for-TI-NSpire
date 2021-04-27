@@ -118,7 +118,8 @@ public:
     /// @see ButtonWidget() or Widget()
     CheckBoxWidget()
     {
-        widgettype = (char*) "CheckBox";
+        //widgettype = (char*) "CheckBox";
+        strcpy( widgettype, (char*) "CheckBox");
     };
 
 
@@ -137,7 +138,8 @@ public:
     /// @see ButtonWidget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
     CheckBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "CheckBox";
+        //widgettype = (char*) "CheckBox";
+        strcpy( widgettype, (char*) "CheckBox");
     };
 
 

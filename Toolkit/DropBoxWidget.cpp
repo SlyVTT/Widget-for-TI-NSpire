@@ -4,13 +4,16 @@
 
 DropBoxWidget::DropBoxWidget() : Widget()
 {
-    widgettype = (char*) "DropBox";
+    //widgettype = (char*) "DropBox";
+    strcpy( widgettype, (char*) "DropBox");
+
 
     dropbutton = new MiniButtonWidget();
     dropbutton->settype( Bottom_Arrow );
+    addchild(dropbutton);
 
     listbox = new ListBoxWidget();
-
+    addchild( listbox );
     listbox->setparent( this );
 
     listbox->setlabel( (char*) "Hello Listbox" );
@@ -21,7 +24,8 @@ DropBoxWidget::DropBoxWidget() : Widget()
 
 DropBoxWidget::DropBoxWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
 {
-    widgettype = (char*) "DropBox";
+    //widgettype = (char*) "DropBox";
+    strcpy( widgettype, (char*) "DropBox");
 
     this->setdimensions( x, y, w-h, h );
 
@@ -29,11 +33,12 @@ DropBoxWidget::DropBoxWidget(char *l, unsigned int x, unsigned int y, unsigned i
     dropbutton = tempbutton;
     dropbutton->setdimensions( x+w, y, h, h );
     dropbutton->settype( Bottom_Arrow );
+    addchild(dropbutton);
 
     ListBoxWidget *templist = new ListBoxWidget();
     listbox = templist;
     listbox->setdimensions( x, y+h, w+h, 5*h );
-
+    addchild( listbox );
     listbox->setparent( this );
 
     listbox->setlabel( (char*) "Hello Listbox" );
@@ -136,8 +141,8 @@ void DropBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             this->undrop();
         }
 
-        for (auto& c : children )
-            c->logic( mouse, keyboard );
+        //for (auto& c : children )
+        //    c->logic( mouse, keyboard );
 
     }
 }
@@ -174,7 +179,7 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
             if ((drawablecharlabel!=0) && (selected_item!=-1))
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
             }
@@ -201,7 +206,7 @@ void DropBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
             if ((drawablecharlabel!=0) && (selected_item!=-1))
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
             }

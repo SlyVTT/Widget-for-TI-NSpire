@@ -10,7 +10,10 @@ unsigned int WindowWidget::getuseablexpos()
 
 unsigned int WindowWidget::getuseableypos()
 {
-    return ypos + 14;
+    if (!hasmenubar && !hasiconbar) return ypos + 14;               // we just remove the size of the title bar (12px+2px = 14px)
+    if (hasmenubar && !hasiconbar) return ypos + 14 + 12;            // we remove the size of the title bar and of the menu bar (14px + 12px)
+    if (hasmenubar && hasiconbar) return ypos + 14 + 12 + 20;        // we remove the size of the title bar, of the menu bar and of the icon bar (14px + 12px + 20px)
+    if (!hasmenubar && hasiconbar) return ypos + 14 + 20;        // we remove the size of the title bar, of the menu bar and of the icon bar (14px + 12px + 20px)
 }
 
 
@@ -22,7 +25,10 @@ unsigned int WindowWidget::getuseablewidth()
 
 unsigned int WindowWidget::getuseableheight()
 {
-    return height - 16;
+    if (!hasmenubar && !hasiconbar) return height - 16;                // we just remove the size of the title bar (12px + 2px + 2px = 16px)
+    if (hasmenubar && !hasiconbar) return height - 16 - 12;            // we remove the size of the title bar and of the menu bar (16px + 12px)
+    if (hasmenubar && hasiconbar) return height - 16 - 12 - 20;        // we remove the size of the title bar, of the menu bar and of the icon bar (16px + 12px + 20px)
+    if (!hasmenubar && hasiconbar) return height - 16 - 20;            // we remove the size of the title bar, of the menu bar and of the icon bar (16px + 12px + 20px)
 }
 
 
@@ -103,10 +109,16 @@ void WindowWidget::maximize()
         widthback = width;
         heightback = height;
 
-        xpos = 0;
-        ypos = 0;
-        width = SCREEN_WIDTH;
-        height = SCREEN_HEIGHT;
+        //xpos = 0;
+        //ypos = 0;
+        //width = SCREEN_WIDTH;
+        //height = SCREEN_HEIGHT;
+
+        xpos = parent->getuseablexpos();
+        ypos = parent->getuseableypos();
+        width = parent->getuseablewidth();
+        height = parent->getuseableheight();
+
 
         for (auto& c : children )
             c->setvisible();
@@ -146,9 +158,14 @@ void WindowWidget::minimize()
         widthback = width;
         heightback = height;
 
-        xpos = 0;
-        ypos = 0;
-        width = SCREEN_WIDTH;
+        //xpos = 0;
+        //ypos = 0;
+        //width = SCREEN_WIDTH;
+        //height = 12;
+
+        xpos = parent->getuseablexpos();
+        ypos = parent->getuseableypos();
+        width = parent->getuseablewidth();
         height = 12;
 
         for (auto& c : children )
@@ -296,12 +313,13 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             startmove = false;
         }
 
-
+        // Here comes the resize logic
         if (resizemode && ismouseatleftborder( mouse ))
         {
             unsigned int xposold = xpos;
             mouse->logic();
-            if ((mouse->x > 2) && (width + xposold - mouse->x >= minwidth)) xpos = mouse->x;
+            //if ((mouse->x > 2) && (width + xposold - mouse->x >= minwidth)) xpos = mouse->x;
+            if ((mouse->x > parent->getuseablexpos()) && (width + xposold - mouse->x >= minwidth)) xpos = mouse->x;
             width += (xposold - xpos);
             adjust();
         }
@@ -309,7 +327,8 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if (resizemode && ismouseatrightborder( mouse ))
         {
             mouse->logic();
-            if ((mouse->x < SCREEN_WIDTH-2) && (mouse->x - xpos >= minwidth)) width = mouse->x - xpos;
+            //if ((mouse->x < SCREEN_WIDTH-2) && (mouse->x - xpos >= minwidth)) width = mouse->x - xpos;
+            if ((mouse->x < parent->getuseablexpos()+parent->getuseablewidth()) && (mouse->x - xpos >= minwidth)) width = mouse->x - xpos;
             adjust();
         }
 
@@ -317,7 +336,8 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         {
             unsigned int yposold = ypos;
             mouse->logic();
-            if ((mouse->y > 2) && (height + yposold - mouse->y >= minheight)) ypos = mouse->y;
+            //if ((mouse->y > 2) && (height + yposold - mouse->y >= minheight)) ypos = mouse->y;
+            if ((mouse->y > parent->getuseableypos()) && (height + yposold - mouse->y >= minheight)) ypos = mouse->y;
             height += (yposold - ypos);
             adjust();
         }
@@ -325,7 +345,8 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if (resizemode && ismouseatbottomborder( mouse ))
         {
             mouse->logic();
-            if ((mouse->y < SCREEN_HEIGHT-2) && (mouse->y - ypos >= minheight)) height = mouse->y - ypos;
+            //if ((mouse->y < SCREEN_HEIGHT-2) && (mouse->y - ypos >= minheight)) height = mouse->y - ypos;
+            if ((mouse->y < parent->getuseableypos()+parent->getuseableheight()) && (mouse->y - ypos >= minheight)) height = mouse->y - ypos;
             adjust();
         }
 
@@ -341,23 +362,27 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             //we go left
             if (deltax < 0)
             {
-                if ((int) xpos > (int) (-1 * deltax))   xpos += deltax;
+                //if ((int) xpos > (int) (-1 * deltax))   xpos += deltax;
+                if ((int) (xpos + deltax) > (int) parent->getuseablexpos() )   xpos += deltax;
             }
             //we go up
             if (deltay < 0)
             {
-                if ((int) ypos > (int) (-1 * deltay))   ypos += deltay;
+                //if ((int) ypos > (int) (-1 * deltay))   ypos += deltay;
+                if ((int) (ypos + deltay) > (int) parent->getuseableypos() )   ypos += deltay;
             }
 
             //we go right
             if (deltax > 0)
             {
-                if ((int) (SCREEN_WIDTH - xpos - width) > (int) (deltax))   xpos += deltax;
+                //if ((int) (SCREEN_WIDTH - xpos - width) > (int) (deltax))   xpos += deltax;
+                if ((int) (parent->getuseablexpos() + parent->getuseablewidth() - xpos - width) > (int) (deltax))   xpos += deltax;
             }
             //we go down
             if (deltay > 0)
             {
-                if ((int) (SCREEN_HEIGHT - ypos - height) > (int) (deltay))   ypos += deltay;
+                //if ((int) (SCREEN_HEIGHT - ypos - height) > (int) (deltay))   ypos += deltay;
+                if ((int) (parent->getuseableypos() + parent->getuseableheight() - ypos - height) > (int) (deltay))   ypos += deltay;
             }
 
             adjust();
@@ -377,6 +402,7 @@ void WindowWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             if (d->isvisible())
                 d->logic( mouse, keyboard );
         }
+
     }
 }
 
@@ -423,7 +449,7 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
 
             if (drawablecharlabel!=0)
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+sh/2, colors->window_titlebartext_enable.R, colors->window_titlebartext_enable.G, colors->window_titlebartext_enable.B, colors->window_titlebartext_enable.A );
             }
@@ -448,7 +474,7 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
 
             if (drawablecharlabel!=0)
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+5, ypos+sh/2, colors->window_titlebartext_disable.R, colors->window_titlebartext_disable.G, colors->window_titlebartext_disable.B, colors->window_titlebartext_disable.A );
             }
@@ -456,19 +482,26 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
 
         // THIS IS FOR DEBUGGING THE DEPTH BUFFER PORTION OF THE CODE
         char* tempID;
-        sprintf( tempID, "ID = %d", WidgetID );
+        sprintf( tempID, "ID = %ld", WidgetID );
         fonts->setcurrentfont( THIN_FONT );
         fonts->setmodifiertypo( Bold );
         fonts->drawstringleft( screen, tempID, xpos+2, ypos+4, 255, 0, 0, 255 );
 
 
         for (auto& c : children )
-            c->render( screen, colors, fonts );
+        {
+            if (c->isvisible())
+            {
+                c->render( screen, colors, fonts );
+            }
+        }
 
         for (auto& d : popupchildren )
         {
             if (d->isvisible())
+            {
                 d->render( screen, colors, fonts );
+            }
         }
     }
 

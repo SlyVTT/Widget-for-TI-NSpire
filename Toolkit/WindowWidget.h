@@ -9,11 +9,13 @@ class WindowWidget : public Widget
 public:
     WindowWidget( )
     {
-        widgettype = (char*) "Window";
+        //widgettype = (char*) "Window";
+        strcpy( widgettype, (char*) "Window");
     };
     WindowWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Window";
+        //widgettype = (char*) "Window";
+        strcpy( widgettype, (char*) "Window");
         xposback = x;
         yposback = y;
         widthback = w;
@@ -29,12 +31,28 @@ public:
     virtual void minimize();
     virtual void restore();
 
-    virtual void setminimaldimensions( unsigned int widmin, unsigned int heimin) { minwidth = widmin; minheight = heimin; };
+    virtual void setminimaldimensions( unsigned int widmin, unsigned int heimin)
+    {
+        minwidth = widmin;
+        minheight = heimin;
+    };
 
-    virtual void setmenubar() { hasmenubar = true; };
-    virtual void seticonbar() { hasiconbar = true; };
-    virtual bool getmenubar() { return hasmenubar; };
-    virtual bool geticonbar() { return hasiconbar; };
+    virtual void setmenubar()
+    {
+        hasmenubar = true;
+    };
+    virtual void seticonbar()
+    {
+        hasiconbar = true;
+    };
+    virtual bool getmenubar()
+    {
+        return hasmenubar;
+    };
+    virtual bool geticonbar()
+    {
+        return hasiconbar;
+    };
 
     // These methods must be override cause window geometry is a bit different with the title bar
     virtual unsigned int getuseablexpos() override;

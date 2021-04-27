@@ -116,7 +116,8 @@ public:
     /// @see Widget()
     ContainerHWidget()
     {
-        widgettype = (char*) "ContainerH";
+        //widgettype = (char*) "ContainerH";
+        strcpy( widgettype, (char*) "ContainerH");
     };
 
     /// Advanced constructor.
@@ -134,7 +135,8 @@ public:
     /// @see Widget( char*, int, int, int, int, Widget* )
     ContainerHWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "ContainerH";
+        //widgettype = (char*) "ContainerH";
+        strcpy( widgettype, (char*) "ContainerH");
     };
 
 

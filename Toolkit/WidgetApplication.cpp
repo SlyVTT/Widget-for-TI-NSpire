@@ -21,13 +21,23 @@
 unsigned int GlobalWdidgetIDCounter;
 
 
+
+
 bool is_existing( const std::string & file )
 {
     struct stat buffer;
     return (stat (file.c_str(), &buffer) == 0);
 }
 
+/*
+void WidgetApplication::DEBUG_draw_widget_tree_structure( char* filename )
+{
 
+    for( auto& c : currentdesktop->rootwidgets)
+        c->DEBUG_draw_widget_tree_structure( 1, filename );
+
+}
+*/
 
 void takescreenshot( SDL_Surface* screen )
 {
@@ -225,6 +235,7 @@ void WidgetApplication::addchildtodesktop( Widget *root, DesktopFeatures *deskto
 }
 
 
+
 void WidgetApplication::adddesktop( )
 {
     DesktopFeatures *desktoptoadd = new DesktopFeatures;
@@ -304,10 +315,17 @@ void WidgetApplication::setpreviousdesktop()
 
 void WidgetApplication::renderdepth( void )
 {
+
+    // We clear the depthbuffer of the current desktop
     SDL_FillRect( currentdesktop->depthbuffer, 0, 0x0000);
 
+    // we scrutinize all the rootwidgets on the current desktop and render them in the depth buffer
+    // we cannot launch a (currentdesktop->renderdepth method()) cause currentdesktop is a struct, not a widget derivative class
+    // the renderdepth method is one of the widget class
+
     for (auto& c : currentdesktop->rootwidgets )
-        c->renderdepth( currentdesktop->depthbuffer );
+        if (c->isvisible()) c->renderdepth( currentdesktop->depthbuffer );
+
 
 }
 
@@ -323,7 +341,7 @@ void WidgetApplication::render( void )
     }
 
     for (auto& c : currentdesktop->rootwidgets )
-        c->render( currentdesktop->screen, colors, fonts );
+        if (c->isvisible()) c->render( currentdesktop->screen, colors, fonts );
 
     mouse->render( currentdesktop->screen );
 
@@ -334,6 +352,7 @@ void WidgetApplication::render( void )
 
 void WidgetApplication::logic( void )
 {
+
     mouse->logic();
     keyboard->logic();
 
@@ -344,7 +363,7 @@ void WidgetApplication::logic( void )
         renderdepth();
 
         for (auto& c : currentdesktop->rootwidgets )
-            c->logic( mouse, keyboard );
+            if (c->isvisible() && c->isenabled()) c->logic( mouse, keyboard );
     }
 
     // This is to take a screenshot to be store in the Widget folder.
@@ -381,20 +400,28 @@ void WidgetApplication::logic( void )
 
 void WidgetApplication::logicwithforcedrender( void )
 {
+
     mouse->logic();
+
     keyboard->logic();
 
+
     // render() has to be called at every loop cause it is force (this is usefull for game loop but not for usual apps.
+
     render();
+
+
     renderdepth();
 
+
     // if an event from mouse or from keyboard is detected, we launch the children->logic() processes
+
     if (mouse->ismouseevent() || keyboard->iskeyevent())
     {
+
         for (auto& c : currentdesktop->rootwidgets )
             c->logic( mouse, keyboard );
     }
-
 
     // This is to take a screenshot to be store in the Widget folder.
     if (keyboard->kbCTRL && keyboard->kbDOT)

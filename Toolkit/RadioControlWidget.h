@@ -9,12 +9,14 @@ class RadioControlWidget : public ButtonWidget
 public:
     RadioControlWidget()
     {
-        widgettype = (char*) "RadioControl";
+        //widgettype = (char*) "RadioControl";
+        strcpy( widgettype, (char*) "RadioControl");
     };
 
     RadioControlWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "CheckBox";
+        //widgettype = (char*) "RadioControl";
+        strcpy( widgettype, (char*) "RadioControl");
     };
 
     virtual ~RadioControlWidget() { };

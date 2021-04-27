@@ -11,11 +11,13 @@ class ListBoxWidget : public Widget
 public:
     ListBoxWidget() : Widget()
     {
-        widgettype = (char*) "ListBox";
+        //widgettype = (char*) "ListBox";
+        strcpy( widgettype, (char*) "ListBox");
     };
     ListBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "ListBox";
+        //widgettype = (char*) "ListBox";
+        strcpy( widgettype, (char*) "ListBox");
     };
 
     virtual ~ListBoxWidget() {};
@@ -61,7 +63,8 @@ protected:
 
 private:
     unsigned int scroll = 0;
-    unsigned int nbvisible;
+    unsigned int nbvisible = 0;
+    unsigned int heightline = 0;
     bool is_pressed = false;
 };
 

@@ -128,8 +128,8 @@ void ProgressBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEn
                 int sl = fonts->getstringwidth( value );
                 int sh = fonts->getstringheight( value );
 
-                if (sl<=width-15) boxRGBA( screen, xpos+(width-sl)/2-2, ypos+2, xpos+(width+sl)/2+2, ypos+height-2, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
-                if (sl<=width-15) fonts->drawstringleft( screen, value, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                if (sl<=(int) width-15) boxRGBA( screen, xpos+(width-sl)/2-2, ypos+2, xpos+(width+sl)/2+2, ypos+height-2, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
+                if (sl<=(int) width-15) fonts->drawstringleft( screen, value, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
             }
         }
         else
@@ -222,8 +222,8 @@ void ProgressBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEn
                 int sl = fonts->getstringwidth( value );
                 int sh = fonts->getstringheight( value );
 
-                if (sl<=width-15) boxRGBA( screen, xpos+(width-sl)/2-2, ypos+2, xpos+(width+sl)/2+2, ypos+height-2, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
-                if (sl<=width-15) fonts->drawstringleft( screen, value, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                if (sl<=(int) width-15) boxRGBA( screen, xpos+(width-sl)/2-2, ypos+2, xpos+(width+sl)/2+2, ypos+height-2, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
+                if (sl<=(int) width-15) fonts->drawstringleft( screen, value, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
             }
         }
 

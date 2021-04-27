@@ -9,11 +9,13 @@ class FrameWidget : public Widget
 public:
     FrameWidget()
     {
-        widgettype = (char*) "Frame";
+        //widgettype = (char*) "Frame";
+        strcpy( widgettype, (char*) "Frame");
     };
     FrameWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Frame";
+        //widgettype = (char*) "Frame";
+        strcpy( widgettype, (char*) "Frame");
     };
     ~FrameWidget() { };
 

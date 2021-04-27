@@ -9,12 +9,14 @@ class SpacerWidget : public Widget
 public:
     SpacerWidget()
     {
-        widgettype = (char*) "Spacer";
+        //widgettype = (char*) "Spacer";
+        strcpy( widgettype, (char*) "Spacer");
     };
 
     SpacerWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Spacer";
+        //widgettype = (char*) "Spacer";
+        strcpy( widgettype, (char*) "Spacer");
     };
 
     virtual ~SpacerWidget() {};

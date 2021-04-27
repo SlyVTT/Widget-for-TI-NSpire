@@ -75,7 +75,7 @@ void RadioControlWidget::render( SDL_Surface *screen, ColorEngine *colors, FontE
 
             if (drawablecharlabel!=0)
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+15, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
             }
@@ -107,7 +107,7 @@ void RadioControlWidget::render( SDL_Surface *screen, ColorEngine *colors, FontE
 
             if (drawablecharlabel!=0)
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+15, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
             }

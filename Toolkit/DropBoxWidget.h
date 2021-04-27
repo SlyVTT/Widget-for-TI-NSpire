@@ -30,6 +30,7 @@ public:
         this->listbox->setvisible();
         has_been_updated = false;
     };
+
     virtual void undrop()
     {
         is_dropped = false;

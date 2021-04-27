@@ -116,7 +116,8 @@ public:
     /// @see ButtonWidget() or Widget()
     CommuterWidget()
     {
-        widgettype = (char*) "Commuter";
+        //widgettype = (char*) "Commuter";
+        strcpy( widgettype, (char*) "Commuter");
     };
 
 
@@ -135,7 +136,8 @@ public:
     /// @see ButtonWidget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
     CommuterWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Commuter";
+        //widgettype = (char*) "Commuter";
+        strcpy( widgettype, (char*) "Commuter");
     };
 
 

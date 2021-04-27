@@ -19,12 +19,14 @@ class MiniButtonWidget : public ButtonWidget
 public:
     MiniButtonWidget()
     {
-        widgettype = (char*) "MiniButton";
+        //widgettype = (char*) "MiniButton";
+        strcpy( widgettype, (char*) "MiniButton");
     };
 
     MiniButtonWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "MiniButton";
+        //widgettype = (char*) "MiniButton";
+        strcpy( widgettype, (char*) "MiniButton");
     };
 
     virtual ~MiniButtonWidget() { };

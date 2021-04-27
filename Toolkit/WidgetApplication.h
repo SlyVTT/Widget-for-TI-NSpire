@@ -24,10 +24,12 @@ struct DesktopFeatures
     Uint8 g_background = 0;
     Uint8 b_background = 0;
     Uint32 rgb_background = 0;
+
     SDL_Surface *background_image=nullptr;
+    SDL_Rect position_background;
+
     SDL_Surface *screen = nullptr;
     SDL_Surface *depthbuffer = nullptr;
-    SDL_Rect position_background;
 
     // This allows having multiple desktops/screens in future revisions
     std::vector< Widget* > rootwidgets;
@@ -40,8 +42,11 @@ public:
     WidgetApplication();
     virtual ~WidgetApplication();
 
+    // virtual void DEBUG_draw_widget_tree_structure( char* filename );
+
     virtual void addchild( Widget *root );
     virtual void removechild( Widget *root );
+
     virtual void addchildtodesktop( Widget *root, DesktopFeatures *desktop );
 
     virtual void adddesktop( );
@@ -84,13 +89,10 @@ protected:
 
     CursorTask *mouse = nullptr;
     KeyboardTask *keyboard = nullptr;
-    //nSDL_Font *currentfont = nullptr;
 
     ColorEngine *colors = nullptr;
     FontEngine *fonts = nullptr;
     ThemeEngine *theme = nullptr;
-
-    //SDL_Surface *screen = nullptr;
 
     bool backgroundtobedrawn = true;
 

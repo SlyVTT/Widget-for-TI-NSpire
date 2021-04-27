@@ -5,15 +5,15 @@
 
 MenuBarWidget::MenuBarWidget() : ContainerHWidget ()
 {
-    widgettype = (char*) "MenuBar";
+    strcpy( widgettype, (char*) "MenuBar");
 };
 
 
 MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ContainerHWidget( l, x, y, w, h, p )
 {
-    widgettype = (char*) "MenuBar";
+    strcpy( widgettype, (char*) "MenuBar");
 
-    label=l;
+    strcpy(label,l);
     xrel=x;
     yrel=y;
     widrel=w;
@@ -22,24 +22,41 @@ MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
 
     if (parent)
     {
-        if (parent->getwidgettype() == (char*) "Desktop")
+        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
         {
-            xpos = 0;
-            ypos = 0;
-            width = SCREEN_WIDTH;
-            height = 12;
-
             dynamic_cast<DesktopWidget*>(parent)->setmenubar();
 
-        }
-        else if (parent->getwidgettype() == (char*) "Window")
-        {
             xpos = parent->getuseablexpos();
-            ypos = parent->getuseableypos();
+
+            if (dynamic_cast<DesktopWidget*>(parent)->geticonbar() == true)
+            {
+                ypos = parent->getuseableypos()-12-20;
+            }
+            else
+            {
+                ypos = parent->getuseableypos()-12;
+            }
+
             width = parent->getuseablewidth();
             height = 12;
-
+        }
+        else if (strcmp( parent->getwidgettype(),(char*) "Window" )==0)
+        {
             dynamic_cast<WindowWidget*>(parent)->setmenubar();
+
+            xpos = parent->getuseablexpos();
+
+            if (dynamic_cast<WindowWidget*>(parent)->geticonbar() == true)
+            {
+                ypos = parent->getuseableypos()-12-20;
+            }
+            else
+            {
+                ypos = parent->getuseableypos()-12;
+            }
+
+            width = parent->getuseablewidth();
+            height = 12;
         }
     }
     else
@@ -55,7 +72,7 @@ MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
 
     for (auto& c : children )
     {
-        c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height );
+        c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height-1 );
         i++;
     }
 
@@ -64,12 +81,12 @@ MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
 
 };
 
+
+
 MenuBarWidget::~MenuBarWidget()
 {
     //dtor
 }
-
-
 
 
 void MenuBarWidget::adjust()
@@ -77,17 +94,35 @@ void MenuBarWidget::adjust()
 
     if (parent)
     {
-        if (parent->getwidgettype() == (char*) "Desktop")
-        {
-            xpos = 0;
-            ypos = 0;
-            width = SCREEN_WIDTH;
-            height = 12;
-        }
-        else if (parent->getwidgettype() == (char*) "Window")
+        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
         {
             xpos = parent->getuseablexpos();
-            ypos = parent->getuseableypos();
+
+            if (dynamic_cast<DesktopWidget*>(parent)->geticonbar() == true)
+            {
+                ypos = parent->getuseableypos()-12-20;
+            }
+            else
+            {
+                ypos = parent->getuseableypos()-12;
+            }
+
+            width = parent->getuseablewidth();
+            height = 12;
+        }
+        else if (strcmp( parent->getwidgettype(),(char*) "Window" )==0)
+        {
+            xpos = parent->getuseablexpos();
+
+            if (dynamic_cast<WindowWidget*>(parent)->geticonbar() == true)
+            {
+                ypos = parent->getuseableypos()-12-20;
+            }
+            else
+            {
+                ypos = parent->getuseableypos()-12;
+            }
+
             width = parent->getuseablewidth();
             height = 12;
         }
@@ -115,6 +150,10 @@ void MenuBarWidget::adjust()
 
 }
 
+unsigned int MenuBarWidget::getuseableheight()
+{
+    return height - 2;
+};
 
 
 void MenuBarWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
@@ -137,14 +176,27 @@ void MenuBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
         {
             boxRGBA( screen, xpos, ypos, xpos+width, ypos+height, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
 
+            if (!is_hovering)
+            {
+                lineRGBA( screen, xpos, ypos+height-1, xpos+width, ypos+height-1, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+            }
+            else
+            {
+                lineRGBA( screen, xpos, ypos+height-1, xpos+width, ypos+height-1, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
+            }
+
         }
         else
         {
             boxRGBA( screen, xpos, ypos, xpos+width, ypos+height, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
+            lineRGBA( screen, xpos, ypos+height-1, xpos+width, ypos+height-1, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
         }
 
         for (auto& c : children )
-            c->render( screen, colors, fonts );
+        {
+            if (c->isvisible())
+                c->render( screen, colors, fonts );
+        }
 
     }
 }

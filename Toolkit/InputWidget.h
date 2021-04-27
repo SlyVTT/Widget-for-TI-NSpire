@@ -10,11 +10,13 @@ class InputWidget : public Widget
 public:
     InputWidget()
     {
-        widgettype = (char*) "Input";
+        //widgettype = (char*) "Input";
+        strcpy( widgettype, (char*) "Input");
     };
     InputWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Input";
+        //widgettype = (char*) "Input";
+        strcpy( widgettype, (char*) "Input");
     };
     virtual ~InputWidget() {};
 

@@ -1,7 +1,8 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include <vector>
+//#include <vector>
+#include <list>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
@@ -22,6 +23,8 @@ public:
 
     Uint32 WidgetID = -1;
 
+//    virtual void DEBUG_draw_widget_tree_structure( int level, char* filename );
+
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
     virtual void focus( Widget *emitter );
@@ -32,46 +35,26 @@ public:
     virtual void addchild( Widget *child );
     virtual void addpopupchild( Widget *child );
 
-    virtual void activate() { is_activated = true; };
-    virtual void desactivate() { is_activated = false; };
-    virtual bool isactivated() {return is_activated; };
 
-    virtual void lock() { is_locked = true; }
-    virtual void unlock() { is_locked = false; };
-    virtual bool islocked() {return is_locked; };
+    virtual Widget* getclosestmainparent();
+    virtual Widget* getwidgetbyID( Uint32 IDsearched );
+
+    virtual void activate();
+    virtual void desactivate();
+    virtual bool isactivated();
+
+    virtual void lock();
+    virtual void unlock();
+    virtual bool islocked();
 
     //SETTERs
-    virtual void setdimensions( unsigned int mx, unsigned int my, unsigned int mw, unsigned int mh )
-    {
-        xpos=mx;
-        ypos=my;
-        width=mw;
-        height=mh;
-    };
-    virtual void setxpos( unsigned int mx )
-    {
-        xpos=mx;
-    };
-    virtual void setypos( unsigned int my )
-    {
-        ypos=my;
-    };
-    virtual void setwidth( unsigned int mw )
-    {
-        width=mw;
-    };
-    virtual void setheight( unsigned int mh )
-    {
-        height=mh;
-    };
-    virtual void setlabel(char *l)
-    {
-        label=l;
-    };
-    virtual void setcontainerstatus( bool status )
-    {
-        is_container = status;
-    };
+    virtual void setdimensions( unsigned int mx, unsigned int my, unsigned int mw, unsigned int mh );
+    virtual void setxpos( unsigned int mx );
+    virtual void setypos( unsigned int my );
+    virtual void setwidth( unsigned int mw );
+    virtual void setheight( unsigned int mh );
+    virtual void setlabel(char *l);
+    virtual void setcontainerstatus( bool status );
     virtual void setparent( Widget *p );
     virtual void setvisible();
     virtual void setinvisible();
@@ -80,78 +63,27 @@ public:
     virtual void adjust();
 
     //GETTERs
-    virtual unsigned int getxpos()
-    {
-        return xpos;
-    };
-    virtual unsigned int getypos()
-    {
-        return ypos;
-    };
-    virtual unsigned int getwidth()
-    {
-        return width;
-    };
-    virtual unsigned int getheight()
-    {
-        return height;
-    };
+    virtual unsigned int getxpos();
+    virtual unsigned int getypos();
+    virtual unsigned int getwidth();
+    virtual unsigned int getheight();
 
-    virtual unsigned int getuseablexpos()
-    {
-        return xpos + 2 ;
-    };
-    virtual unsigned int getuseableypos()
-    {
-        return ypos + 2 ;
-    };
-    virtual unsigned int getuseablewidth()
-    {
-        return width - 4;
-    };
-    virtual unsigned int getuseableheight()
-    {
-        return height - 4;
-    };
+    virtual unsigned int getuseablexpos();
+    virtual unsigned int getuseableypos();
+    virtual unsigned int getuseablewidth();
+    virtual unsigned int getuseableheight();
 
-    virtual char* getlabel()
-    {
-        return label;
-    };
-    virtual bool getcontainerstatus()
-    {
-        return is_container;
-    };
-    virtual Widget* getparent()
-    {
-        return parent;
-    };
-    virtual bool getisenabled()
-    {
-        return is_enabled;
-    };
-    virtual bool isvisible()
-    {
-        return is_visible;
-    };
-    virtual char* getwidgettype()
-    {
-        return widgettype;
-    };
+    virtual char* getlabel();
+    virtual bool getcontainerstatus();
+    virtual Widget* getparent();
+    virtual bool isenabled();
+    virtual bool isvisible();
+    virtual char* getwidgettype();
 
     //ACTION Linker
-    virtual void linkonclick( void(*func)(char*) )
-    {
-        clickfunction = func;
-    };
-    virtual void linkonrelease( void(*func)(char*) )
-    {
-        releasefunction = func;
-    };
-    virtual void linkonhover( void(*func)(char*) )
-    {
-        hoverfunction = func;
-    };
+    virtual void linkonclick( void(*func)(char*) );
+    virtual void linkonrelease( void(*func)(char*) );
+    virtual void linkonhover( void(*func)(char*) );
 
 
 protected:
@@ -161,9 +93,9 @@ protected:
     bool is_activated = false;
     bool is_locked = false;
 
-    char *widgettype;
+    char widgettype[25];
 
-    char *label;                // text content of the label
+    char label[100];                // text content of the label
     char drawablelabel[100];    // text content that can be drawn (may be shorter that full label depending on size of the widget and on the used font
     unsigned int drawablecharlabel;
 
@@ -184,8 +116,10 @@ protected:
 
     Widget *parent = nullptr;
     int nbchildren;
-    std::vector< Widget* > children;
-    std::vector< Widget* > popupchildren;
+    //std::vector< Widget* > children;
+    //std::vector< Widget* > popupchildren;
+    std::list< Widget* > children;
+    std::list< Widget* > popupchildren;
 
     void(*clickfunction)(char*) = nullptr;
     void(*releasefunction)(char*) = nullptr;

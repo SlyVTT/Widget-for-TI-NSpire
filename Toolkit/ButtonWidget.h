@@ -101,7 +101,8 @@ public:
     /// @see Widget()
     ButtonWidget()
     {
-        widgettype = (char*) "Button";
+        //widgettype = (char*) "Button";
+        strcpy( widgettype, (char*) "Button");
     };
 
 
@@ -120,7 +121,8 @@ public:
     /// @see Widget( char*, int, int, int, int, Widget* )
     ButtonWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "Button";
+        //widgettype = (char*) "Button";
+        strcpy( widgettype, (char*) "Button");
     };
 
 

@@ -8,25 +8,32 @@ void MiniButtonWidget::settype( typesymbol type )
     switch(type)
     {
     case Bottom_Arrow:
-        label = (char*) "\u001f";
+        strcpy(label,(char*) "\u001f");
+        //label = (char*) "\u001f";
         break;
     case Up_Arrow:
-        label = (char*) "\u001e";
+        strcpy(label,(char*) "\u001e");
+        //label = (char*) "\u001e";
         break;
     case Left_Arrow:
-        label = (char*) "\u0011";
+        strcpy(label,(char*) "\u0011");
+        //label = (char*) "\u0011";
         break;
     case Right_Arrow:
-        label = (char*) "\u0010";
+        strcpy(label,(char*) "\u0010");
+        //label = (char*) "\u0010";
         break;
     case Close_Symbol:
-        label = (char*) "\u0009";
+        strcpy(label,(char*) "\u0009");
+        //label = (char*) "\u0009";
         break;
     case Question_Symbol:
-        label = (char*) "\u003f";
+        strcpy(label,(char*) "\u003f");
+        //label = (char*) "\u003f";
         break;
     case Exclamation_Symbol:
-        label = (char*) "\u0021";
+        strcpy(label,(char*) "\u0021");
+        //label = (char*) "\u0021";
         break;
     }
 }

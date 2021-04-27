@@ -14,6 +14,7 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     if (is_enabled && is_visible)
     {
 
+
         if (keyboard->kbESC)
         {
             DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
@@ -41,6 +42,11 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
 
+
+
+
+
+
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
@@ -60,6 +66,34 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         is_pressed = currently_pressed;
 
 
+
+
+        if (currently_pressed)
+        {
+            // Here is the code when the user click inside the listbox
+
+            // First we check if there is a escalator and if we clicked on the escalator
+            // as we are inside the widget (wue to previous cursoron() call, we just need to check if the mouse x is > right border-15px
+            if ((nbvisible<nbitem) && ((int) mouse->x >= ((int) xpos+ (int) width-15)) && ((int) mouse->y > (int) ypos +6) && ((int) mouse->y < (int) ypos+(int) height-6))
+            {
+                //so we are on the escalator
+                selected = (int) ((mouse->y-ypos-3)*nbitem/(height-12));
+                if (selected<0)
+                {
+                    selected = 0;
+                    scroll = 0;
+                }
+                else if (selected<scroll) scroll=selected;
+                else if (selected>scroll+nbvisible) scroll=selected;
+                if (selected>nbitem) selected=nbitem;
+            }
+            else if (((int) mouse->y > (int) ypos +3) && ((int) mouse->y < (int) ypos+(int) height-3))
+            {
+                //we clicked on the main part of the widget and then we have to calculated which line is clicked and add the scroll to adjsut the selected line
+                int clickedline = (int) ((int)(mouse->y-ypos-3)/ (int) heightline);
+                selected = scroll + clickedline;
+            }
+        }
 
 
         if (keyboard->kbDOWN && keyboard->iskeypressevent())
@@ -133,6 +167,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
             int sh = fonts->getstringheight( label );
+            heightline = sh*2;
 
             nbvisible = (unsigned int) ((height-0) / (sh*2));
 
@@ -158,7 +193,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
                         if (drawablecharlabel!=0)
                         {
-                            int sl = fonts->getstringwidth( drawablelabel );
+                            //int sl = fonts->getstringwidth( drawablelabel );
                             int sh = fonts->getstringheight( drawablelabel );
                             fonts->drawstringleft( screen, drawablelabel, xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
                         }
@@ -186,7 +221,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
                         if (drawablecharlabel!=0)
                         {
-                            int sl = fonts->getstringwidth( drawablelabel );
+                            //int sl = fonts->getstringwidth( drawablelabel );
                             int sh = fonts->getstringheight( drawablelabel );
 
                             // if we can see all the item, no need for space for the escalator on the right
@@ -203,7 +238,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         /*
                         int sh = fonts->getstringheight( (char*) listitems[i] );
 
-                       // if we can see all the item, no need for space for the escalator on the right
+                        // if we can see all the item, no need for space for the escalator on the right
                         if (nbvisible>=nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
                         //else we draw the selection line a bit shorter not to cover the escalator
                         if (nbvisible<nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A );
@@ -288,7 +323,7 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                 filledCircleRGBA( screen, xpos+width-9, ypos+9+escalator, 4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
             }
 
-         }
+        }
 
         for (auto& c : children )
             c->render( screen, colors, fonts );

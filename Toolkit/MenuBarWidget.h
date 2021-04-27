@@ -6,21 +6,23 @@
 
 class MenuBarWidget : public ContainerHWidget
 {
-    public:
-        MenuBarWidget();
-        MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-        ~MenuBarWidget();
+public:
+    MenuBarWidget();
+    MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    ~MenuBarWidget();
 
-        virtual void adjust() override;
+    virtual void adjust() override;
 
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual unsigned int getuseableheight() override;
 
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
 
-    protected:
+protected:
 
-    private:
+private:
 };
 
 #endif // MENUBARWIDGET_H

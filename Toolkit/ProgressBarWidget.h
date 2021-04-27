@@ -17,12 +17,14 @@ class ProgressBarWidget : public Widget
 public:
     ProgressBarWidget()
     {
-        widgettype = (char*) "ProgressBar";
+        //widgettype = (char*) "ProgressBar";
+        strcpy( widgettype, (char*) "ProgressBar");
     };
 
     ProgressBarWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
     {
-        widgettype = (char*) "ProgressBar";
+        //widgettype = (char*) "ProgressBar";
+        strcpy( widgettype, (char*) "ProgressBar");
     };
 
     ~ProgressBarWidget() { };

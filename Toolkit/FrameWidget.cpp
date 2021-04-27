@@ -125,7 +125,7 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             fonts->setmodifierunder( fonts->widget_text_disable.under );
             fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
-             //We check if the titel can be written in the titlebar (with 5px on each side of the title
+            //We check if the titel can be written in the titlebar (with 5px on each side of the title
             drawablecharlabel = fonts->assertstringlength( label, width-5-5 );
 
             strcpy( drawablelabel, label );

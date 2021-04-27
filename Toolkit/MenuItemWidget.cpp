@@ -26,7 +26,6 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         is_hovering = cursoron( mouse );
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
-
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
@@ -45,6 +44,10 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         is_pressed = currently_pressed;
 
+        if (is_pressed && (children.size()!=0))
+            for (auto& c : children )
+                c->setvisible();
+
         for (auto& c : children )
             c->logic( mouse, keyboard );
     }
@@ -57,7 +60,7 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
         if (is_enabled)
         {
-            roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
+            roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height-2, 3, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
 
             if (!is_hovering)
             {
@@ -65,7 +68,7 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
             }
             else
             {
-                roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
+                roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height-2, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
 
             fonts->setcurrentfont( fonts->widget_text_enable.name );
@@ -82,14 +85,14 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
             if (drawablecharlabel!=0)
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
-                fonts->drawstringleft( screen, drawablelabel, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                fonts->drawstringleft( screen, drawablelabel, xpos+2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
             }
         }
         else
         {
-            roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
+            roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height-2, 3, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
             //Border of the button is black cause it is disabled
             //roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
@@ -107,14 +110,17 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
             if (drawablecharlabel!=0)
             {
-                int sl = fonts->getstringwidth( drawablelabel );
+                //int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
-                fonts->drawstringleft( screen, drawablelabel, xpos+(width-sl)/2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                fonts->drawstringleft( screen, drawablelabel, xpos+2, ypos+(height-sh)/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
             }
         }
 
         for (auto& c : children )
-            c->render( screen, colors, fonts );
+        {
+            if (c->isvisible())
+                c->render( screen, colors, fonts );
+        }
 
     }
 }
