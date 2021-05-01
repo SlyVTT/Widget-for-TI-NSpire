@@ -480,13 +480,14 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
             }
         }
 
+        /*
         // THIS IS FOR DEBUGGING THE DEPTH BUFFER PORTION OF THE CODE
         char* tempID;
         sprintf( tempID, "ID = %ld", WidgetID );
         fonts->setcurrentfont( THIN_FONT );
         fonts->setmodifiertypo( Bold );
         fonts->drawstringleft( screen, tempID, xpos+2, ypos+4, 255, 0, 0, 255 );
-
+        */
 
         for (auto& c : children )
         {
@@ -498,7 +499,7 @@ void WindowWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine 
 
         for (auto& d : popupchildren )
         {
-            if (d->isvisible())
+            //if (d->isvisible())
             {
                 d->render( screen, colors, fonts );
             }

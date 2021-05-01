@@ -1,18 +1,19 @@
 #include "MenuPaneWidget.h"
 
 #include "FontEngine.h"
+#include "MenuItemWidget.h"
 
 
 MenuPaneWidget::MenuPaneWidget() : ContainerVWidget ()
 {
-    //widgettype = (char*) "MenuPane";
     strcpy( widgettype, (char*) "MenuPane");
+    this->undrop();
 };
 
 
 MenuPaneWidget::MenuPaneWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ContainerVWidget( l, x, y, w, h, p )
 {
-    //widgettype = (char*) "MenuPane";
+
     strcpy( widgettype, (char*) "MenuPane");
 
     strcpy(label,l);
@@ -27,19 +28,27 @@ MenuPaneWidget::MenuPaneWidget(char *l, unsigned int x, unsigned int y, unsigned
         xpos = parent->getuseablexpos();
         ypos = parent->getuseableypos()+12;
 
+        // This part may be subjected to optimisation
+        // TODO
         int tempw = 0;
         int temph = 0;
+
         for (auto& c : children )
         {
-            // TODO : need to retrieve the dimension of the item of the menu
-
-            //if (FontEngine::getstringwidth( (char*) c->getlabel() ) >= tempw) tempw = FontEngine::getstringwidth( (char*) c->getlabel() );
-            tempw = 50;
+            int d = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+            if ( d > tempw) tempw = d;
+            //tempw = 50;
             temph += 14;
         }
-        width = tempw;
+
+        width = tempw+5;
         height = temph;
 
+        // We check we the menu is too wide and will exceed the right border of the screen, if so, we move it to the left accordingly to its size
+        if (xpos+width>=SCREEN_WIDTH)
+            xpos=SCREEN_WIDTH-width-4;
+
+        // END TODO
 
         parent->addpopupchild( this );
 
@@ -64,6 +73,7 @@ MenuPaneWidget::MenuPaneWidget(char *l, unsigned int x, unsigned int y, unsigned
     for (auto& c : children )
         c->adjust();
 
+    this->undrop();
 };
 
 
@@ -81,33 +91,52 @@ void MenuPaneWidget::adjust()
     {
         if(parent->getparent())
         {
-            //if the parent of the parent is a MenuPane, we shift on the right of the parent menu (this is a submenu
+            //if the parent of the parent is a MenuPane, we shift on the right of the parent menu (this is a submenu)
             if (strcmp(parent->getparent()->getwidgettype(), (char*) "MenuPane") ==0)
             {
-                if (parent->getxpos()+parent->getwidth()+width<=SCREEN_WIDTH) // si on ne dépasse pas le bord droit de l'écran, on met à droite
-                    xpos = parent->getxpos()+parent->getwidth();
+                if (parent->getxpos() + parent->getwidth() + 2 + width <= SCREEN_WIDTH) // si on ne dépasse pas le bord droit de l'écran, on met à droite
+                    {
+                        xpos = parent->getxpos()+parent->getwidth() + 2;
+                    }
                 else
-                    xpos = parent->getxpos() - width;    // sinon on met à gauche
+                    {
+                        xpos = parent->getxpos() - width - 2;    // sinon on met à gauche
+                    }
+
+                    ypos = parent->getypos() ;
+
             }
             else
             {
                 xpos = parent->getxpos();   // else we just put below
+                ypos = parent->getypos() + parent->getheight();
             }
 
-            ypos = parent->getypos() + parent->getheight();
 
+
+            // This part may be subjected to optimisation
+            // TODO
             int tempw = 0;
             int temph = 0;
 
             for (auto& c : children )
             {
-                //if (FontEngine::getstringwidth( (char*) c->getlabel() ) >= tempw) tempw = FontEngine::getstringwidth( (char*) c->getlabel() );
-                tempw = 50;
+                int d = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+
+                if ( d > tempw)
+                    tempw = d;
+                //tempw = 50;
                 temph += 14;
             }
 
-            width = tempw;
+            width = tempw+5;
             height = temph;
+
+            // We check we the menu is too wide and will exceed the right border of the screen, if so, we move it to the left accordingly to its size
+            if (xpos+width>=SCREEN_WIDTH)
+                xpos=SCREEN_WIDTH-width-4;
+
+            // END TODO
 
         }
     }
@@ -142,6 +171,24 @@ void MenuPaneWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     {
         for (auto& c : children )
             c->logic( mouse, keyboard );
+
+        mouse->logic();
+        keyboard->logic();
+
+        is_hovering = cursoron( mouse );
+
+        bool clickoutof = (mouse->state || keyboard->kbSCRATCH) && !is_hovering;
+
+        if (clickoutof && !has_child_menu_open && mouse->ismouseevent() && keyboard->iskeyevent())
+        {
+            this->undrop();
+            if (parent)
+                if (parent->getparent())
+                    if (strcmp( parent->getparent()->getwidgettype(), "MenuPane") == 0)
+                        dynamic_cast<MenuPaneWidget*>(parent->getparent())->unsetchilddropped();
+        }
+
+
     }
 }
 
@@ -149,6 +196,44 @@ void MenuPaneWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 void MenuPaneWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
+
+
+    // This part may be subjected to optimisation
+    // TODO
+    int tempw = 0;
+    int temph = 0;
+
+    for (auto& c : children )
+    {
+        int d = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+        if ( d > tempw )
+            tempw = d;
+        //tempw = 50;
+        temph += 14;
+    }
+
+    width = tempw+5;
+    height = temph;
+
+    // We check we the menu is too wide and will exceed the right border of the screen, if so, we move it to the left accordingly to its size
+    if (xpos+width>=SCREEN_WIDTH)
+        xpos=SCREEN_WIDTH-width-4;
+
+     int i=0;
+    nbchildren = children.size();
+
+    for (auto& c : children )
+    {
+        c->setdimensions( xpos+1, ypos+1 + 14*i, width-2, 12 );
+        i++;
+    }
+
+    for (auto& c : children )
+        c->adjust();
+
+
+    // END TODO
+
     if (is_visible)
     {
 
@@ -175,7 +260,6 @@ void MenuPaneWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
         for (auto& c : children )
         {
-            if (c->isvisible())
                 c->render( screen, colors, fonts );
         }
 

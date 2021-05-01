@@ -13,43 +13,43 @@ Widget* Widget::getclosestmainparent()
     Widget* temp = this;
     Widget* temp2=nullptr;
 
-/*
-    FILE *pFile;
+    /*
+        FILE *pFile;
 
-    pFile = fopen( "/documents/Widget/closepar.txt.tns", "a" );
-    fprintf( pFile, "Enter the GetClosestParent Loop \n" );
-    fprintf( pFile, "widgetID = %ld \n", this->WidgetID );
-*/
+        pFile = fopen( "/documents/Widget/closepar.txt.tns", "a" );
+        fprintf( pFile, "Enter the GetClosestParent Loop \n" );
+        fprintf( pFile, "widgetID = %ld \n", this->WidgetID );
+    */
 
 
     if ((strcmp( this->getwidgettype(),(char*) "Desktop" )==0) || (strcmp( this->getwidgettype(),(char*) "Window" )==0))
     {
-   //     fprintf( pFile, "This is me = %ld \n", this->WidgetID );
-   //     fclose( pFile );
+        //     fprintf( pFile, "This is me = %ld \n", this->WidgetID );
+        //     fclose( pFile );
         return this;
     }
     else
     {
-    //    fprintf( pFile, "go to my parent \n" );
+        //    fprintf( pFile, "go to my parent \n" );
         temp = this->parent;
         while (temp!=nullptr)
         {
             if ((strcmp( temp->getwidgettype(),(char*) "Desktop" )==0) || (strcmp( temp->getwidgettype(),(char*) "Window" )==0))
             {
-    //            fprintf( pFile, "This is me = %ld \n", temp->WidgetID );
-    //            fclose( pFile );
+                //            fprintf( pFile, "This is me = %ld \n", temp->WidgetID );
+                //            fclose( pFile );
                 return temp;
             }
             else
             {
-    //            fprintf( pFile, "go to my grand-parent \n" );
+                //            fprintf( pFile, "go to my grand-parent \n" );
                 temp2=temp;
                 temp = temp2->parent;
             }
         }
 
-    //    fprintf( pFile, "Houston, we have a problem !! \n" );
-    //    fclose( pFile );
+        //    fprintf( pFile, "Houston, we have a problem !! \n" );
+        //    fclose( pFile );
 
         return nullptr;
     }
@@ -295,7 +295,7 @@ Widget::Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigne
         // if the widget has a parent, then we have to compute relative coordinates
         // if the parent is directly the desktop, we are free to position the widget as we want
         if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
-        //if (parent->getwidgettype() == (char*) "Desktop")
+            //if (parent->getwidgettype() == (char*) "Desktop")
         {
             xpos = xrel;
             ypos = yrel;
@@ -425,7 +425,33 @@ void Widget::renderdepth( SDL_Surface *depthbuffer )
 
         //if the widget is a window, then we plot the corresponding zone in the depth buttfer with a color representing its ID
 
-        if ( (strcmp( getwidgettype(),(char*) "Desktop" )==0) || (strcmp( getwidgettype(),(char*) "Window" )==0) || (strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) )
+        if ( (strcmp( getwidgettype(),(char*) "Desktop" )==0) || (strcmp( getwidgettype(),(char*) "Window" )==0) ) // || (strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) )
+        {
+            //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
+            //It assumes a maximum number of widget limited to 249 per desktop
+
+            //The number of units codes the BB component
+            unsigned int B=0;
+            unsigned int u = WidgetID % 10;
+            B = u*25;
+
+            //The number of tens codes the GG component
+            unsigned int G=0;
+            unsigned int d=((WidgetID-u)/10) % 10;
+            G = d*25;
+
+            //The number of hundreds codes the RR component
+            unsigned int R=0;
+            unsigned int c=(WidgetID-u-10*d) / 100;
+            R = c*25;
+
+
+            //Draw the corresponding shape in the Depth Buffer Image
+            roundedBoxRGBA( depthbuffer, xpos, ypos, xpos+width, ypos+height, 3, R, G, B, 255 );
+
+        }
+
+        if (((strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) ) && (strcmp(getclosestmainparent()->getwidgettype(), "Desktop" ) == 0 ) )
         {
             //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
             //It assumes a maximum number of widget limited to 249 per desktop

@@ -1,5 +1,7 @@
 #include "MenuItemWidget.h"
 
+#include "MenuPaneWidget.h"
+
 /*
 MenuItemWidget::MenuItemWidget()
 {
@@ -26,6 +28,7 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         is_hovering = cursoron( mouse );
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
+
         if(currently_pressed && !is_pressed)
         {
             if (clickfunction)
@@ -42,11 +45,36 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 hoverfunction( (char*) "test" );
         }
 
+
         is_pressed = currently_pressed;
 
+
+
         if (is_pressed && (children.size()!=0))
-            for (auto& c : children )
-                c->setvisible();
+            for ( auto& c : children )
+            {
+
+                //c->setvisible();
+
+                //TODO : working on that part of the code for correct overlapping of the menus
+
+                if (parent)
+                    if (strcmp(parent->getwidgettype(), "MenuPane") == 0 )
+                        dynamic_cast<MenuPaneWidget*>(parent)->setchilddropped();
+
+                if (strcmp(c->getwidgettype(), "MenuPane") == 0 )
+                {
+                    c->setvisible();
+                    dynamic_cast<MenuPaneWidget*>(c)->drop();
+                }
+                else
+                {
+                    c->setvisible();
+                }
+
+
+            }
+
 
         for (auto& c : children )
             c->logic( mouse, keyboard );
@@ -55,6 +83,11 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
+    strcpy( labelarrow, label );
+    //strcat( labelarrow, (char *) "   " );
+
+    width_full_text = fonts->getstringwidth( labelarrow );
+
     if (is_visible)
     {
 
@@ -79,16 +112,51 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
             //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
             drawablecharlabel = fonts->assertstringlength( label, width-2-2 );
 
+
+            //width_full_text = fonts->getstringwidth( strcat(label, (char *) "   " ) );
+            strcpy( labelarrow, label );
+            //strcat( labelarrow, (char *) "   " );
+            width_full_text = fonts->getstringwidth( labelarrow );
+
+
             strcpy( drawablelabel, label );
             if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
             if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
             if (drawablecharlabel!=0)
             {
-                //int sl = fonts->getstringwidth( drawablelabel );
+                int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
                 fonts->drawstringleft( screen, drawablelabel, xpos+2, ypos+(height-sh)/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+
+
+                // create a mark to indicate that there is a submenu
+                if (parent)
+                {
+                    // if thye parent is a menubar, there is no need for the arrow indicator, it is absolutely logic to have a submenu
+                    if (strcmp( parent->getwidgettype(),"MenuBar") != 0 )
+                    {
+                        if (children.size()!=0)
+                        {
+
+                            for(auto& c : children)
+                            {
+                                if ( strcmp( c->getwidgettype(),"MenuPane") == 0 )
+                                {
+                                    fonts->drawcharleft( screen, (char) '\u0010',  xpos+sl+5, ypos+(height-sh)/2, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
             }
+
         }
         else
         {
@@ -103,6 +171,13 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
             //We check if the titel can be written in the titlebar (with 2px on each side of the label
             drawablecharlabel = fonts->assertstringlength( label, width-2-2 );
+
+
+            //width_full_text = fonts->getstringwidth( strcat(label, (char *) "   " ) );
+            strcpy( labelarrow, label );
+            //strcat( labelarrow, (char *) "   " );
+            width_full_text = fonts->getstringwidth( labelarrow );
+
 
             strcpy( drawablelabel, label );
             if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';

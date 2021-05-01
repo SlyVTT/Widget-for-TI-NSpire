@@ -6,8 +6,11 @@
 void Debug_Write_log( (char *) strtolog )
 {
     FILE *pFile;
-    pFile = fopen( "/documents/Widget/Logger.txt.tns" , "a" );
-    if (pFile==NULL) { return; }
+    pFile = fopen( "/documents/Widget/Logger.txt.tns", "a" );
+    if (pFile==NULL)
+    {
+        return;
+    }
     fprintf( pFile, "%s\n", strtolog );
     fclose( pFile );
 }

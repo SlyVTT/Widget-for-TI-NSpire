@@ -42,7 +42,7 @@ public:
     WidgetApplication();
     virtual ~WidgetApplication();
 
-    // virtual void DEBUG_draw_widget_tree_structure( char* filename );
+    //virtual void DEBUG_draw_widget_tree_structure( char* filename );
 
     virtual void addchild( Widget *root );
     virtual void removechild( Widget *root );

@@ -83,35 +83,6 @@ void MiniButtonWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             c->logic( mouse, keyboard );
     }
 
-    /*    if (is_enabled && is_visible)
-        {
-
-            is_hovering = cursoron( mouse );
-            bool currently_pressed = mouse->state && is_hovering;
-
-
-            if(currently_pressed && !is_pressed)
-            {
-                if (clickfunction)
-                    clickfunction( (char*) "test" );
-            }
-            else if(!currently_pressed && is_pressed)
-            {
-                if (releasefunction)
-                    releasefunction( (char*) "test" );
-            }
-            else if(is_hovering)
-            {
-                if (hoverfunction)
-                    hoverfunction( (char*) "test" );
-            }
-
-            is_pressed = currently_pressed;
-
-            for (auto& c : children )
-                c->logic( mouse, keyboard );
-        }
-    */
 }
 
 

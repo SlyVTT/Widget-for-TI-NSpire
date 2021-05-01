@@ -23,6 +23,8 @@ public:
 protected:
 
 private:
+    bool has_child_menu_open = false;
+    int child_menu_opened = -1;
 };
 
 #endif // MENUBARWIDGET_H

@@ -23,7 +23,7 @@ public:
 
     Uint32 WidgetID = -1;
 
-//    virtual void DEBUG_draw_widget_tree_structure( int level, char* filename );
+    //virtual void DEBUG_draw_widget_tree_structure( int level, char* filename );
 
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
