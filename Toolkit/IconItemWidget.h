@@ -26,7 +26,7 @@ public:
     void disable( void ) override;
     void enable(void ) override;
 
-    virtual bool ispressed();
+    virtual bool ispressed() override;
 
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
@@ -50,7 +50,8 @@ protected:
 
 
 private:
-    bool is_pressed = false;
+    bool is_ticked = false;
+    bool mouse_hold_down = false;
 
 };
 

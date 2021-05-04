@@ -39,6 +39,8 @@
 #include "DesktopWidget.h"
 
 #include "WindowWidget.h"
+#include "DialogBoxWidget.h"
+#include "FileDialogBoxWidget.h"
 
 #include "ButtonWidget.h"
 #include "MiniButtonWidget.h"

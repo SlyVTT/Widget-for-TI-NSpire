@@ -54,6 +54,9 @@ public:
         return listitems[selected];
     };
 
+    bool validated = false;
+    bool escaped = false;
+
 protected:
 
     unsigned int nbitem = 0;

@@ -423,9 +423,9 @@ void Widget::renderdepth( SDL_Surface *depthbuffer )
     if (is_visible)
     {
 
-        //if the widget is a window, then we plot the corresponding zone in the depth buttfer with a color representing its ID
+        //if the widget is a Window or a DialogBox or the Desktop, then we plot the corresponding zone in the depth buttfer with a color representing its ID
 
-        if ( (strcmp( getwidgettype(),(char*) "Desktop" )==0) || (strcmp( getwidgettype(),(char*) "Window" )==0) ) // || (strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) )
+        if ( (strcmp( getwidgettype(),(char*) "Desktop" )==0) || (strcmp( getwidgettype(),(char*) "Window" )==0)  || (strcmp( getwidgettype(),(char*) "DialogBox" )==0)  || (strcmp( getwidgettype(),(char*) "FileDialogBox" )==0)) // || (strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) )
         {
             //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
             //It assumes a maximum number of widget limited to 249 per desktop
@@ -451,7 +451,7 @@ void Widget::renderdepth( SDL_Surface *depthbuffer )
 
         }
 
-        if (((strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) ) && (strcmp(getclosestmainparent()->getwidgettype(), "Desktop" ) == 0 ) )
+        if (((strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) || (strcmp( getwidgettype(),(char*) "IconBar" )==0) ) && (strcmp(getclosestmainparent()->getwidgettype(), "Desktop" ) == 0 ) )
         {
             //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
             //It assumes a maximum number of widget limited to 249 per desktop

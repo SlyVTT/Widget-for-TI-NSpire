@@ -76,18 +76,25 @@ void IconItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         is_hovering = cursoron( mouse );
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
 
-
-        if(currently_pressed && !is_pressed)
+        if(mouse_hold_down)
+        {
+            mouse_hold_down = currently_pressed;
+        }
+        else if (currently_pressed && !is_ticked )
         {
             if (clickfunction)
                 clickfunction( (char*) "test" );
+
+            mouse_hold_down = true;
         }
-        else if(!currently_pressed && is_pressed)
+        else if (currently_pressed && is_ticked )
         {
             if (releasefunction)
                 releasefunction( (char*) "test" );
+
+            mouse_hold_down = true;
         }
-        else if(is_hovering)
+        else if (is_hovering)
         {
             if (hoverfunction)
                 hoverfunction( (char*) "test" );
@@ -98,6 +105,7 @@ void IconItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         for (auto& c : children )
             c->logic( mouse, keyboard );
     }
+
 }
 
 void IconItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )

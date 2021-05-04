@@ -17,10 +17,19 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         if (keyboard->kbESC)
         {
-            DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
-            temp->escape();
-
-            //parent->escape();
+            if(parent)
+            {
+                if (strcmp(parent->getwidgettype(),"DropBox")==0)
+                {
+                        DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
+                        temp->escape();
+                }
+                else
+                {
+                    validated = false;
+                    escaped = true;
+                }
+            }
 
             is_visible = false;
             return;
@@ -28,10 +37,19 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         if (keyboard->kbRET || keyboard->kbENTER)
         {
-            DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
-            temp->validate();
-
-            //parent->validate;
+            if(parent)
+            {
+                if (strcmp(parent->getwidgettype(),"DropBox")==0)
+                {
+                        DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
+                        temp->validate();
+                }
+                else
+                {
+                    validated = true;
+                    escaped = false;
+                }
+            }
 
             is_visible = false;
             return;
@@ -40,11 +58,6 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         is_hovering = cursoron( mouse );
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
-
-
-
-
-
 
 
         if(currently_pressed && !is_pressed)

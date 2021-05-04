@@ -64,7 +64,6 @@ protected:
     //virtual bool cursoron( CursorTask *mouse ) override;
     bool is_developped = true;
 
-private:
     virtual bool ismouseatleftborder(CursorTask *mouse);
     virtual bool ismouseatrightborder(CursorTask *mouse);
     virtual bool ismouseattopborder(CursorTask *mouse);

@@ -197,7 +197,13 @@ public:
     /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
+
+    virtual void addconstraint( int value, char *type );
+
+
 protected:
+    std::list<int> constraintvalue;
+    std::list<char*> constrainttype;
 
 private:
 

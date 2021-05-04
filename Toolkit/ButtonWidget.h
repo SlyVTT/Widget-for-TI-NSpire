@@ -174,6 +174,8 @@ protected:
 private:
 
     friend class MiniButtonWidget;
+    friend class IconItemWidget;
+    friend class MenuItemWidget;
 
     /// Is the ButtonWidget pressed ?
     ///
