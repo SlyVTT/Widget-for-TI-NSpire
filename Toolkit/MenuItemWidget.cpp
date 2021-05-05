@@ -51,6 +51,7 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 
         if (is_pressed && (children.size()!=0))
+        {
             for ( auto& c : children )
             {
 
@@ -74,7 +75,17 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 
             }
+        }
+        else if (is_pressed && (children.size()==0))
+        {
+            if (parent)
+                if (strcmp(parent->getwidgettype(), "MenuPane") == 0 )
+                {
+                    dynamic_cast<MenuPaneWidget*>(parent)->unsetchilddropped();
+                    dynamic_cast<MenuPaneWidget*>(parent)->undrop();
+                }
 
+        }
 
         for (auto& c : children )
             c->logic( mouse, keyboard );

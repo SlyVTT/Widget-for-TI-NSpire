@@ -14,50 +14,13 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
     if (is_enabled && is_visible)
     {
 
-
-        if (keyboard->kbESC)
-        {
-            if(parent)
-            {
-                if (strcmp(parent->getwidgettype(),"DropBox")==0)
-                {
-                        DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
-                        temp->escape();
-                }
-                else
-                {
-                    validated = false;
-                    escaped = true;
-                }
-            }
-
-            is_visible = false;
-            return;
-        }
-
-        if (keyboard->kbRET || keyboard->kbENTER)
-        {
-            if(parent)
-            {
-                if (strcmp(parent->getwidgettype(),"DropBox")==0)
-                {
-                        DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
-                        temp->validate();
-                }
-                else
-                {
-                    validated = true;
-                    escaped = false;
-                }
-            }
-
-            is_visible = false;
-            return;
-        }
-
-
         is_hovering = cursoron( mouse );
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
+
+        if (currently_pressed)
+        {
+            focus(this);
+        }
 
 
         if(currently_pressed && !is_pressed)
@@ -79,7 +42,8 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         is_pressed = currently_pressed;
 
 
-
+        if (!has_focus)
+            return;
 
         if (currently_pressed)
         {
@@ -105,6 +69,46 @@ void ListBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 //we clicked on the main part of the widget and then we have to calculated which line is clicked and add the scroll to adjsut the selected line
                 int clickedline = (int) ((int)(mouse->y-ypos-3)/ (int) heightline);
                 selected = scroll + clickedline;
+            }
+        }
+
+
+        if (keyboard->kbESC)
+        {
+            if(parent)
+            {
+                if (strcmp(parent->getwidgettype(),"DropBox")==0)
+                {
+                        DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
+                        temp->escape();
+                        is_visible = false;
+                        return;
+                }
+                else
+                {
+                    validated = false;
+                    escaped = true;
+                }
+            }
+        }
+
+
+        if (keyboard->kbRET || keyboard->kbENTER)
+        {
+            if(parent)
+            {
+                if (strcmp(parent->getwidgettype(),"DropBox")==0)
+                {
+                        DropBoxWidget *temp = dynamic_cast<DropBoxWidget*>(parent);
+                        temp->validate();
+                        is_visible = false;
+                        return;
+                }
+                else
+                {
+                    validated = true;
+                    escaped = false;
+                }
             }
         }
 

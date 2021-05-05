@@ -45,6 +45,7 @@ class FileDialogBoxWidget : public DialogBoxWidget
     protected:
         bool ismouseontitlebar(CursorTask *mouse) override;
     private:
+        int listdir(const char *path);
 };
 
 #endif // FILEDIALOGBOX_H

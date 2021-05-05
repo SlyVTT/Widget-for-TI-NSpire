@@ -208,10 +208,9 @@ public:
     SDL_Surface *screen = nullptr;
     SDL_Surface *depthbuffer = nullptr;
 
-
-protected:
     virtual void putontop( unsigned int widgetidsearched );
 
+protected:
 
 
 private:

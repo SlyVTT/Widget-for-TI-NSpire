@@ -1,4 +1,8 @@
 #include "FileDialogBoxWidget.h"
+#include <stdio.h>
+#include <dirent.h>
+#include <string.h>
+
 
 FileDialogBoxWidget::FileDialogBoxWidget()
 {
@@ -10,12 +14,65 @@ FileDialogBoxWidget::~FileDialogBoxWidget()
     //dtor
 }
 
+int FileDialogBoxWidget::listdir(const char *path)
+{
+
+/*
+    // this is dummy values to check if folderlist and filelist widgets can be filled with value : OK works fine
+
+    folderlist->additem( "[temp 1]");
+    folderlist->additem( "[temp 2]");
+    folderlist->additem( "[temp 3]");
+    folderlist->additem( "[temp 4]");
+    folderlist->additem( "[temp 5]");
+    folderlist->additem( "[temp 6]");
+    folderlist->additem( "[temp 7]");
+
+    filelist->additem( "File A");
+    filelist->additem( "File B");
+    filelist->additem( "File C");
+    filelist->additem( "File D");
+    filelist->additem( "File E");
+    filelist->additem( "File F");
+    filelist->additem( "File G");
+*/
+
+    char name[255];
+
+    struct dirent *ent;
+
+
+    DIR *dir = opendir(path);
+    while((ent = readdir(dir)))
+    {
+        //Test whether it's a directory
+        strcpy(name, path);
+        strcat(name,"/");
+        strcat(name, ent->d_name);
+
+        DIR *test = opendir( name );
+
+        if(test)    // This is a directory and we add to the folder list widget
+        {
+            closedir(test);
+            folderlist->additem( (char *) ent->d_name );
+        }
+        else    // this is a file and we add to the folder list widget
+        {
+            filelist->additem( (char *) ent->d_name );
+        }
+
+    }
+
+    closedir(dir);
+
+  return 0;
+}
+
+
 FileDialogBoxWidget::FileDialogBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ): DialogBoxWidget( l, x, y, w, h, p )
 {
     strcpy( widgettype, (char*) "FileDialogBox");
-
-
-
 
         vertical_layout = new ContainerVWidget( (char *) "ContainerV", 1, 1, 1, 1, this );
 
@@ -58,8 +115,9 @@ FileDialogBoxWidget::FileDialogBoxWidget( char *l, unsigned int x, unsigned int 
             cancelbutton = new ButtonWidget( (char*) "Cancel",1,1,1,1, horizontal_split_button );;
             horizontal_split_button->addconstraint( 70, (char*) "px" );
 
-        this->adjust();
+            listdir("./Widget");
 
+        this->adjust();
 
 }
 

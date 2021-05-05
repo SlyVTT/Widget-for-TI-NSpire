@@ -185,7 +185,11 @@ void MenuPaneWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
             if (parent)
                 if (parent->getparent())
                     if (strcmp( parent->getparent()->getwidgettype(), "MenuPane") == 0)
-                        dynamic_cast<MenuPaneWidget*>(parent->getparent())->unsetchilddropped();
+                    {
+                            dynamic_cast<MenuPaneWidget*>(parent->getparent())->unsetchilddropped();
+                            dynamic_cast<MenuPaneWidget*>(parent->getparent())->undrop();
+                    }
+
         }
 
 
