@@ -20,7 +20,29 @@ public:
         strcpy( widgettype, (char*) "ListBox");
     };
 
-    virtual ~ListBoxWidget() {};
+    virtual ~ListBoxWidget()
+    {
+        std::vector<char*>::iterator it1;
+        while (listitems.size()!=0)
+        {
+            it1 = listitems.begin();
+            listitems.erase( it1 );
+        }
+    };
+
+    virtual void flush()
+    {
+        std::vector<char*>::iterator it1;
+        while (listitems.size()!=0)
+        {
+            it1 = listitems.begin();
+            listitems.erase( it1 );
+        }
+        nbitem = 0;
+        selected = 0;
+        scroll = 0;
+        nbvisible = 0;
+    };
 
     virtual bool ispressed();
 

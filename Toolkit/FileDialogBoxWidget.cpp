@@ -4,9 +4,11 @@
 #include <string.h>
 
 
+
 FileDialogBoxWidget::FileDialogBoxWidget()
 {
     strcpy( widgettype, (char*) "FileDialogBox");
+    //strcpy( pathtoexplore, (char *) "./Widget\0" );
 }
 
 FileDialogBoxWidget::~FileDialogBoxWidget()
@@ -16,32 +18,8 @@ FileDialogBoxWidget::~FileDialogBoxWidget()
 
 int FileDialogBoxWidget::listdir(const char *path)
 {
-
-/*
-    // this is dummy values to check if folderlist and filelist widgets can be filled with value : OK works fine
-
-    folderlist->additem( "[temp 1]");
-    folderlist->additem( "[temp 2]");
-    folderlist->additem( "[temp 3]");
-    folderlist->additem( "[temp 4]");
-    folderlist->additem( "[temp 5]");
-    folderlist->additem( "[temp 6]");
-    folderlist->additem( "[temp 7]");
-
-    filelist->additem( "File A");
-    filelist->additem( "File B");
-    filelist->additem( "File C");
-    filelist->additem( "File D");
-    filelist->additem( "File E");
-    filelist->additem( "File F");
-    filelist->additem( "File G");
-*/
-
     char name[255];
-
     struct dirent *ent;
-
-
     DIR *dir = opendir(path);
     while((ent = readdir(dir)))
     {
@@ -49,23 +27,22 @@ int FileDialogBoxWidget::listdir(const char *path)
         strcpy(name, path);
         strcat(name,"/");
         strcat(name, ent->d_name);
-
         DIR *test = opendir( name );
-
         if(test)    // This is a directory and we add to the folder list widget
         {
             closedir(test);
-            folderlist->additem( (char *) ent->d_name );
+            char *temp = (char*) malloc( strlen(ent->d_name) +1 );
+            strcpy(temp, ent->d_name );
+            folderlist->additem( (char *) temp );
         }
-        else    // this is a file and we add to the folder list widget
+        else    // this is a file and we add to the file list widget
         {
-            filelist->additem( (char *) ent->d_name );
+            char *temp = (char*) malloc( strlen(ent->d_name) +1 );
+            strcpy(temp, ent->d_name );
+            filelist->additem( (char *) temp );
         }
-
     }
-
     closedir(dir);
-
   return 0;
 }
 
@@ -73,6 +50,7 @@ int FileDialogBoxWidget::listdir(const char *path)
 FileDialogBoxWidget::FileDialogBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ): DialogBoxWidget( l, x, y, w, h, p )
 {
     strcpy( widgettype, (char*) "FileDialogBox");
+    strcpy( pathtoexplore, (char *) "/documents/Widget/" );
 
         vertical_layout = new ContainerVWidget( (char *) "ContainerV", 1, 1, 1, 1, this );
 
@@ -94,7 +72,7 @@ FileDialogBoxWidget::FileDialogBoxWidget( char *l, unsigned int x, unsigned int 
 
 
             input_name = new InputWidget( (char*) ".",1,1,1,1, vertical_layout );
-            input_name->setcontent( (char *) "Please enter something here !!!" );
+            input_name->setcontent( (char *) pathtoexplore );
             vertical_layout->addconstraint( 15, (char*) "px" );
 
 
@@ -115,7 +93,7 @@ FileDialogBoxWidget::FileDialogBoxWidget( char *l, unsigned int x, unsigned int 
             cancelbutton = new ButtonWidget( (char*) "Cancel",1,1,1,1, horizontal_split_button );;
             horizontal_split_button->addconstraint( 70, (char*) "px" );
 
-            listdir("./Widget");
+            listdir( (char *) pathtoexplore );
 
         this->adjust();
 
@@ -244,6 +222,27 @@ void FileDialogBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
         for (auto& c : children )
             c->logic( mouse, keyboard );
+
+
+        if (folderlist->validated)
+        {
+            strcat( pathtoexplore, folderlist->getselecteditem() );
+            strcat( pathtoexplore, "/" );
+            strcpy( fullname, pathtoexplore );
+            folderlist->flush();
+            filelist->flush();
+            folderlist->validated = false;
+            listdir( (char *) pathtoexplore );
+            input_name->setcontent( (char *) fullname );
+        }
+
+        if (filelist->validated)
+        {
+            strcpy( fileselected, filelist->getselecteditem() );
+            filelist->validated = false;
+            strcat( fullname, fileselected );
+            input_name->setcontent( (char *) fullname );
+        }
 
         // No PopUpChild
 

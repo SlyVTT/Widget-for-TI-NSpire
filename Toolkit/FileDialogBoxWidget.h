@@ -31,7 +31,6 @@ class FileDialogBoxWidget : public DialogBoxWidget
         ButtonWidget *okbutton;
         ButtonWidget *cancelbutton;
 
-
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
         virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
@@ -44,6 +43,10 @@ class FileDialogBoxWidget : public DialogBoxWidget
 
     protected:
         bool ismouseontitlebar(CursorTask *mouse) override;
+        char pathtoexplore[256];
+        char fileselected[64];
+        char fullname[320];
+
     private:
         int listdir(const char *path);
 };
