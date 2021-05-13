@@ -49,7 +49,7 @@
 #include "CheckBoxWidget.h"
 
 #include "SliderWidget.h"
-#include "InputWidget.h"
+
 #include "LabelWidget.h"
 #include "ProgressBarWidget.h"
 
@@ -63,4 +63,6 @@
 #include "IconBarWidget.h"
 #include "IconItemWidget.h"
 
+#include "InputWidget.h"
+#include "MultiLineTextBoxWidget.h"
 

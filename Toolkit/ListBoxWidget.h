@@ -22,22 +22,31 @@ public:
 
     virtual ~ListBoxWidget()
     {
-        std::vector<char*>::iterator it1;
+        /*
+        std::vector<std::string>::iterator it1;
         while (listitems.size()!=0)
         {
             it1 = listitems.begin();
             listitems.erase( it1 );
         }
+        */
+
+        listitems.clear();
+
     };
 
     virtual void flush()
     {
-        std::vector<char*>::iterator it1;
+       /*std::vector<std::string>::iterator it1;
         while (listitems.size()!=0)
         {
             it1 = listitems.begin();
             listitems.erase( it1 );
         }
+        */
+
+        listitems.clear();
+
         nbitem = 0;
         selected = 0;
         scroll = 0;
@@ -52,7 +61,7 @@ public:
 
     virtual void additem( char *item )
     {
-        listitems.push_back( item );
+        listitems.push_back( std::string(item) );
         nbitem++;
     };
 
@@ -63,7 +72,7 @@ public:
 
     virtual char* getitem( int itemnumber )
     {
-        return listitems[itemnumber];
+        return (char*)  listitems[itemnumber].c_str();
     };
 
     virtual int getselected()
@@ -73,7 +82,7 @@ public:
 
     virtual char* getselecteditem()
     {
-        return listitems[selected];
+        return (char*) listitems[selected].c_str();
     };
 
     bool validated = false;
@@ -82,7 +91,7 @@ public:
 protected:
 
     unsigned int nbitem = 0;
-    std::vector<char*> listitems;
+    std::vector<std::string> listitems;
     unsigned int selected = 0;
 
 

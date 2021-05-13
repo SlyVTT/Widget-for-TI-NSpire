@@ -195,9 +195,12 @@ WidgetApplication::~WidgetApplication()
     {
         if (c->background_image != nullptr) SDL_FreeSurface( c->background_image );
         SDL_FreeSurface( c->screen );
+        SDL_FreeSurface( c->depthbuffer );
 
         c->rootwidgets.clear();
     }
+
+
 
     SDL_Quit();
 

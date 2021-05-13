@@ -18,6 +18,7 @@ public:
         //widgettype = (char*) "Input";
         strcpy( widgettype, (char*) "Input");
     };
+
     virtual ~InputWidget() {};
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
@@ -27,20 +28,14 @@ public:
     {
         return text.c_str();
     }
+
     virtual void setcontent(std::string str)
     {
         text = str;
         cursor_pos = 0;
         scroll = 0;
     }
-    //virtual void setfont( nSDL_Font *font )
-    //{
-    //    fontwidget = font;
-    //};
-    //virtual nSDL_Font* getfont()
-    //{
-    //    return fontwidget;
-    //};
+
 
 private:
     void updateScroll();
@@ -49,7 +44,6 @@ private:
     unsigned int scroll = 0;
     unsigned int mousex,mousey;
     bool mouses;
-    //nSDL_Font *fontwidget;
 
     FontEngine *nfontwidget = nullptr;
 

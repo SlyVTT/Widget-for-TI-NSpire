@@ -201,12 +201,12 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
                         //We check if the titel can be written in the titlebar (with 5px on each side of the title
-                        if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
-                        if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
+                        if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( (char*) getitem(i), width-5-25 );
+                        if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( (char*) getitem(i), width-5-25 );
 
-                        strcpy( drawablelabel, (char*) listitems[i] );
-                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
-                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+                        strcpy( drawablelabel, (char*) getitem(i) );
+                        if ((drawablecharlabel < strlen((char*) getitem(i))) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+                        if ((drawablecharlabel < strlen((char*) getitem(i))) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
                         if (drawablecharlabel!=0)
                         {
@@ -229,12 +229,12 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 
 
                         //We check if the titel can be written in the titlebar (with 5px on each side of the title
-                        if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
-                        if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( (char*) listitems[i], width-5-25 );
+                        if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( (char*) getitem(i), width-5-25 );
+                        if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( (char*) getitem(i), width-5-25 );
 
-                        strcpy( drawablelabel, (char*) listitems[i] );
-                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
-                        if ((drawablecharlabel < strlen((char*) listitems[i])) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
+                        strcpy( drawablelabel, (char*) getitem(i) );
+                        if ((drawablecharlabel < strlen((char*) getitem(i))) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
+                        if ((drawablecharlabel < strlen((char*) getitem(i))) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
                         if (drawablecharlabel!=0)
                         {
@@ -309,9 +309,9 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierunder( fonts->widget_text_enable.under );
                         fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-                        int sh = fonts->getstringheight( (char*) listitems[i] );
+                        int sh = fonts->getstringheight( (char*) getitem(i) );
 
-                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                        fonts->drawstringleft( screen, (char*) getitem(i), xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
                     }
                     else
                     {
@@ -320,14 +320,14 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                         fonts->setmodifierunder( fonts->widget_text_selected.under );
                         fonts->setmodifierstrike( fonts->widget_text_selected.strike );
 
-                        int sh = fonts->getstringheight( (char*) listitems[i] );
+                        int sh = fonts->getstringheight( (char*) getitem(i) );
 
                         // if we can see all the item, no need for space for the escalator on the right
                         if (nbvisible>=nbitem) roundedRectangleRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
                         //else we draw the selection line a bit shorter not to cover the escalator
                         if (nbvisible<nbitem) roundedRectangleRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
 
-                        fonts->drawstringleft( screen, (char*) listitems[i], xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                        fonts->drawstringleft( screen, (char*) getitem(i), xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
                     }
                 }
             }

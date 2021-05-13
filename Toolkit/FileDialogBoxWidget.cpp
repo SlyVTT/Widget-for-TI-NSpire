@@ -4,6 +4,47 @@
 #include <string.h>
 
 
+char *simplify(char *inputpath)
+{
+    std::string path( inputpath );
+    // using vector in place of stack
+    std::vector<std::string> v;
+    int n = path.length();
+    std::string ans;
+    for (int i = 0; i < n; i++) {
+        std::string dir = "";
+        // forming the current directory.
+        while (i < n && path[i] != '/') {
+            dir += path[i];
+            i++;
+        }
+
+        // if ".." , we pop.
+        if (dir == "..") {
+            if (!v.empty())
+                v.pop_back();
+        }
+        else if (dir == "." || dir == "") {
+            // do nothing (added for better understanding.)
+        }
+        else {
+            // push the current directory into the vector.
+            v.push_back(dir);
+        }
+    }
+
+    // forming the ans
+    for (auto i : v) {
+        ans += "/" + i;
+    }
+
+    // vector is empty
+    if (ans == "")
+        return (char *) "/";
+
+    return (char *) ans.c_str();
+}
+
 
 FileDialogBoxWidget::FileDialogBoxWidget()
 {
@@ -227,21 +268,43 @@ void FileDialogBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
         if (folderlist->validated)
         {
             strcat( pathtoexplore, folderlist->getselecteditem() );
+            strcpy(pathtoexplore, simplify(pathtoexplore) );
             strcat( pathtoexplore, "/" );
-            strcpy( fullname, pathtoexplore );
+
             folderlist->flush();
             filelist->flush();
             folderlist->validated = false;
             listdir( (char *) pathtoexplore );
-            input_name->setcontent( (char *) fullname );
+            input_name->setcontent( (char *) pathtoexplore );
         }
 
         if (filelist->validated)
         {
             strcpy( fileselected, filelist->getselecteditem() );
             filelist->validated = false;
+
+            strcpy( fullname, pathtoexplore );
+            //strcat( fullname, "/" );
             strcat( fullname, fileselected );
             input_name->setcontent( (char *) fullname );
+        }
+
+
+
+
+
+
+        if (okbutton->ispressed())
+        {
+            validated = true;
+            canceled = false;
+        }
+
+
+        if (cancelbutton->ispressed())
+        {
+            validated = false;
+            canceled = true;
         }
 
         // No PopUpChild

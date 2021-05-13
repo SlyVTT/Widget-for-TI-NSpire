@@ -24,10 +24,8 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
     if (is_enabled && is_visible)
     {
-
         is_hovering = cursoron( mouse );
         bool currently_pressed = (mouse->state || keyboard->kbSCRATCH) && is_hovering;
-
 
         if(currently_pressed && !is_pressed)
         {
@@ -45,20 +43,13 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 hoverfunction( (char*) "test" );
         }
 
-
         is_pressed = currently_pressed;
-
-
 
         if (is_pressed && (children.size()!=0))
         {
             for ( auto& c : children )
             {
-
-                //c->setvisible();
-
                 //TODO : working on that part of the code for correct overlapping of the menus
-
                 if (parent)
                     if (strcmp(parent->getwidgettype(), "MenuPane") == 0 )
                         dynamic_cast<MenuPaneWidget*>(parent)->setchilddropped();
@@ -72,8 +63,6 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                 {
                     c->setvisible();
                 }
-
-
             }
         }
         else if (is_pressed && (children.size()==0))
@@ -84,7 +73,6 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                     dynamic_cast<MenuPaneWidget*>(parent)->unsetchilddropped();
                     dynamic_cast<MenuPaneWidget*>(parent)->undrop();
                 }
-
         }
 
         for (auto& c : children )
@@ -95,8 +83,6 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
     strcpy( labelarrow, label );
-    //strcat( labelarrow, (char *) "   " );
-
     width_full_text = fonts->getstringwidth( labelarrow );
 
     if (is_visible)
@@ -120,7 +106,7 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            //We check if the titel can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
+            //We check if the title can be written in the titlebar (with 5px on each side of the title + 30 pixels for the buttons on the right
             drawablecharlabel = fonts->assertstringlength( label, width-2-2 );
 
 

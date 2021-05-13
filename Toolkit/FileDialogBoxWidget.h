@@ -19,17 +19,7 @@ class FileDialogBoxWidget : public DialogBoxWidget
 
         virtual ~FileDialogBoxWidget();
 
-        ContainerVWidget *vertical_layout;
-        LabelWidget *header_text;
-        ContainerHWidget *horizontal_split;
-        InputWidget *input_name;
-        ContainerHWidget *horizontal_split_button;
-        ListBoxWidget *filelist;
-        ListBoxWidget *folderlist;
-        SpacerWidget *space;
-        SpacerWidget *space2;
-        ButtonWidget *okbutton;
-        ButtonWidget *cancelbutton;
+
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
@@ -41,11 +31,30 @@ class FileDialogBoxWidget : public DialogBoxWidget
         virtual unsigned int getuseablewidth() override;
         virtual unsigned int getuseableheight() override;
 
+        bool validated = false;
+        bool canceled = false;
+
+        virtual char *getselectedfilename() { return fileselected; };
+        virtual char *getselectedpath() { return pathtoexplore; };
+        virtual char *getselectedfullname() { return fullname; };
+
     protected:
         bool ismouseontitlebar(CursorTask *mouse) override;
         char pathtoexplore[256];
         char fileselected[64];
         char fullname[320];
+
+        ContainerVWidget *vertical_layout;
+        LabelWidget *header_text;
+        ContainerHWidget *horizontal_split;
+        InputWidget *input_name;
+        ContainerHWidget *horizontal_split_button;
+        ListBoxWidget *filelist;
+        ListBoxWidget *folderlist;
+        SpacerWidget *space;
+        SpacerWidget *space2;
+        ButtonWidget *okbutton;
+        ButtonWidget *cancelbutton;
 
     private:
         int listdir(const char *path);
