@@ -8,7 +8,7 @@ class MenuBarWidget : public ContainerHWidget
 {
 public:
     MenuBarWidget();
-    MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    MenuBarWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
     ~MenuBarWidget();
 
     virtual void adjust() override;

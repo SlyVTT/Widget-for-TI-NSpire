@@ -4,66 +4,40 @@
 #include "Widget.h"
 
 
-enum barstyle
-{
-    Continuous = 0,
-    Bricks = 1,
-    Rainbow = 2,
-    RainbowBrick = 3
-};
 
 class ProgressBarWidget : public Widget
 {
 public:
-    ProgressBarWidget()
-    {
-        //widgettype = (char*) "ProgressBar";
-        strcpy( widgettype, (char*) "ProgressBar");
-    };
+       ProgressBarWidget();
+       ProgressBarWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+       ~ProgressBarWidget();
 
-    ProgressBarWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "ProgressBar";
-        strcpy( widgettype, (char*) "ProgressBar");
-    };
 
-    ~ProgressBarWidget() { };
+       enum barstyle
+       {
+              Continuous = 0,
+              Bricks = 1,
+              Rainbow = 2,
+              RainbowBrick = 3
+       };
 
-    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
-    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+       virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+       virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-    virtual void setcurrentpercentage( float percent )
-    {
-        percentfilled = percent;
-    };
+       virtual void setcurrentpercentage( float percent );
+       virtual float getcurrentpercentage( );
 
-    virtual float getcurrentpercentage( )
-    {
-        return percentfilled;
-    };
-
-    virtual void setstyle( barstyle st )
-    {
-        style = st;
-    };
-
-    virtual void setnumberbricks( int nb )
-    {
-        nbbricks = nb;
-    };
-
-    virtual void setprintvalue( bool setter )
-    {
-        drawvalue = setter;
-    };
+       virtual void setstyle( barstyle st );
+       virtual void setnumberbricks( int nb );
+       virtual void setprintvalue( bool setter );
 
 
 protected:
-    float percentfilled = 0.0;
-    barstyle style = Continuous;
-    int nbbricks = 10;
-    bool drawvalue = false;
+       float percentfilled = 0.0;
+       barstyle style = Continuous;
+       int nbbricks = 10;
+       bool drawvalue = false;
 
 
 private:

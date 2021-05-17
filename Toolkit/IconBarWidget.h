@@ -8,7 +8,7 @@ class IconBarWidget : public ContainerHWidget
 {
 public:
     IconBarWidget();
-    IconBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    IconBarWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
     ~IconBarWidget();
 
     virtual void adjust() override;

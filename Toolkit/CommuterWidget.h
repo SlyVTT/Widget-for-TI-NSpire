@@ -107,207 +107,179 @@ class CommuterWidget : public ButtonWidget
 {
 public:
 
-    /// Simple constructor.
-    ///
-    /// Widget properties are set to default, nothing more.
-    /// Simple constructor, will need specific properties assignement later.
-    /// @param None
-    /// @returns Nothing
-    /// @see ButtonWidget() or Widget()
-    CommuterWidget()
-    {
-        //widgettype = (char*) "Commuter";
-        strcpy( widgettype, (char*) "Commuter");
-    };
+       /// Simple constructor.
+       ///
+       /// Widget properties are set to default, nothing more.
+       /// Simple constructor, will need specific properties assignement later.
+       /// @param None
+       /// @returns Nothing
+       /// @see ButtonWidget() or Widget()
+       CommuterWidget();
 
 
-    /// Advanced constructor.
-    ///
-    /// Widget properties are set with parameters values given at call.
-    /// @param l : text string (char*) that will be used as the widget textual content
-    /// @param x : position x in pixels relatively to the parent widget usable drawspace
-    /// @param y : position y in pixels relatively to the parent widget usable drawspace
-    /// @param w : width in pixel of the widget
-    /// @param h : height in pixel of the widget
-    /// @param p : pointer type to a Widget* to create a link with the parent widget (if any).
-    /// @note *p* should be set to *nullptr* if no parent exists
-    /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
-    /// @returns Nothing
-    /// @see ButtonWidget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
-    CommuterWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "Commuter";
-        strcpy( widgettype, (char*) "Commuter");
-    };
+       /// Advanced constructor.
+       ///
+       /// Widget properties are set with parameters values given at call.
+       /// @param l : text string (char*) that will be used as the widget textual content
+       /// @param x : position x in pixels relatively to the parent widget usable drawspace
+       /// @param y : position y in pixels relatively to the parent widget usable drawspace
+       /// @param w : width in pixel of the widget
+       /// @param h : height in pixel of the widget
+       /// @param p : pointer type to a Widget* to create a link with the parent widget (if any).
+       /// @note *p* should be set to *nullptr* if no parent exists
+       /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
+       /// @returns Nothing
+       /// @see ButtonWidget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
+       CommuterWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
 
 
-    /// Object destructor
-    ///
-    /// Object destructor, remove all trace of the object and free allocated memory
-    /// @param None
-    /// @returns Nothing
-    /// @see ~Widget()
-    virtual ~CommuterWidget() { };
+       /// Object destructor
+       ///
+       /// Object destructor, remove all trace of the object and free allocated memory
+       /// @param None
+       /// @returns Nothing
+       /// @see ~Widget()
+       virtual ~CommuterWidget();
 
 
-    /// Enumerator for CommuterWidget style.
-    ///
-    /// Gives the style of CommuterWidget (of the colors of both backgroud and commuter button).
-    /// *style1* the commuter background is blank and the button also
-    /// *style2* the commuter background is blank and the button is colorized
-    /// *style3* the commuter background is blank and the button is colorized in color depending on switch position
-    /// *style4* the commuter background and the button are colorized in color depending on switch position
-    enum commutertype
-    {
-        style1 = 0,
-        style2 = 1,
-        style3 = 2,
-        style4 = 3
-    };
+       /// Enumerator for CommuterWidget style.
+       ///
+       /// Gives the style of CommuterWidget (of the colors of both backgroud and commuter button).
+       /// *style1* the commuter background is blank and the button also
+       /// *style2* the commuter background is blank and the button is colorized
+       /// *style3* the commuter background is blank and the button is colorized in color depending on switch position
+       /// *style4* the commuter background and the button are colorized in color depending on switch position
+       enum commutertype
+       {
+              style1 = 0,
+              style2 = 1,
+              style3 = 2,
+              style4 = 3
+       };
 
 
-    /// Invert the CommuterWidget status
-    ///
-    /// Invert the CommuterWidget status, if unticked --> ticked and if ticked --> unticked
-    /// @param None
-    /// @returns None
-    /// @note It changes the internal property *is_ticked* of the CommuterWidget
-    virtual void invert()
-    {
-        is_ticked = !is_ticked;
-    };
+       /// Invert the CommuterWidget status
+       ///
+       /// Invert the CommuterWidget status, if unticked --> ticked and if ticked --> unticked
+       /// @param None
+       /// @returns None
+       /// @note It changes the internal property *is_ticked* of the CommuterWidget
+       virtual void invert();
 
 
-    /// Is the CommuterWidget ticked ?
-    ///
-    /// Gives the status of the CommuterWidget (switched or not).
-    /// @param None
-    /// @returns Boolean value : *true* if the CommuterWidget is switched, *false* otherwise
-    virtual bool isticked( void )
-    {
-        return is_ticked;
-    };
+       /// Is the CommuterWidget ticked ?
+       ///
+       /// Gives the status of the CommuterWidget (switched or not).
+       /// @param None
+       /// @returns Boolean value : *true* if the CommuterWidget is switched, *false* otherwise
+       virtual bool isticked( void );
 
 
-    /// The CommuterWidget logic mechanism
-    ///
-    /// Method to be launched to drive the the mechanics behind the widget behavior.
-    /// @param mouse : pointer to a CursorTask handler object serving at passing the mouse (Touchpad) state and position
-    /// @param keyboard : pointer to a KeyboardTask handler object serving at passing the keyboard state
-    /// @returns Nothing, but will launch the logic() method of all the Widgets belonging to chidren (vector<Widget*>)
-    /// @note This method overrides Widget::logic( CursorTask*, KeyboardTask*)
-    /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->logic() from the WidgetApplication class
-    /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
-    /// @warning Before calling the logic method, a mouse handler and a keyboard handler must be instancied and properly updated through their respective logic() methods. This is normally done by using the WidgetApplication class.
-    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+       /// The CommuterWidget logic mechanism
+       ///
+       /// Method to be launched to drive the the mechanics behind the widget behavior.
+       /// @param mouse : pointer to a CursorTask handler object serving at passing the mouse (Touchpad) state and position
+       /// @param keyboard : pointer to a KeyboardTask handler object serving at passing the keyboard state
+       /// @returns Nothing, but will launch the logic() method of all the Widgets belonging to chidren (vector<Widget*>)
+       /// @note This method overrides Widget::logic( CursorTask*, KeyboardTask*)
+       /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->logic() from the WidgetApplication class
+       /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
+       /// @warning Before calling the logic method, a mouse handler and a keyboard handler must be instancied and properly updated through their respective logic() methods. This is normally done by using the WidgetApplication class.
+       virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
 
 
-    /// The CommuterWidget render method.
-    ///
-    /// Method to be launched to draw the CommuterWidget.
-    /// @param screen : pointer to a SDL_Surface object where we would like to draw the wigdet
-    /// @param colors : pointer to a ColorEngine object giving all the color options to be used (theme) for drawing the widget
-    /// @param fonts : pointer to a FontEngine object giving all the fonts options to be used (theme) for drawing the widget
-    /// @returns Nothing, but will launch the render() method of all the Widgets belonging to chidren (vector<Widget*>)
-    /// @note This method overrides Widget::render( SDL_Surface*, ColorEngine*, FontEngine*)
-    /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->render() from the WidgetApplication class.
-    /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
-    /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
-    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+       /// The CommuterWidget render method.
+       ///
+       /// Method to be launched to draw the CommuterWidget.
+       /// @param screen : pointer to a SDL_Surface object where we would like to draw the wigdet
+       /// @param colors : pointer to a ColorEngine object giving all the color options to be used (theme) for drawing the widget
+       /// @param fonts : pointer to a FontEngine object giving all the fonts options to be used (theme) for drawing the widget
+       /// @returns Nothing, but will launch the render() method of all the Widgets belonging to chidren (vector<Widget*>)
+       /// @note This method overrides Widget::render( SDL_Surface*, ColorEngine*, FontEngine*)
+       /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->render() from the WidgetApplication class.
+       /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
+       /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
+       virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
 
-    /// CommuterWidget style setter.
-    ///
-    /// Gives the style of CommuterWidget
-    /// @param type refers to one of the styles given by the *tick* enumerator
-    /// @returns Nothing
-    /// @see commutertype
-    virtual void settype( commutertype type )
-    {
-        typetick = type;
-    };
+       /// CommuterWidget style setter.
+       ///
+       /// Gives the style of CommuterWidget
+       /// @param type refers to one of the styles given by the *tick* enumerator
+       /// @returns Nothing
+       /// @see commutertype
+       virtual void settype( commutertype type );
 
-    /// CommuterWidget style getter.
-    ///
-    /// Gives the style of CommuterWidget
-    /// @param None
-    /// @returns The corresponding type of CommuterWidget style
-    /// @see commutertype
-    virtual commutertype gettype()
-    {
-        return typetick;
-    };
+       /// CommuterWidget style getter.
+       ///
+       /// Gives the style of CommuterWidget
+       /// @param None
+       /// @returns The corresponding type of CommuterWidget style
+       /// @see commutertype
+       virtual commutertype gettype();
 
 
-    /// CommuterWidget normal style setter.
-    ///
-    /// Set the normal order of the CommuterWidget (false = switch on the left / true = switch on the right)
-    /// @param None
-    /// @returns Nothing
-    virtual void setnormal()
-    {
-        is_reversed = false;
-    };
+       /// CommuterWidget normal style setter.
+       ///
+       /// Set the normal order of the CommuterWidget (false = switch on the left / true = switch on the right)
+       /// @param None
+       /// @returns Nothing
+       virtual void setnormal();
 
 
-    /// CommuterWidget reversed style setter.
-    ///
-    /// Set the normal order of the CommuterWidget (false = switch on the right / true = switch on the left)
-    /// @param None
-    /// @returns Nothing
-    virtual void setreversed()
-    {
-        is_reversed = true;
-    };
+       /// CommuterWidget reversed style setter.
+       ///
+       /// Set the normal order of the CommuterWidget (false = switch on the right / true = switch on the left)
+       /// @param None
+       /// @returns Nothing
+       virtual void setreversed();
 
 
-    /// CommuterWidget normal/reveresed style getter.
-    ///
-    /// Ask if the CommuterWidget is normal or reversed
-    /// @param None
-    /// @returns Nothing
-    /// @see setnormal() or setreversed()
-    virtual bool isreversed()
-    {
-        return is_reversed;
-    };
+       /// CommuterWidget normal/reveresed style getter.
+       ///
+       /// Ask if the CommuterWidget is normal or reversed
+       /// @param None
+       /// @returns Nothing
+       /// @see setnormal() or setreversed()
+       virtual bool isreversed();
+
 
 protected:
 
 private:
 
-    /// Is the CommuterWidget switched ?
-    ///
-    /// Widget properties giving the status of the CommuterWidget.
-    /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CommuterWidget::isticked() method.
-    /// @see CommuterWidget::isticked()
-    bool is_ticked = false;
+       /// Is the CommuterWidget switched ?
+       ///
+       /// Widget properties giving the status of the CommuterWidget.
+       /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CommuterWidget::isticked() method.
+       /// @see CommuterWidget::isticked()
+       bool is_ticked = false;
 
 
-    /// Is the CommuterWidget reversed ?
-    ///
-    /// Widget properties giving the status of the CommuterWidget.
-    /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CommuterWidget::isreversed() method.
-    /// @see CommuterWidget::isreversed()
-    bool is_reversed = false;
+       /// Is the CommuterWidget reversed ?
+       ///
+       /// Widget properties giving the status of the CommuterWidget.
+       /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CommuterWidget::isreversed() method.
+       /// @see CommuterWidget::isreversed()
+       bool is_reversed = false;
 
 
 
-    /// Is the mouse clickbutton hold down ?
-    ///
-    /// Private property, not accessible by the user directly
-    /// @note This boolean should not be adressed directly by the user. It says if the click button is hold down to avoid the CommuterWidget to switch on/off at each call to logic();
-    /// @note This is only aiming at serving good behavior of the widget.
-    bool mouse_hold_down = false;
+       /// Is the mouse clickbutton hold down ?
+       ///
+       /// Private property, not accessible by the user directly
+       /// @note This boolean should not be adressed directly by the user. It says if the click button is hold down to avoid the CommuterWidget to switch on/off at each call to logic();
+       /// @note This is only aiming at serving good behavior of the widget.
+       bool mouse_hold_down = false;
 
 
-    /// The style of the CommuterWidget
-    ///
-    /// Private property, not accessible by the user directly
-    /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CommuterWidget::gettype() method.
-    /// @see CommuterWidget::gettype()
-    commutertype typetick = style1;
+       /// The style of the CommuterWidget
+       ///
+       /// Private property, not accessible by the user directly
+       /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CommuterWidget::gettype() method.
+       /// @see CommuterWidget::gettype()
+       commutertype typetick = style1;
 };
 
 #endif // COMMUTERWIDGET_H

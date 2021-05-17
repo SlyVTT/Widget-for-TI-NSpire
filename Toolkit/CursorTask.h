@@ -62,10 +62,7 @@ public:
     /// @param None.
     /// @returns Nothing.
     /// @note By default, at initialisation, the cursor is shown
-    virtual void showmouse()
-    {
-        show=true;
-    };
+    virtual void showmouse();
 
 
     /// The CursorTask hidemouse method
@@ -74,10 +71,7 @@ public:
     /// @param None.
     /// @returns Nothing.
     /// @note By default, at initialisation, the cursor is shown
-    virtual void hidemouse()
-    {
-        show=false;
-    };
+    virtual void hidemouse();
 
 
     /// The CursorTask ismousevisible method
@@ -86,10 +80,7 @@ public:
     /// @param None.
     /// @returns Boolean : *true* if the cursor is visible and *false* otherwise.
     /// @note By default, at initialisation, the cursor is shown.
-    virtual bool ismousevisible()
-    {
-        return show;
-    };
+    virtual bool ismousevisible();
 
 
     /// The CursorTask ismouseevent method
@@ -100,10 +91,7 @@ public:
     /// @returns Boolean : *true* if something happened and *false* otherwise.
     /// @note Each individual event can be tracked individually by CursorTask::ismousemovement() CursorTask::ismouseclickevent() CursorTask::ismousereleaseevent() respectively.
     /// @see CursorTask::ismousemovement() CursorTask::ismouseclickevent() CursorTask::ismousereleaseevent()
-    virtual bool ismouseevent()
-    {
-        return mouseevent;
-    };
+    virtual bool ismouseevent();
 
 
     /// The CursorTask ismousemoveevent method
@@ -113,10 +101,7 @@ public:
     /// @param None.
     /// @returns Boolean : *true* if something happened and *false* otherwise.
     /// @see CursorTask::ismouseevent() CursorTask::ismouseclickevent() CursorTask::ismousereleaseevent()
-    virtual bool ismousemoveevent()
-    {
-        return mousemoveevent;
-    };
+    virtual bool ismousemoveevent();
 
 
     /// The CursorTask ismouseclickevent method
@@ -126,10 +111,7 @@ public:
     /// @param None.
     /// @returns Boolean : *true* if something happened and *false* otherwise.
     /// @see CursorTask::ismouseevent() CursorTask::ismousemoveevent() CursorTask::ismousereleaseevent()
-    virtual bool ismouseclickevent()
-    {
-        return mouseclickevent;
-    };
+    virtual bool ismouseclickevent();
 
 
     /// The CursorTask ismousereleaseevent method
@@ -139,10 +121,7 @@ public:
     /// @param None.
     /// @returns Boolean : *true* if something happened and *false* otherwise.
     /// @see CursorTask::ismouseevent() CursorTask::ismousemoveevent() CursorTask::ismouseclickevent()
-    virtual bool ismousereleaseevent()
-    {
-        return mousereleaseevent;
-    };
+    virtual bool ismousereleaseevent();
 
 
     /// Enumerator for mouse cursor style.

@@ -1,6 +1,20 @@
 #include "FrameWidget.h"
 
+    FrameWidget::FrameWidget()
+    {
+        widgettype =  "Frame";
+        //strcpy( widgettype, (char*) "Frame");
+    };
 
+    FrameWidget::FrameWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+    {
+        widgettype =  "Frame";
+        //strcpy( widgettype, (char*) "Frame");
+    };
+
+    FrameWidget::~FrameWidget()
+     {
+     };
 
 unsigned int FrameWidget::getuseablexpos()
 {
@@ -74,12 +88,7 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             fonts->setmodifierunder( fonts->widget_text_enable.under );
             fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-            //We check if the titel can be written in the titlebar (with 5px on each side of the title)
             drawablecharlabel = fonts->assertstringlength( label, width-5-5 );
-
-            strcpy( drawablelabel, label );
-            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
-            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
 
             if (drawablecharlabel!=0)
             {
@@ -96,6 +105,8 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
                 }
 
                 boxRGBA( screen, xpos+3, ypos, xpos+3+sl, ypos+sh, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
+
+                drawablelabel = fonts->reducestringtovisible( label, width-5 -5  );
 
                 fonts->drawstringleft( screen, drawablelabel, xpos+3, ypos+sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
             }
@@ -128,11 +139,7 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             //We check if the titel can be written in the titlebar (with 5px on each side of the title
             drawablecharlabel = fonts->assertstringlength( label, width-5-5 );
 
-            strcpy( drawablelabel, label );
-            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=2)) drawablelabel[drawablecharlabel-2] = '\u0010';
-            if ((drawablecharlabel < strlen(label)) && (drawablecharlabel >=1)) drawablelabel[drawablecharlabel-1] = '\0';
-
-            if (drawablecharlabel!=0)
+             if (drawablecharlabel!=0)
             {
                 int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );
@@ -141,6 +148,8 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
                 roundedRectangleRGBA( screen, xpos, ypos+sh, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
                 boxRGBA( screen, xpos+3, ypos, xpos+3+sl, ypos+sh, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
+
+                drawablelabel = fonts->reducestringtovisible( label, width-5-5  );
 
                 fonts->drawstringleft( screen, drawablelabel, xpos+3, ypos+sh/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
             }

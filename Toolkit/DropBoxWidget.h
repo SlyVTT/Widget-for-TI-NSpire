@@ -11,69 +11,37 @@ class DropBoxWidget : public Widget
 public:
 
     DropBoxWidget();
-
-
-    DropBoxWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-
-
+    DropBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
     virtual ~DropBoxWidget() {};
 
 
     virtual void adjust() override;
 
-
     virtual bool ispressed();
 
-    virtual void drop()
-    {
-        is_dropped = true;
-        this->listbox->setvisible();
-        has_been_updated = false;
-    };
+    virtual void drop();
 
-    virtual void undrop()
-    {
-        is_dropped = false;
-        this->listbox->setinvisible();
-    };
+    virtual void undrop();
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-    virtual void additem( char *item )
-    {
-        listbox->additem( item );
-    };
+    virtual void additem( std::string item );
 
-    virtual int getnbitem()
-    {
-        return listbox->getnbitem();
-    };
+    virtual int getnbitem();
 
-    virtual char* getitem( int itemnumber )
-    {
-        return listbox->getitem( itemnumber );
-    };
+    virtual std::string getitem( int itemnumber );
 
-    virtual int getselected()
-    {
-        return listbox->getselected();
-    };
+    virtual int getselected();
 
-    virtual char* getselecteditem()
-    {
-        return listbox->getselecteditem();
-    };
+    virtual std::string getselecteditem();
 
     virtual void validate();
 
     virtual void escape();
 
-    virtual bool isupdated()
-    {
-        return has_been_updated;
-    };
+    virtual bool isupdated();
 
 protected:
 
@@ -81,7 +49,7 @@ protected:
     ListBoxWidget *listbox;
 
     int selected_item = -1;     // -1 means no selection have been made yet
-    char* selected_item_value;
+    std::string selected_item_value;
 
 private:
 

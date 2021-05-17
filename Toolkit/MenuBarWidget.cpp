@@ -1,19 +1,20 @@
 #include "MenuBarWidget.h"
-
+#include "MenuItemWidget.h"
 #include "WindowWidget.h"
 #include "DesktopWidget.h"
 
+
 MenuBarWidget::MenuBarWidget() : ContainerHWidget ()
 {
-    strcpy( widgettype, (char*) "MenuBar");
-};
+    widgettype = "MenuBar";
+}
 
 
-MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ContainerHWidget( l, x, y, w, h, p )
+MenuBarWidget::MenuBarWidget(std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ContainerHWidget( l, x, y, w, h, p )
 {
-    strcpy( widgettype, (char*) "MenuBar");
+    widgettype = "MenuBar";
 
-    strcpy(label,l);
+    label = l;
     xrel=x;
     yrel=y;
     widrel=w;
@@ -22,7 +23,7 @@ MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
 
     if (parent)
     {
-        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
+        if (parent->getwidgettype() == "Desktop")
         {
             dynamic_cast<DesktopWidget*>(parent)->setmenubar();
 
@@ -40,7 +41,7 @@ MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
             width = parent->getuseablewidth();
             height = 12;
         }
-        else if (strcmp( parent->getwidgettype(),(char*) "Window" )==0)
+        else if (parent->getwidgettype() == "Window" )
         {
             dynamic_cast<WindowWidget*>(parent)->setmenubar();
 
@@ -70,16 +71,22 @@ MenuBarWidget::MenuBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
     int i=0;
     nbchildren = children.size();
 
-    for (auto& c : children )
+    unsigned int currentpositionX = xpos+1;
+    unsigned int currentwidth=0;
+
+    for (auto& c : children )   // this code has been updated to have a homogeneous spacing of MenuItemsWidgets
     {
-        c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height-1 );
-        i++;
+       //c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height );
+       //i++;
+       currentwidth = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth() + 10;
+       c->setdimensions( currentpositionX, ypos, currentwidth, height );
+       currentpositionX += currentwidth;
     }
 
     for (auto& c : children )
         c->adjust();
 
-};
+}
 
 
 
@@ -94,7 +101,7 @@ void MenuBarWidget::adjust()
 
     if (parent)
     {
-        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
+        if (parent->getwidgettype() == "Desktop" )
         {
             xpos = parent->getuseablexpos();
 
@@ -110,7 +117,7 @@ void MenuBarWidget::adjust()
             width = parent->getuseablewidth();
             height = 12;
         }
-        else if (strcmp( parent->getwidgettype(),(char*) "Window" )==0)
+        else if (parent->getwidgettype() == "Window" )
         {
             xpos = parent->getuseablexpos();
 
@@ -135,25 +142,29 @@ void MenuBarWidget::adjust()
         height=heirel;
     }
 
-
     int i=0;
     nbchildren = children.size();
 
-    for (auto& c : children )
+    unsigned int currentpositionx = xpos+1;
+    unsigned int widthchildren;
+
+    for (auto& c : children )  // this code has been updated to have a homogeneous spacing of MenuItemsWidgets
     {
-        c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height );
-        i++;
+       //c->setdimensions( xpos+1 + width/nbchildren*i, ypos, width/nbchildren-2, height );
+       //i++;
+        widthchildren = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth() + 10;
+        c->setdimensions( currentpositionx, ypos, widthchildren, height );
+        currentpositionx += widthchildren;
     }
 
-    for (auto& c : children )
-        c->adjust();
-
+    for (auto& c : children ) c->adjust();
 }
+
 
 unsigned int MenuBarWidget::getuseableheight()
 {
     return height - 2;
-};
+}
 
 
 void MenuBarWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
@@ -166,12 +177,10 @@ void MenuBarWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 }
 
 
-
 void MenuBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
     if (is_visible)
     {
-
         if (is_enabled)
         {
             boxRGBA( screen, xpos, ypos, xpos+width, ypos+height, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
@@ -184,7 +193,6 @@ void MenuBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
             {
                 lineRGBA( screen, xpos, ypos+height-1, xpos+width, ypos+height-1, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
             }
-
         }
         else
         {
@@ -193,10 +201,6 @@ void MenuBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
         }
 
         for (auto& c : children )
-        {
-            if (c->isvisible())
                 c->render( screen, colors, fonts );
-        }
-
     }
 }

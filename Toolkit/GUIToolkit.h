@@ -11,6 +11,9 @@
 
 #define DEBUG_MODE_GUI_TOOLKIT
 
+#include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
+
 
 // These two #include files to be used for Touchpad (Mouse/Cursor) handling and Keyboard handling respectively
 
@@ -66,3 +69,4 @@
 #include "InputWidget.h"
 #include "MultiLineTextBoxWidget.h"
 
+#include "GraphicContextWidget.h"

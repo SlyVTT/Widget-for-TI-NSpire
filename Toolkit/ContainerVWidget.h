@@ -114,11 +114,7 @@ public:
     /// @param None
     /// @returns Nothing
     /// @see Widget()
-    ContainerVWidget()
-    {
-        //widgettype = (char*) "ContainerV";
-        strcpy( widgettype, (char*) "ContainerV");
-    };
+    ContainerVWidget();
 
 
     /// Advanced constructor.
@@ -134,11 +130,7 @@ public:
     /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
     /// @returns Nothing
     /// @see Widget( char*, int, int, int, int, Widget* )
-    ContainerVWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "ContainerV";
-        strcpy( widgettype, (char*) "ContainerV");
-    };
+    ContainerVWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
 
 
     /// Object destructor
@@ -147,7 +139,7 @@ public:
     /// @param None
     /// @returns Nothing
     /// @see ~Widget()
-    virtual ~ContainerVWidget() { };
+    virtual ~ContainerVWidget();
 
 
     /// Adjust method
@@ -165,10 +157,7 @@ public:
     /// @param None
     /// @returns int number of children of the container
     /// @see ~Widget()
-    virtual int getsize()
-    {
-        return nbchildren;
-    };
+    virtual int getsize();
 
 
     /// The ContainerVWidget logic mechanism
@@ -200,12 +189,12 @@ public:
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
 
-    virtual void addconstraint( int value, char *type );
+    virtual void addconstraint( int value, std::string type );
 
 
 protected:
     std::list<int> constraintvalue;
-    std::list<char*> constrainttype;
+    std::list<std::string> constrainttype;
 
 
 private:

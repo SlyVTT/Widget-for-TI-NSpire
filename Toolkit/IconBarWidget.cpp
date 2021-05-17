@@ -1,21 +1,19 @@
 #include "IconBarWidget.h"
-
 #include "WindowWidget.h"
 #include "DesktopWidget.h"
 
+
 IconBarWidget::IconBarWidget() : ContainerHWidget ()
 {
-    //widgettype = (char*) "IconBar";
-    strcpy( widgettype, (char*) "IconBar");
+    widgettype =  "IconBar";
 };
 
 
-IconBarWidget::IconBarWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ContainerHWidget( l, x, y, w, h, p )
+IconBarWidget::IconBarWidget(std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ContainerHWidget( l, x, y, w, h, p )
 {
-    //widgettype = (char*) "IconBar";
-    strcpy( widgettype, (char*) "IconBar");
+    widgettype = "IconBar";
 
-    strcpy(label,l);
+    label = l;
     xrel=x;
     yrel=y;
     widrel=w;
@@ -24,7 +22,7 @@ IconBarWidget::IconBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
 
     if (parent)
     {
-        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
+        if (parent->getwidgettype() == "Desktop" )
         {
             dynamic_cast<DesktopWidget*>(parent)->seticonbar();
 
@@ -42,7 +40,7 @@ IconBarWidget::IconBarWidget(char *l, unsigned int x, unsigned int y, unsigned i
             width = parent->getuseablewidth();
             height = 20;
         }
-        else if (strcmp( parent->getwidgettype(),(char*) "Window" )==0)
+        else if (parent->getwidgettype() == "Window" )
         {
             dynamic_cast<WindowWidget*>(parent)->seticonbar();
 
@@ -96,7 +94,7 @@ void IconBarWidget::adjust()
 
     if (parent)
     {
-        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
+        if (parent->getwidgettype() == "Desktop" )
         {
             xpos = parent->getuseablexpos();
 
@@ -112,7 +110,7 @@ void IconBarWidget::adjust()
             width = parent->getuseablewidth();
             height = 20;
         }
-        else if (strcmp( parent->getwidgettype(),(char*) "Window" )==0)
+        else if (parent->getwidgettype() == "Window" )
         {
             xpos = parent->getuseablexpos();
 
@@ -168,18 +166,26 @@ void IconBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
 {
     if (is_visible)
     {
-
         if (is_enabled)
         {
             boxRGBA( screen, xpos, ypos, xpos+width, ypos+height, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
+
+            if (!is_hovering)
+            {
+                lineRGBA( screen, xpos, ypos+height, xpos+width, ypos+height, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+            }
+            else
+            {
+                lineRGBA( screen, xpos, ypos+height, xpos+width, ypos+height, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
+            }
         }
         else
         {
             boxRGBA( screen, xpos, ypos, xpos+width, ypos+height, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
+            lineRGBA( screen, xpos, ypos+height-1, xpos+width, ypos+height-1, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
         }
 
         for (auto& c : children )
-            c->render( screen, colors, fonts );
-
+                c->render( screen, colors, fonts );
     }
 }

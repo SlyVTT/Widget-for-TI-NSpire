@@ -11,14 +11,14 @@
 
 FontEngine::FontEngine()
 {
-    this->loadfontfromfile( (char*) "/documents/widget/Fonts/THIN.WFE.tns" );
-    this->loadfontfromfile( (char*) "/documents/widget/Fonts/VGA.WFE.tns" );
-    this->loadfontfromfile( (char*) "/documents/widget/Fonts/SPACE.WFE.tns" );
-    this->loadfontfromfile( (char*) "/documents/widget/Fonts/TINY.WFE.tns" );
-    this->loadfontfromfile( (char*) "/documents/widget/Fonts/STANDARD.WFE.tns" );
-    this->loadfontfromfile( (char*) "/documents/widget/Fonts/FANTASY.WFE.tns" );
-    this->setcurrentfont( THIN_FONT );
-    vspacing = 0;
+    loadfontfromfile( "/documents/widget/Fonts/THIN.WFE.tns" );
+    loadfontfromfile( "/documents/widget/Fonts/VGA.WFE.tns" );
+    loadfontfromfile( "/documents/widget/Fonts/SPACE.WFE.tns" );
+    loadfontfromfile( "/documents/widget/Fonts/TINY.WFE.tns" );
+    loadfontfromfile( "/documents/widget/Fonts/STANDARD.WFE.tns" );
+    loadfontfromfile( "/documents/widget/Fonts/FANTASY.WFE.tns" );
+    setcurrentfont( THIN_FONT );
+    vspacing = 3;
     hspacing = -1;
     currentmodifiertypo = Normal;  // set text as normal
     currentmodifierunder = NoUnder; // No underlining
@@ -39,11 +39,11 @@ FontEngine::~FontEngine()
     //delete FontCollection;
 }
 
-FontData* FontEngine::loadfontfromfilepointer( char* filename )
+FontEngine::FontData* FontEngine::loadfontfromfilepointer( std::string filename )
 {
 
     FILE* pFile;
-    pFile = fopen (filename,"r");
+    pFile = fopen (filename.c_str(), "r");
     if (pFile!=NULL)
     {
         //bool flag = true;
@@ -168,11 +168,11 @@ FontData* FontEngine::loadfontfromfilepointer( char* filename )
 
 }
 
-void FontEngine::loadfontfromfile( char* filename )
+void FontEngine::loadfontfromfile( std::string filename )
 {
 
     FILE* pFile;
-    pFile = fopen (filename,"r");
+    pFile = fopen (filename.c_str(),"r");
     if (pFile!=NULL)
     {
         //bool flag = true;
@@ -309,22 +309,51 @@ unsigned int FontEngine::getstringwidth( char *str )
     return posx;
 }
 
+
+unsigned int FontEngine::getstringwidth( std::string str )
+{
+    int length = str.size();
+    int posx = 0;
+
+    for(int i=0; i< length-1; i++)
+    {
+        posx += currentfont->Font[str[i]]->charwidth + hspacing;
+    }
+    posx +=currentfont->Font[str[length-1]]->charwidth; // for the alst character we do not add the spacing
+
+    return posx;
+}
+
+
 // this is for monoline text, does not take into consideration \n character yet
 unsigned int FontEngine::getstringheight( char *str )
 {
     int length = (int) strlen( str );
     int posy = 0;
 
+    for(int i=0; i< length; i++)
+    {
+        if( currentfont->Font[str[i]]->charheight > posy)
+            posy = currentfont->Font[str[i]]->charheight;
+    }
+    return posy;
+}
+
+
+// this is for monoline text, does not take into consideration \n character yet
+unsigned int FontEngine::getstringheight( std::string str )
+{
+    int length = str.size();
+    int posy = 0;
 
     for(int i=0; i< length; i++)
     {
         if( currentfont->Font[str[i]]->charheight > posy)
             posy = currentfont->Font[str[i]]->charheight;
     }
-
     return posy;
-
 }
+
 
 unsigned int FontEngine::getcharwidth( char str )
 {
@@ -339,10 +368,7 @@ unsigned int FontEngine::getcharheight( char str )
 
 unsigned int FontEngine::assertstringlength( char *str, unsigned int width )
 {
-
     unsigned int lengthstr = getstringwidth( str );
-    char returnstr[100];
-
     unsigned int nbchartotal = (unsigned int) strlen( str );
 
     if (width >= lengthstr)
@@ -351,16 +377,111 @@ unsigned int FontEngine::assertstringlength( char *str, unsigned int width )
     }
     else
     {
-        strcpy( returnstr, str );
-        for( unsigned int i=nbchartotal; i>1; i-- )
+        unsigned int current_length=0;
+        for (unsigned int i=0;i<nbchartotal;i++)
         {
-            returnstr[i-1]='\0';
-            lengthstr = getstringwidth( returnstr );
-            if (width >= lengthstr) return i;
+            current_length += getcharwidth(str[i]);
+            if (current_length >= width) return i;
+            current_length += hspacing;
         }
     }
-
     return 0;
+}
+
+unsigned int FontEngine::assertstringlength( std::string str, unsigned int width )
+{
+    unsigned int lengthstr = getstringwidth( str );
+    unsigned int nbchartotal = str.size();
+
+    if (width >= lengthstr)
+    {
+        return nbchartotal;
+    }
+    else
+    {
+        unsigned int current_length=0;
+        for (unsigned int i=0;i<nbchartotal;i++)
+        {
+            current_length += getcharwidth(str[i]);
+            if (current_length >= width) return i;
+            current_length += hspacing;
+        }
+    }
+    return 0;
+}
+
+
+unsigned int FontEngine::assertstringlength( std::string str, unsigned int width, fontname name, fontmodifiertypo typo, fontmodifierunder under, fontmodifierstrike strike )
+{
+    setcurrentfont( name );
+    setmodifiertypo( typo );
+    setmodifierunder( under );
+    setmodifierstrike( strike );
+
+    unsigned int lengthstr = getstringwidth( str );
+    unsigned int nbchartotal = str.size();
+
+    if (width >= lengthstr)
+    {
+        return nbchartotal;
+    }
+    else
+    {
+        unsigned int current_length = 0;
+        for (unsigned int i=0;i<nbchartotal;i++)
+        {
+            current_length += getcharwidth(str[i]);
+            if (current_length >= width) return i;
+            current_length += hspacing;
+        }
+    }
+    return 0;
+}
+
+
+std::string FontEngine::reducestringtovisible( std::string str, unsigned int width )
+{
+    unsigned int maxlength = assertstringlength( str, width );
+    std::string resultstr;
+
+    if (maxlength == str.size())
+    {
+        for(unsigned int i=0; i<maxlength; i++)
+            resultstr += str[i];
+    }
+    else
+    {
+        for(unsigned int i=0; i<maxlength-2; i++)
+            resultstr += str[i];
+        resultstr += '\u0010';
+    }
+    return resultstr;
+}
+
+
+
+std::string FontEngine::reducestringtovisible( std::string str, unsigned int width, fontname name, fontmodifiertypo typo, fontmodifierunder under, fontmodifierstrike strike )
+{
+    setcurrentfont( name );
+    setmodifiertypo( typo );
+    setmodifierunder( under );
+    setmodifierstrike( strike );
+
+    unsigned int maxlength = assertstringlength( str, width );
+    std::string resultstr;
+
+    if (maxlength == str.size())
+    {
+        for(unsigned int i=0; i<maxlength; i++)
+            resultstr += str[i];
+    }
+    else
+    {
+        for(unsigned int i=0; i<maxlength-2; i++)
+            resultstr += str[i];
+        resultstr += '\u0010';
+    }
+    return resultstr;
 }
 
 
@@ -369,10 +490,20 @@ void FontEngine::setcurrentfont( fontname curfont ) // To be checked for interna
     currentfont = FontCollection[ curfont ];
 }
 
-void FontEngine::setspacing( unsigned int hspace, unsigned int vspace )
+void FontEngine::setspacing( int hspace, int vspace )
 {
     hspacing = hspace;
     vspacing = vspace;
+}
+
+int FontEngine::gethspacing( )
+{
+    return hspacing;
+}
+
+int FontEngine::getvspacing( )
+{
+    return vspacing;
 }
 
 void FontEngine::setmodifiertypo( fontmodifiertypo mod )
@@ -403,6 +534,23 @@ void FontEngine::drawstringleft( SDL_Surface *screen, char *str, unsigned int x,
         posx += currentfont->Font[str[i]]->charwidth + hspacing;
     }
 }
+
+
+void FontEngine::drawstringleft( SDL_Surface *screen, std::string str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+{
+
+    int length = str.size();
+    int posx = x;
+    int posy = y;
+
+    for(int i=0; i< length; i++)
+    {
+        drawcharleft( screen, str[i], posx, posy, R, G, B, A );
+        posx += currentfont->Font[str[i]]->charwidth + hspacing;
+    }
+}
+
+
 
 void FontEngine::drawcharleft( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
@@ -489,11 +637,20 @@ void FontEngine::drawstringcenter( SDL_Surface *screen, char *str, unsigned int 
     drawstringleft( screen, str, x-dx, y, R, G, B, A);
 }
 
+
+void FontEngine::drawstringcenter( SDL_Surface *screen, std::string str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+{
+    int dx = (int) (getstringwidth( str ) / 2);
+    drawstringleft( screen, str, x-dx, y, R, G, B, A);
+}
+
+
 void FontEngine::drawcharcenter( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     int dx = (int) (getcharwidth( str ) / 2);
     drawcharleft( screen, str, x-dx, y, R, G, B, A);
 }
+
 
 void FontEngine::drawstringright( SDL_Surface *screen, char *str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
@@ -501,20 +658,27 @@ void FontEngine::drawstringright( SDL_Surface *screen, char *str, unsigned int x
     drawstringleft( screen, str, x-dx, y, R, G, B, A);
 }
 
+
+void FontEngine::drawstringright( SDL_Surface *screen, std::string str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
+{
+    int dx = (int) getstringwidth( str );
+    drawstringleft( screen, str, x-dx, y, R, G, B, A);
+}
+
+
 void FontEngine::drawcharright( SDL_Surface *screen, char str, unsigned int x, unsigned int y, unsigned short R, unsigned short G, unsigned short B, unsigned short A )
 {
     int dx = (int) getcharwidth( str );
     drawcharleft( screen, str, x-dx, y, R, G, B, A);
 }
 
+
 void FontEngine::setdefaultfontpreset( )
 {
-
     widget_text_enable = { THIN_FONT, Normal, NoUnder, NoStrike };
     widget_text_disable = { THIN_FONT, Normal, NoUnder, NoStrike };
     widget_text_selected = { THIN_FONT, Normal, NoUnder, NoStrike };
 
     window_titlebartext_enable = { THIN_FONT, Bold, NoUnder, NoStrike };
     window_titlebartext_disable = { THIN_FONT, Bold, NoUnder, NoStrike };
-
 }

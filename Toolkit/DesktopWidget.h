@@ -115,13 +115,7 @@ public:
     /// @param None
     /// @returns Nothing
     /// @see Widget()
-    DesktopWidget()
-    {
-        //widgettype = (char*) "Desktop";
-        strcpy( widgettype, (char*) "Desktop");
-        fonttemp = new FontEngine();
-    };
-
+    DesktopWidget();
 
 
     /// Advanced constructor.
@@ -137,30 +131,16 @@ public:
     /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
     /// @returns Nothing
     /// @see Widget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
-    DesktopWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "Desktop";
-        strcpy( widgettype, (char*) "Desktop");
-        fonttemp = new FontEngine();
-    };
+    DesktopWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
 
 
-    virtual void setmenubar()
-    {
-        hasmenubar = true;
-    };
-    virtual void seticonbar()
-    {
-        hasiconbar = true;
-    };
-    virtual bool getmenubar()
-    {
-        return hasmenubar;
-    };
-    virtual bool geticonbar()
-    {
-        return hasiconbar;
-    };
+    virtual void setmenubar();
+
+    virtual void seticonbar();
+
+    virtual bool getmenubar();
+
+    virtual bool geticonbar();
 
 
     // These methods must be override cause Desktop geometry is a bit different with the menubar/icon bar
@@ -175,7 +155,7 @@ public:
     /// @param None
     /// @returns Nothing
     /// @see ~Widget()
-    virtual ~DesktopWidget() { };
+    virtual ~DesktopWidget();
 
 
     /// The DesktopWidget logic mechanism

@@ -7,52 +7,22 @@
 class WindowWidget : public Widget
 {
 public:
-    WindowWidget( )
-    {
-        //widgettype = (char*) "Window";
-        strcpy( widgettype, (char*) "Window");
-    };
-    WindowWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "Window";
-        strcpy( widgettype, (char*) "Window");
-        xposback = x;
-        yposback = y;
-        widthback = w;
-        heightback = h;
-    };
-    virtual ~WindowWidget() { };
+    WindowWidget( );
+    WindowWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~WindowWidget();
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
     virtual void maximize();
     virtual void minimize();
     virtual void restore();
 
-    virtual void setminimaldimensions( unsigned int widmin, unsigned int heimin)
-    {
-        minwidth = widmin;
-        minheight = heimin;
-    };
-
-    virtual void setmenubar()
-    {
-        hasmenubar = true;
-    };
-    virtual void seticonbar()
-    {
-        hasiconbar = true;
-    };
-    virtual bool getmenubar()
-    {
-        return hasmenubar;
-    };
-    virtual bool geticonbar()
-    {
-        return hasiconbar;
-    };
+    virtual void setminimaldimensions( unsigned int widmin, unsigned int heimin);
+    virtual void setmenubar();
+    virtual void seticonbar();
+    virtual bool getmenubar();
+    virtual bool geticonbar();
 
     // These methods must be override cause window geometry is a bit different with the title bar
     virtual unsigned int getuseablexpos() override;

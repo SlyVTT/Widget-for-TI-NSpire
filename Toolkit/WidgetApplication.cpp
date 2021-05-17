@@ -267,6 +267,33 @@ void WidgetApplication::removedesktop( DesktopFeatures *desktoptoremove )
     }
 }
 
+
+void WidgetApplication::initiateall( void )
+{
+    // We need to init the theme engine, by default, this is not done at startup to save memory
+    initthemeengine();
+    // We apply the default theme while using theme (this is for safe use and avoid any risk of crash)
+    setdefaulttheme();
+
+    // We render the app for the first time so what we can see what's happening on the screen
+    render();
+
+    // we adjust the desktop
+    for (auto&c  : currentdesktop->rootwidgets)
+        c->adjust();
+}
+
+
+void WidgetApplication::run( unsigned mode )
+{
+
+    if (mode == 1)
+        logicwithforcedrender();
+    else
+        logic();
+}
+
+
 DesktopFeatures* WidgetApplication::getcurrentdesktoppointer()
 {
     return desktops[cur_desktop];
@@ -470,7 +497,7 @@ void WidgetApplication::setuniformbackgroundcolor( Uint8 r, Uint8 g, Uint8 b)
     currentdesktop->rgb_background = SDL_MapRGB(currentdesktop->screen->format, currentdesktop->r_background, currentdesktop->g_background, currentdesktop->g_background);
 }
 
-void WidgetApplication::setbackgroundpicture( char *filename )
+void WidgetApplication::setbackgroundpicture( std::string filename )
 {
     currentdesktop->uniform_background = false;
     currentdesktop->background_wallpaper = true;
@@ -480,7 +507,7 @@ void WidgetApplication::setbackgroundpicture( char *filename )
     currentdesktop->position_background.w = 320;
     currentdesktop->position_background.h = 240;
 
-    currentdesktop->background_image = IMG_Load( filename );
+    currentdesktop->background_image = IMG_Load( filename.c_str() );
 }
 
 
@@ -508,7 +535,7 @@ void WidgetApplication::setdefaulttheme()
 }
 
 
-void WidgetApplication::loadtheme( char* filename )
+void WidgetApplication::loadtheme( std::string filename )
 {
     if (theme)
     {

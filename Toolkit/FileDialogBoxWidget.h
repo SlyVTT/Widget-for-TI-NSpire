@@ -15,11 +15,8 @@ class FileDialogBoxWidget : public DialogBoxWidget
 {
     public:
         FileDialogBoxWidget();
-        FileDialogBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-
+        FileDialogBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
         virtual ~FileDialogBoxWidget();
-
-
 
         virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
@@ -34,15 +31,15 @@ class FileDialogBoxWidget : public DialogBoxWidget
         bool validated = false;
         bool canceled = false;
 
-        virtual char *getselectedfilename() { return fileselected; };
-        virtual char *getselectedpath() { return pathtoexplore; };
-        virtual char *getselectedfullname() { return fullname; };
+        virtual char *getselectedfilename();
+        virtual char *getselectedpath();
+        virtual char *getselectedfullname();
 
     protected:
         bool ismouseontitlebar(CursorTask *mouse) override;
-        char pathtoexplore[256];
-        char fileselected[64];
-        char fullname[320];
+        std::string pathtoexplore;
+        std::string fileselected;
+        std::string fullname;
 
         ContainerVWidget *vertical_layout;
         LabelWidget *header_text;
@@ -57,7 +54,7 @@ class FileDialogBoxWidget : public DialogBoxWidget
         ButtonWidget *cancelbutton;
 
     private:
-        int listdir(const char *path);
+        int listdir(std::string path);
 };
 
 #endif // FILEDIALOGBOX_H

@@ -8,7 +8,7 @@ class MenuPaneWidget : public ContainerVWidget
 {
 public:
     MenuPaneWidget();
-    MenuPaneWidget(char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    MenuPaneWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
     virtual ~MenuPaneWidget();
 
     virtual void adjust() override;
@@ -17,31 +17,10 @@ public:
 
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-    virtual void drop( )
-    {
-        is_dropped = true;
-        is_visible = true;
-    }
-
-    virtual void undrop( )
-    {
-        if (!has_child_menu_open)
-        {
-            is_dropped = false;
-            is_visible = false;
-        }
-    }
-
-    virtual void setchilddropped()
-    {
-        has_child_menu_open = true;
-        is_visible = true;
-    }
-
-        virtual void unsetchilddropped()
-    {
-        has_child_menu_open = false;
-    }
+    virtual void drop( );
+    virtual void undrop( );
+    virtual void setchilddropped();
+    virtual void unsetchilddropped();
 
 
 protected:

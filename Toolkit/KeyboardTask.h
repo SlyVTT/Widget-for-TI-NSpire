@@ -104,23 +104,14 @@ public:
     virtual ~KeyboardTask();
     virtual void logic();
 
+    //This is a recode of LibNDLS nio_ascii_get() to correctly map the nSpire CX/CX-II keyboard
+    virtual char asciiget( );
+
     virtual bool iskeypressed();
-    virtual bool iskeyevent( )
-    {
-        return keyevent;
-    };
-    virtual bool iskeypressevent( )
-    {
-        return keypressevent;
-    };
-    virtual bool iskeyreleaseevent( )
-    {
-        return keyreleaseevent;
-    };
-    virtual bool iskeyarrowevent( )
-    {
-        return keyevent_arrow;
-    };
+    virtual bool iskeyevent( );
+    virtual bool iskeypressevent( );
+    virtual bool iskeyreleaseevent( );
+    virtual bool iskeyarrowevent( );
 
     bool keypressevent = false;
     bool keyreleaseevent = false;

@@ -9,81 +9,21 @@
 class ListBoxWidget : public Widget
 {
 public:
-    ListBoxWidget() : Widget()
-    {
-        //widgettype = (char*) "ListBox";
-        strcpy( widgettype, (char*) "ListBox");
-    };
-    ListBoxWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "ListBox";
-        strcpy( widgettype, (char*) "ListBox");
-    };
+    ListBoxWidget();
+    ListBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~ListBoxWidget();
 
-    virtual ~ListBoxWidget()
-    {
-        /*
-        std::vector<std::string>::iterator it1;
-        while (listitems.size()!=0)
-        {
-            it1 = listitems.begin();
-            listitems.erase( it1 );
-        }
-        */
-
-        listitems.clear();
-
-    };
-
-    virtual void flush()
-    {
-       /*std::vector<std::string>::iterator it1;
-        while (listitems.size()!=0)
-        {
-            it1 = listitems.begin();
-            listitems.erase( it1 );
-        }
-        */
-
-        listitems.clear();
-
-        nbitem = 0;
-        selected = 0;
-        scroll = 0;
-        nbvisible = 0;
-    };
-
+    virtual void flush();
     virtual bool ispressed();
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-    virtual void additem( char *item )
-    {
-        listitems.push_back( std::string(item) );
-        nbitem++;
-    };
-
-    virtual unsigned int getnbitem()
-    {
-        return listitems.size();
-    };
-
-    virtual char* getitem( int itemnumber )
-    {
-        return (char*)  listitems[itemnumber].c_str();
-    };
-
-    virtual int getselected()
-    {
-        return selected;
-    };
-
-    virtual char* getselecteditem()
-    {
-        return (char*) listitems[selected].c_str();
-    };
+    virtual void additem( std::string item );
+    virtual unsigned int getnbitem();
+    virtual std::string getitem( int itemnumber );
+    virtual int getselected();
+    virtual std::string getselecteditem();
 
     bool validated = false;
     bool escaped = false;

@@ -3,6 +3,16 @@
 
 #include "ButtonWidget.h"
 
+
+
+class MiniButtonWidget : public ButtonWidget
+{
+public:
+    MiniButtonWidget();
+    MiniButtonWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~MiniButtonWidget();
+
+
 enum typesymbol
 {
     Bottom_Arrow = 0,
@@ -14,37 +24,11 @@ enum typesymbol
     Exclamation_Symbol = 6
 };
 
-class MiniButtonWidget : public ButtonWidget
-{
-public:
-    MiniButtonWidget()
-    {
-        //widgettype = (char*) "MiniButton";
-        strcpy( widgettype, (char*) "MiniButton");
-    };
-
-    MiniButtonWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : ButtonWidget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "MiniButton";
-        strcpy( widgettype, (char*) "MiniButton");
-    };
-
-    virtual ~MiniButtonWidget() { };
-
     virtual bool ispressed() override;
-
-    virtual bool isticked( void )
-    {
-        return is_ticked;
-    };
-
-    virtual void invert( void )
-    {
-        is_ticked = !is_ticked;
-    };
+    virtual bool isticked( void );
+    virtual void invert( void );
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
     virtual void settype( typesymbol type );

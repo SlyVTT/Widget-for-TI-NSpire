@@ -1,8 +1,9 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-//#include <vector>
+
 #include <list>
+#include <string>
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
@@ -18,20 +19,22 @@ class Widget
 {
 public:
     Widget( );
-    Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    Widget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
     virtual ~Widget();
 
     Uint32 WidgetID = -1;
 
     //virtual void DEBUG_draw_widget_tree_structure( int level, char* filename );
 
-
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
+
     virtual void focus( Widget *emitter );
     virtual void unfocusup( Widget *emitter );
     virtual void unfocusdown( Widget *emitter );
+
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts );
     virtual void renderdepth( SDL_Surface *depthbuffer );
+
     virtual void addchild( Widget *child );
     virtual void addpopupchild( Widget *child );
 
@@ -53,7 +56,7 @@ public:
     virtual void setypos( unsigned int my );
     virtual void setwidth( unsigned int mw );
     virtual void setheight( unsigned int mh );
-    virtual void setlabel(char *l);
+    virtual void setlabel(std::string l);
     virtual void setcontainerstatus( bool status );
     virtual void setparent( Widget *p );
     virtual void setvisible();
@@ -73,12 +76,12 @@ public:
     virtual unsigned int getuseablewidth();
     virtual unsigned int getuseableheight();
 
-    virtual char* getlabel();
+    virtual std::string getlabel();
     virtual bool getcontainerstatus();
     virtual Widget* getparent();
     virtual bool isenabled();
     virtual bool isvisible();
-    virtual char* getwidgettype();
+    virtual std::string getwidgettype();
 
     //ACTION Linker
     virtual void linkonclick( void(*func)(char*) );
@@ -93,10 +96,10 @@ protected:
     bool is_activated = false;
     bool is_locked = false;
 
-    char widgettype[25];
+    std::string widgettype;
 
-    char label[100];                // text content of the label
-    char drawablelabel[100];    // text content that can be drawn (may be shorter that full label depending on size of the widget and on the used font
+    std::string label;                // text content of the label
+    std::string drawablelabel;    // text content that can be drawn (may be shorter that full label depending on size of the widget and on the used font
     unsigned int drawablecharlabel;
 
     unsigned int xpos; // absolute coordinate vs screen
@@ -116,8 +119,6 @@ protected:
 
     Widget *parent = nullptr;
     int nbchildren;
-    //std::vector< Widget* > children;
-    //std::vector< Widget* > popupchildren;
     std::list< Widget* > children;
     std::list< Widget* > popupchildren;
 

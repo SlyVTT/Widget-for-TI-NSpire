@@ -7,32 +7,14 @@
 class SliderWidget : public Widget
 {
 public:
-    SliderWidget()
-    {
-        //widgettype = (char*) "Slider";
-        strcpy( widgettype, (char*) "Slider");
-    };
-    SliderWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        length_pixels = w-8;
-        //widgettype = (char*) "Slider";
-        strcpy( widgettype, (char*) "Slider");
-    };
-    ~SliderWidget() { };
+    SliderWidget();
+    SliderWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    ~SliderWidget();
 
     int getvalueint();
     float getvaluefloat();
-
-    void setrangeint( int minvalue, int maxvalue)
-    {
-        intmin = minvalue;
-        intmax=maxvalue;
-    };
-    void setrangefloat( float minvalue, float maxvalue )
-    {
-        floatmin = minvalue;
-        floatmax=maxvalue;
-    };
+    void setrangeint( int minvalue, int maxvalue);
+    void setrangefloat( float minvalue, float maxvalue );
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;

@@ -57,6 +57,9 @@ public:
     virtual void setnextdesktop();
     virtual void setpreviousdesktop();
 
+    virtual void initiateall( void );
+    virtual void run( unsigned mode );
+
     virtual void render( void );
     virtual void renderdepth( void );
 
@@ -64,12 +67,12 @@ public:
     virtual void logicwithforcedrender( void );
 
     virtual void setuniformbackgroundcolor( Uint8 r, Uint8 g, Uint8 b);
-    virtual void setbackgroundpicture( char *filename );
+    virtual void setbackgroundpicture( std::string filename );
     virtual void setdrawbackground( bool setter );
 
     virtual void initthemeengine();
     virtual void setdefaulttheme();
-    virtual void loadtheme( char* filename );
+    virtual void loadtheme( std::string filename );
 
     // To handle the mouse and keyboard events
     virtual KeyboardTask* getkeyboardhandler();

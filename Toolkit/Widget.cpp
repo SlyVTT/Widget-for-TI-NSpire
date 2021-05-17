@@ -22,7 +22,7 @@ Widget* Widget::getclosestmainparent()
     */
 
 
-    if ((strcmp( this->getwidgettype(),(char*) "Desktop" )==0) || (strcmp( this->getwidgettype(),(char*) "Window" )==0))
+    if (( this->getwidgettype() == "Desktop" ) || ( this->getwidgettype() == "Window" ))
     {
         //     fprintf( pFile, "This is me = %ld \n", this->WidgetID );
         //     fclose( pFile );
@@ -34,7 +34,7 @@ Widget* Widget::getclosestmainparent()
         temp = this->parent;
         while (temp!=nullptr)
         {
-            if ((strcmp( temp->getwidgettype(),(char*) "Desktop" )==0) || (strcmp( temp->getwidgettype(),(char*) "Window" )==0))
+            if (( temp->getwidgettype() == "Desktop" ) || (temp->getwidgettype() == "Window" ))
             {
                 //            fprintf( pFile, "This is me = %ld \n", temp->WidgetID );
                 //            fclose( pFile );
@@ -58,7 +58,7 @@ Widget* Widget::getclosestmainparent()
 
 Widget* Widget::getwidgetbyID( Uint32 IDsearched )
 {
-    if ((IDsearched<0) || (IDsearched>=GlobalWdidgetIDCounter))  return nullptr;
+    if (IDsearched>=GlobalWdidgetIDCounter)  return nullptr;
     if (this->WidgetID == IDsearched)
     {
         // we are lucky, we are on the widget we are looking for
@@ -140,9 +140,9 @@ void Widget::setheight( unsigned int mh )
     height=mh;
 };
 
-void Widget::setlabel(char *l)
+void Widget::setlabel(std::string l)
 {
-    strcpy(label,l);
+    label = l;
 };
 
 void Widget::setcontainerstatus( bool status )
@@ -190,7 +190,7 @@ unsigned int Widget::getuseableheight()
     return height - 4;
 };
 
-char* Widget::getlabel()
+std::string Widget::getlabel()
 {
     return label;
 };
@@ -215,7 +215,7 @@ bool Widget::isvisible()
     return is_visible;
 };
 
-char* Widget::getwidgettype()
+std::string Widget::getwidgettype()
 {
     return widgettype;
 };
@@ -275,9 +275,9 @@ Widget::Widget( )
 
 }
 
-Widget::Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p )
+Widget::Widget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p )
 {
-    strcpy(label,l);
+    label=l;
     xrel=x;
     yrel=y;
     widrel=w;
@@ -294,7 +294,7 @@ Widget::Widget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigne
 
         // if the widget has a parent, then we have to compute relative coordinates
         // if the parent is directly the desktop, we are free to position the widget as we want
-        if (strcmp( parent->getwidgettype(),(char*) "Desktop" )==0)
+        if (parent->getwidgettype() == "Desktop" )
             //if (parent->getwidgettype() == (char*) "Desktop")
         {
             xpos = xrel;
@@ -419,13 +419,11 @@ void Widget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts
 void Widget::renderdepth( SDL_Surface *depthbuffer )
 {
 
-
     if (is_visible)
     {
-
         //if the widget is a Window or a DialogBox or the Desktop, then we plot the corresponding zone in the depth buttfer with a color representing its ID
 
-        if ( (strcmp( getwidgettype(),(char*) "Desktop" )==0) || (strcmp( getwidgettype(),(char*) "Window" )==0)  || (strcmp( getwidgettype(),(char*) "DialogBox" )==0)  || (strcmp( getwidgettype(),(char*) "FileDialogBox" )==0)) // || (strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) )
+        if ((getwidgettype() == "Desktop") || (getwidgettype() == "Window") || (getwidgettype() == "DialogBox") || (getwidgettype() == "FileDialogBox")) // || (strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) )
         {
             //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
             //It assumes a maximum number of widget limited to 249 per desktop
@@ -445,13 +443,10 @@ void Widget::renderdepth( SDL_Surface *depthbuffer )
             unsigned int c=(WidgetID-u-10*d) / 100;
             R = c*25;
 
-
             //Draw the corresponding shape in the Depth Buffer Image
             roundedBoxRGBA( depthbuffer, xpos, ypos, xpos+width, ypos+height, 3, R, G, B, 255 );
-
         }
-
-        if (((strcmp( getwidgettype(),(char*) "MenuBar" )==0) || (strcmp( getwidgettype(),(char*) "MenuPane" )==0) || (strcmp( getwidgettype(),(char*) "IconBar" )==0) ) && (strcmp(getclosestmainparent()->getwidgettype(), "Desktop" ) == 0 ) )
+        else if (((getwidgettype() == "MenuBar") || (getwidgettype() == "MenuPane") || (getwidgettype() == "IconBar")) && (getclosestmainparent()->getwidgettype() == "Desktop" ))
         {
             //This part of the routine convert the Wedgit ID into a color code 0xRRGGBBAA (with AA always equal to 0XFF)
             //It assumes a maximum number of widget limited to 249 per desktop
@@ -471,12 +466,9 @@ void Widget::renderdepth( SDL_Surface *depthbuffer )
             unsigned int c=(WidgetID-u-10*d) / 100;
             R = c*25;
 
-
             //Draw the corresponding shape in the Depth Buffer Image
             roundedBoxRGBA( depthbuffer, xpos, ypos, xpos+width, ypos+height, 3, R, G, B, 255 );
-
         }
-
 
         for (auto& c : children )
             if (c->isvisible()) c->renderdepth( depthbuffer );
@@ -503,15 +495,11 @@ void Widget::disable( )
 void Widget::setvisible( )
 {
     is_visible = true;
-    //for (auto& c : children )
-    //  c->setvisible( );
 }
 
 void Widget::setinvisible( )
 {
     is_visible = false;
-    //for (auto& c : children )
-    //  c->setinvisible( );
 }
 
 
@@ -525,7 +513,7 @@ void Widget::addchild( Widget *child )
 
 void Widget::addpopupchild( Widget *child )
 {
-    if ((strcmp( getwidgettype(),(char*) "Window" )==0) || (strcmp( getwidgettype(),(char*) "Desktop" )==0))
+    if ((getwidgettype() == "Window" ) || (getwidgettype() == "Desktop" ))
     {
         popupchildren.push_back( child );
     }
@@ -544,5 +532,8 @@ void Widget::setparent( Widget *p )
 
 bool Widget::cursoron( CursorTask *mouse )
 {
-    return ((unsigned int) mouse->x >= xpos) && ((unsigned int) mouse->y >= ypos) && ((unsigned int) mouse->x <= xpos+width) && ((unsigned int) mouse->y <= ypos+height);
+    return ((unsigned int) mouse->x >= xpos)
+                    && ((unsigned int) mouse->y >= ypos)
+                    && ((unsigned int) mouse->x <= xpos+width)
+                    && ((unsigned int) mouse->y <= ypos+height);
 }

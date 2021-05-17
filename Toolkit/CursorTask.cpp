@@ -7,6 +7,7 @@
 #include "cursors.h"
 
 
+
 CursorTask::CursorTask()
 {
     // the transparent color is define as red (note that the sprite of the cursor are defined with this convention
@@ -47,7 +48,48 @@ CursorTask::~CursorTask()
 }
 
 
-void CursorTask::setcursortype( cursortype type )
+     void CursorTask::showmouse()
+    {
+        show=true;
+    };
+
+
+         void CursorTask::hidemouse()
+    {
+        show=false;
+    };
+
+
+         bool CursorTask::ismousevisible()
+    {
+        return show;
+    };
+
+         bool CursorTask::ismouseevent()
+    {
+        return mouseevent;
+    };
+
+
+         bool CursorTask::ismousemoveevent()
+    {
+        return mousemoveevent;
+    };
+
+
+         bool CursorTask::ismouseclickevent()
+    {
+        return mouseclickevent;
+    };
+
+
+         bool CursorTask::ismousereleaseevent()
+    {
+        return mousereleaseevent;
+    };
+
+
+void CursorTask::setcursortype( CursorTask::cursortype type )
 {
     cursor = type;
 }

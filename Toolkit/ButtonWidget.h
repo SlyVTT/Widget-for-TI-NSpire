@@ -99,11 +99,7 @@ public:
     /// @param None
     /// @returns Nothing
     /// @see Widget()
-    ButtonWidget()
-    {
-        //widgettype = (char*) "Button";
-        strcpy( widgettype, (char*) "Button");
-    };
+    ButtonWidget();
 
 
     /// Advanced constructor.
@@ -119,11 +115,7 @@ public:
     /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
     /// @returns Nothing
     /// @see Widget( char*, int, int, int, int, Widget* )
-    ButtonWidget( char *l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        //widgettype = (char*) "Button";
-        strcpy( widgettype, (char*) "Button");
-    };
+    ButtonWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
 
 
     /// Object destructor.
@@ -132,7 +124,7 @@ public:
     /// @param None
     /// @returns Nothing
     /// @see ~Widget()
-    ~ButtonWidget() {};
+    ~ButtonWidget();
 
 
     /// Is the ButtonWidget pressed ?
