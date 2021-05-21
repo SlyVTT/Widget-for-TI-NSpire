@@ -35,6 +35,12 @@ enable
 0 155 255
 disable
 170 170 170
+maximize
+0 255 0
+minimize
+255 0 0
+restore
+255 255 0
 
 [WINDOW_TITLEBARTEXT]
 enable
