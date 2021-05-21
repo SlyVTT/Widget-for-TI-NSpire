@@ -1,4 +1,5 @@
-# Widget-for-TI-NSpire
+<img src="https://imgur.com/FDTBdSU.png" align="center">
+
 A GUI toolkit for Ndless-TI NSpire using SDL and Ndless libraries.
 
 Documentation and more detailed description of the features to be done. Please have a llok a the wiki page here https://github.com/SlyVTT/Widget-for-TI-NSpire/wiki where you can find some examples of using the GUI Tollkit.
