@@ -26,10 +26,31 @@ public:
        virtual void assignsurface( SDL_Surface *surface );
        virtual void setmode( drawmode mode );
 
+       void setuserzoomlevel( float level );
+       void update( void );
+
+       void adjust() override;
+
 protected:
         SDL_Surface *surfacetobedrawn = nullptr;
+        SDL_Surface *transformedimage = nullptr;
 
         drawmode currentmode = normal;
+
+        unsigned int posviewX = 0;
+        unsigned int posviewY = 0;
+
+        unsigned int shiftposX = 0;
+        unsigned int shiftposY = 0;
+
+        unsigned int widthuseableGC = 0;            // this correspond to the actual width of the widget that can be used (equals width but can be reduce by 15pixels if escalators are drawn)
+        unsigned int heightuseableGC = 0;         // this correspond to the actual height of the widget that can be used (equals height but can be reduce by 15pixels if escalators are drawn)
+
+        bool escalatorH = false;
+        bool escalatorV = false;
+
+        bool scrollableX = false;
+        bool scrollableY = false;
 
         double zoomx = 1.0f;
         double zoomy = 1.0f;

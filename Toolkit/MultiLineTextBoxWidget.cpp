@@ -1,5 +1,6 @@
 #include "MultiLineTextBoxWidget.h"
 
+#include <fstream>
 
 MultiLineTextBoxWidget::MultiLineTextBoxWidget()
 {
@@ -18,6 +19,45 @@ MultiLineTextBoxWidget::MultiLineTextBoxWidget( std::string l, unsigned int x, u
 MultiLineTextBoxWidget::~MultiLineTextBoxWidget()
 {
        content.clear();
+}
+
+
+void MultiLineTextBoxWidget::flush()
+{
+       content.clear();
+}
+
+
+void MultiLineTextBoxWidget::loadcontentfromfile( std::string filename )
+{
+       flush();
+
+       /*
+       std::ifstream ifs( filename );
+
+       std::string contenttoadd( (std::istreambuf_iterator<char>(ifs) ), (std::istreambuf_iterator<char>()    ) );
+
+       content.push_back(contenttoadd);
+        */
+
+           FILE* pFile;
+           char c;
+
+           std::string filecontent;
+
+           pFile = fopen (filename.c_str(), "r");
+           if (pFile!=NULL)
+           {
+                   while (!feof(pFile))
+                   {
+                       fscanf( pFile, "%c",  &c);
+                       filecontent += c;
+                   }
+
+           fclose(pFile);
+           }
+
+       content.push_back( filecontent );
 }
 
 
@@ -96,7 +136,7 @@ void MultiLineTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
                      updateScroll();
               }
-             else if (keyboard->kbCTRL && keyboard->kbUP)
+              else if (keyboard->kbCTRL && keyboard->kbUP)
               {
                      cursor_posX = 0;
 
@@ -122,25 +162,25 @@ void MultiLineTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
                      updateScroll();
               }
-             else if (keyboard->kbDOWN)
+              else if (keyboard->kbDOWN)
               {
-                    if(cursor_posX < content[0].length()-nbcharvisibleperline)
+                     if(cursor_posX < content[0].length()-nbcharvisibleperline)
                             cursor_posX += nbcharvisibleperline;
-                    else
+                     else
                             cursor_posX = content[0].length();
 
                      updateScroll();
               }
-             else if (keyboard->kbUP)
-             {
-                    if(cursor_posX > nbcharvisibleperline)
+              else if (keyboard->kbUP)
+              {
+                     if(cursor_posX > nbcharvisibleperline)
                             cursor_posX -= nbcharvisibleperline;
-                    else
+                     else
                             cursor_posX = 0;
 
                      updateScroll();
-             }
-                // TO BE ADDED : THe CODE for the BOTTOM / UP and CTRL + BT/UP keys
+              }
+              // TO BE ADDED : THe CODE for the BOTTOM / UP and CTRL + BT/UP keys
 
               static char old_char = 0;
               if(c != old_char && c != 0)
@@ -239,23 +279,23 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
                             if (*str == '\n' )
                             {
-                                    // if the current char is "RETURN" we go to the next line
+                                   // if the current char is "RETURN" we go to the next line
                                    x1 = xpos + 5;
                                    currentline++;
                             }
                             else if (*str == '\t')
                             {
-                                // if the current char is a "TAB", we replace it with 5 SPACES
-                                for(unsigned int u=0; u<5; u++)
-                                {
-                                    fonts->drawcharleft( screen, ' ', x1, ypos + 2 + currentline * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
-                                    x1 += fonts->getcharwidth( ' ' ) + fonts->gethspacing();
-                                }
+                                   // if the current char is a "TAB", we replace it with 5 SPACES
+                                   for(unsigned int u=0; u<5; u++)
+                                   {
+                                          fonts->drawcharleft( screen, ' ', x1, ypos + 2 + currentline * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
+                                          x1 += fonts->getcharwidth( ' ' ) + fonts->gethspacing();
+                                   }
                             }
                             else
                             {
-                                fonts->drawcharleft( screen, *str, x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
-                                x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
+                                   fonts->drawcharleft( screen, *str, x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
+                                   x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
                             }
 
                             if (x1-xpos > width)
@@ -307,23 +347,23 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
                             if (*str == '\n' )
                             {
-                                    // if the current char is "RETURN" we go to the next line
+                                   // if the current char is "RETURN" we go to the next line
                                    x1 = xpos + 5;
                                    currentline++;
                             }
                             else if (*str == '\t')
                             {
-                                // if the current char is a "TAB", we replace it with 5 SPACES
-                                for(unsigned int u=0; u<5; u++)
-                                {
-                                    fonts->drawcharleft( screen, ' ', x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
-                                    x1 += fonts->getcharwidth( ' ' ) + fonts->gethspacing();
-                                }
+                                   // if the current char is a "TAB", we replace it with 5 SPACES
+                                   for(unsigned int u=0; u<5; u++)
+                                   {
+                                          fonts->drawcharleft( screen, ' ', x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                                          x1 += fonts->getcharwidth( ' ' ) + fonts->gethspacing();
+                                   }
                             }
                             else
                             {
-                                fonts->drawcharleft( screen, *str, x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
-                                x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
+                                   fonts->drawcharleft( screen, *str, x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                                   x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
                             }
 
                             if (x1-xpos > width)
@@ -352,23 +392,23 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
 void MultiLineTextBoxWidget::updateScroll()
 {
-/*
-       if(scrollX != 0 && cursor_posX <= scrollX)
-              --scrollX;
+       /*
+              if(scrollX != 0 && cursor_posX <= scrollX)
+                     --scrollX;
 
-       if(cursor_posX <= scrollX)
-              return;
+              if(cursor_posX <= scrollX)
+                     return;
 
-       nfontwidget->setcurrentfont( nfontwidget->widget_text_enable.name );
+              nfontwidget->setcurrentfont( nfontwidget->widget_text_enable.name );
 
-       const char *str = content[0].c_str() + scrollX;
-       unsigned int cur_x = 0;
-       unsigned int len = cursor_posX - scrollX;
+              const char *str = content[0].c_str() + scrollX;
+              unsigned int cur_x = 0;
+              unsigned int len = cursor_posX - scrollX;
 
-       while(len--)
-              cur_x += nfontwidget->getcharwidth( *str++ ) + nfontwidget->gethspacing();
+              while(len--)
+                     cur_x += nfontwidget->getcharwidth( *str++ ) + nfontwidget->gethspacing();
 
-       if(cur_x >= width - 5)
-              ++scrollX;
-*/
+              if(cur_x >= width - 5)
+                     ++scrollX;
+       */
 }

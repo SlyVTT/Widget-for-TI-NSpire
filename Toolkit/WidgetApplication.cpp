@@ -432,23 +432,16 @@ void WidgetApplication::logicwithforcedrender( void )
 {
 
     mouse->logic();
-
     keyboard->logic();
 
 
     // render() has to be called at every loop cause it is force (this is usefull for game loop but not for usual apps.
-
     render();
-
-
     renderdepth();
 
-
     // if an event from mouse or from keyboard is detected, we launch the children->logic() processes
-
     if (mouse->ismouseevent() || keyboard->iskeyevent())
     {
-
         for (auto& c : currentdesktop->rootwidgets )
             c->logic( mouse, keyboard );
     }

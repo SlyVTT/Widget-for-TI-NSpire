@@ -14,6 +14,9 @@ public:
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
+    virtual void loadcontentfromfile( std::string filename );
+    virtual void flush();
+
     virtual void appendcontent(std::string str);
 
 protected:
