@@ -497,8 +497,13 @@ char KeyboardTask::asciiget( )
        if (keyevent && kb8) return '8';
        if (keyevent && kb9) return '9';
 
+
+
        //then the symbols keys
        //(note that right now they are mapped as per nio_ascii_get, but this can be changed easily)
+
+       if (keyevent && kbEX && !capsonmode && !kbSHIFT && ! kbCTRL) return '#';
+
        if (keyevent && kbPAROPEN && !capsonmode && !kbSHIFT && ! kbCTRL) return '(';
        if (keyevent && kbPAROPEN && (capsonmode || kbSHIFT) && !kbCTRL) return '[';
        if (keyevent && kbPAROPEN && !(capsonmode || kbSHIFT) && kbCTRL) return '{';

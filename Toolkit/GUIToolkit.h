@@ -68,5 +68,6 @@
 
 #include "InputWidget.h"
 #include "MultiLineTextBoxWidget.h"
+#include "MultiLineRichTextBoxWidget.h"
 
 #include "GraphicContextWidget.h"

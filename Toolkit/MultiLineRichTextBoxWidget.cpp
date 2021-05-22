@@ -1,34 +1,34 @@
-#include "MultiLineTextBoxWidget.h"
+#include "MultiLineRichTextBoxWidget.h"
 
 #include <fstream>
 
-MultiLineTextBoxWidget::MultiLineTextBoxWidget()
+MultiLineRichTextBoxWidget::MultiLineRichTextBoxWidget()
 {
-       widgettype =  "MultiLineTextBox";
+       widgettype =  "MultiLineRichTextBox";
        content.push_back( " ");
 }
 
 
-MultiLineTextBoxWidget::MultiLineTextBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+MultiLineRichTextBoxWidget::MultiLineRichTextBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
 {
-       widgettype =  "MultiLineTextBox";
+       widgettype =  "MultiLineRichTextBox";
        content.push_back( " ");
 }
 
 
-MultiLineTextBoxWidget::~MultiLineTextBoxWidget()
+MultiLineRichTextBoxWidget::~MultiLineRichTextBoxWidget()
 {
        content.clear();
 }
 
 
-void MultiLineTextBoxWidget::flush()
+void MultiLineRichTextBoxWidget::flush()
 {
        content.clear();
 }
 
 
-void MultiLineTextBoxWidget::loadcontentfromfile( std::string filename )
+void MultiLineRichTextBoxWidget::loadcontentfromfile( std::string filename )
 {
        flush();
 
@@ -53,26 +53,26 @@ void MultiLineTextBoxWidget::loadcontentfromfile( std::string filename )
 }
 
 
-void MultiLineTextBoxWidget::appendcontent(std::string str)
+void MultiLineRichTextBoxWidget::appendcontent(std::string str)
 {
        content.push_back(str);
 }
 
 
-void MultiLineTextBoxWidget::setcontent( std::string str )
+void MultiLineRichTextBoxWidget::setcontent( std::string str )
 {
        flush();
        content.push_back(str);
 }
 
 
-std::string MultiLineTextBoxWidget::getcontent()
+std::string MultiLineRichTextBoxWidget::getcontent()
 {
        return content[0];
 }
 
 
-void MultiLineTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
+void MultiLineRichTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
        if (is_enabled && is_visible)
        {
@@ -227,7 +227,100 @@ void MultiLineTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 }
 
 
-void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
+void MultiLineRichTextBoxWidget::setstyle( char mode, unsigned short *R, unsigned short *G, unsigned short *B, unsigned short *A, ColorEngine *colors, FontEngine *fonts )
+{
+       switch(mode)
+       {
+       case '0':    // This is choosen as the default write mode
+              fonts->setcurrentfont( fonts->widget_text_enable.name );
+              fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+              fonts->setmodifierunder( fonts->widget_text_enable.under );
+              fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+              *R = colors->widget_text_enable.R;
+              *G = colors->widget_text_enable.G;
+              *B = colors->widget_text_enable.B;
+              *A = colors->widget_text_enable.A;
+              break;
+
+       case '1':    //This is the title level 1
+              fonts->setcurrentfont( FontEngine::VGA_FONT );
+              fonts->setmodifiertypo( FontEngine::Bold );
+              fonts->setmodifierunder( FontEngine::UnderSimple );
+              fonts->setmodifierstrike( FontEngine::NoStrike );
+              *R = 255;
+              *G = 0;
+              *B = 0;
+              *A = 255;
+              break;
+
+       case '2':
+              fonts->setcurrentfont( FontEngine::VGA_FONT );
+              fonts->setmodifiertypo( FontEngine::Normal );
+              fonts->setmodifierunder( FontEngine::UnderSimple );
+              fonts->setmodifierstrike( FontEngine::NoStrike );
+              *R = 0;
+              *G = 255;
+              *B = 0;
+              *A = 255;
+              break;
+
+       case '3':
+              fonts->setcurrentfont( FontEngine::VGA_FONT );
+              fonts->setmodifiertypo( FontEngine::Normal );
+              fonts->setmodifierunder( FontEngine::UnderSimple );
+              fonts->setmodifierstrike( FontEngine::NoStrike );
+              *R = 0;
+              *G = 0;
+              *B = 255;
+              *A = 255;
+              break;
+
+       case '4':
+              fonts->setcurrentfont( FontEngine::THIN_FONT );
+              fonts->setmodifiertypo( FontEngine::Italic );
+              fonts->setmodifierunder( FontEngine::NoUnder );
+              fonts->setmodifierstrike( FontEngine::NoStrike );
+              *R = 64;
+              *G = 64;
+              *B = 64;
+              *A = 255;
+              break;
+
+       case '5':
+
+              break;
+
+       case '6':
+
+              break;
+
+       case '7':
+
+              break;
+
+       case '8':
+
+              break;
+
+       case '9':
+
+              break;
+
+       default:
+              fonts->setcurrentfont( fonts->widget_text_enable.name );
+              fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+              fonts->setmodifierunder( fonts->widget_text_enable.under );
+              fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+              *R = colors->widget_text_enable.R;
+              *G = colors->widget_text_enable.G;
+              *B = colors->widget_text_enable.B;
+              *A = colors->widget_text_enable.A;
+              break;
+       }
+}
+
+
+void MultiLineRichTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
        fonts->setcurrentfont( fonts->widget_text_enable.name );
        nblinevisible = (height-5) /  (fonts->getcharheight( 'O' )+ fonts->getvspacing());
@@ -283,14 +376,18 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
                      }
 
+                     unsigned short R,G,B,A;
+
                      const char *str = content[0].c_str() + scrollX;
                      const char *cursor = content[0].c_str() + cursor_posX;
-                     unsigned int x1 = xpos + 2;
+                     unsigned int x1 = xpos + 5;
 
-                     fonts->setcurrentfont( fonts->widget_text_enable.name );
-                     fonts->setmodifiertypo( fonts->widget_text_enable.typo );
-                     fonts->setmodifierunder( fonts->widget_text_enable.under );
-                     fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+                     //fonts->setcurrentfont( fonts->widget_text_enable.name );
+                     //fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+                     //fonts->setmodifierunder( fonts->widget_text_enable.under );
+                     //fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+
+                     setstyle( '0', &R, &G, &B, &A, colors, fonts );
 
                      char* tpstr = (char*) str;
                      int sh = fonts->getstringheight( tpstr );
@@ -308,7 +405,58 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                                    x1+=2;
                             }
 
-                            if (*str == '\n' )
+
+                            if ((str[0]=='#') && (str[1]=='0')) // This corresponds to the normal style
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='1'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='2'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='3'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='4'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='5'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='6'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='7'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='8'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='9'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if (*str == '\n' )
                             {
                                    // if the current char is "RETURN" we go to the next line
                                    x1 = xpos + 2;
@@ -321,7 +469,7 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                                    {
                                           if ((currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                                           {
-                                                 fonts->drawcharleft( screen, ' ', x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
+                                                 fonts->drawcharleft( screen, ' ', x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp), R, G, B, A);
                                           }
                                           x1 += fonts->getcharwidth( ' ' ) + fonts->gethspacing();
                                    }
@@ -330,7 +478,7 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                             {
                                    if ((currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                                    {
-                                          fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
+                                          fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp), R, G, B, A);
                                    }
                                    x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
                             }
@@ -374,19 +522,24 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                             filledCircleRGBA( screen, xpos+width-8, ypos+7+y, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
                      }
 
+                     unsigned short R,G,B,A;
+
                      const char *str = content[0].c_str() + scrollX;
                      const char *cursor = content[0].c_str() + cursor_posX;
                      unsigned int x1 = xpos + 5;
 
-                     fonts->setcurrentfont( fonts->widget_text_disable.name );
-                     fonts->setmodifiertypo( fonts->widget_text_disable.typo );
-                     fonts->setmodifierunder( fonts->widget_text_disable.under );
-                     fonts->setmodifierstrike( fonts->widget_text_disable.strike );
+                     //fonts->setcurrentfont( fonts->widget_text_enable.name );
+                     //fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+                     //fonts->setmodifierunder( fonts->widget_text_enable.under );
+                     //fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+
+                     setstyle( '0', &R, &G, &B, &A, colors, fonts );
 
                      char* tpstr = (char*) str;
                      int sh = fonts->getstringheight( tpstr );
                      int sp = fonts->getvspacing();
 
+                     currentline = 0;
                      //while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
                      while (*str)
                      {
@@ -398,7 +551,58 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                                    x1+=2;
                             }
 
-                            if (*str == '\n' )
+
+                            if ((str[0]=='#') && (str[1]=='0')) // This corresponds to the normal style
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='1'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='2'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='3'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='4'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='5'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='6'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='7'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='8'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if ((str[0]=='#') && (str[1]=='9'))
+                            {
+                                   setstyle( str[1], &R, &G, &B, &A, colors, fonts );
+                                   str++;
+                            }
+                            else if (*str == '\n' )
                             {
                                    // if the current char is "RETURN" we go to the next line
                                    x1 = xpos + 2;
@@ -409,25 +613,19 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                                    // if the current char is a "TAB", we replace it with 5 SPACES
                                    for(unsigned int u=0; u<5; u++)
                                    {
-                                          //fonts->drawcharleft( screen, ' ', x1, ypos + 2 + currentline * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
-
                                           if ((currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                                           {
-                                                 fonts->drawcharleft( screen, ' ', x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A);
+                                                 fonts->drawcharleft( screen, ' ', x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp), R, G, B, A);
                                           }
-
                                           x1 += fonts->getcharwidth( ' ' ) + fonts->gethspacing();
                                    }
                             }
                             else
                             {
-                                   //fonts->drawcharleft( screen, *str, x1, ypos + 2+ currentline * (sh+sp), colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
-
                                    if ((currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                                    {
-                                          fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A);
+                                          fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp), R, G, B, A);
                                    }
-
                                    x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
                             }
 
@@ -445,6 +643,7 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                                    if (currentline>currentnblinetotal) currentnblinetotal=currentline;
                             }
 
+
                             ++str;
                      }
 
@@ -457,7 +656,6 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
 
               }
-
               for (auto& c : children )
                      c->render( screen, colors, fonts );
        }
@@ -465,7 +663,25 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
        nblinetotal = currentnblinetotal;
 }
 
-void MultiLineTextBoxWidget::updateScroll()
+void MultiLineRichTextBoxWidget::updateScroll()
 {
+       /*
+              if(scrollX != 0 && cursor_posX <= scrollX)
+                     --scrollX;
 
+              if(cursor_posX <= scrollX)
+                     return;
+
+              nfontwidget->setcurrentfont( nfontwidget->widget_text_enable.name );
+
+              const char *str = content[0].c_str() + scrollX;
+              unsigned int cur_x = 0;
+              unsigned int len = cursor_posX - scrollX;
+
+              while(len--)
+                     cur_x += nfontwidget->getcharwidth( *str++ ) + nfontwidget->gethspacing();
+
+              if(cur_x >= width - 5)
+                     ++scrollX;
+       */
 }

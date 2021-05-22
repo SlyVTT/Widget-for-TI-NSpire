@@ -1,18 +1,20 @@
-#ifndef MULTILINETEXTBOXWIDGET_H
-#define MULTILINETEXTBOXWIDGET_H
+#ifndef MULTILINERICHTEXTBOXWIDGET_H
+#define MULTILINERICHTEXTBOXWIDGET_H
 
 #include "Widget.h"
 
 
-class MultiLineTextBoxWidget : public Widget
+class MultiLineRichTextBoxWidget : public Widget
 {
 public:
-    MultiLineTextBoxWidget();
-    MultiLineTextBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-    virtual ~MultiLineTextBoxWidget();
+    MultiLineRichTextBoxWidget();
+    MultiLineRichTextBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~MultiLineRichTextBoxWidget();
 
     virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+
+    virtual void setstyle( char mode, unsigned short *R, unsigned short *G, unsigned short *B, unsigned short *A, ColorEngine *colors, FontEngine *fonts );
 
     virtual void loadcontentfromfile( std::string filename );
     virtual void flush();
@@ -49,4 +51,4 @@ private:
     bool key_hold_down = false;
 };
 
-#endif // MULTILINETEXTBOXWIDGET_H
+#endif // MULTILINERICHTEXTBOXWIDGET_H
