@@ -2,6 +2,8 @@
 #define KEYBOARDTASK_H
 
 #include <SDL/SDL.h>
+#include <string>
+
 
 /// Example of program using KeyboardTask
 ///
@@ -104,8 +106,14 @@ public:
     virtual ~KeyboardTask();
     virtual void logic();
 
+    virtual void setselection( std::string select );
+    virtual std::string getselection( void );
+    virtual void flushselection( void );
+
     //This is a recode of LibNDLS nio_ascii_get() to correctly map the nSpire CX/CX-II keyboard
     virtual char asciiget( );
+
+    virtual void resetstate();
 
     virtual bool iskeypressed();
     virtual bool iskeyevent( );
@@ -222,6 +230,7 @@ public:
 private:
     unsigned short *base;
     unsigned short *specialON;
+    std::string selection;
 };
 
 #endif // KEYBOARDTASK_H

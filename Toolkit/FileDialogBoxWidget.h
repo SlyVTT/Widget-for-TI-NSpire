@@ -22,11 +22,23 @@ class FileDialogBoxWidget : public DialogBoxWidget
 
         virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
+       enum filedialogtype
+       {
+              fileopen = 0,
+              filesaveas = 1,
+              filesave = 2
+       };
+
             // These methods must be override cause window geometry is a bit different with the title bar
         virtual unsigned int getuseablexpos() override;
         virtual unsigned int getuseableypos() override;
         virtual unsigned int getuseablewidth() override;
         virtual unsigned int getuseableheight() override;
+
+        virtual void setdialogtype( FileDialogBoxWidget::filedialogtype type );
+        virtual FileDialogBoxWidget::filedialogtype getdialogtype( void );
+
+
 
         bool validated = false;
         bool canceled = false;
@@ -43,6 +55,7 @@ class FileDialogBoxWidget : public DialogBoxWidget
 
         ContainerVWidget *vertical_layout;
         LabelWidget *header_text;
+        LabelWidget *bottom_text;
         ContainerHWidget *horizontal_split;
         InputWidget *input_name;
         ContainerHWidget *horizontal_split_button;
@@ -55,6 +68,7 @@ class FileDialogBoxWidget : public DialogBoxWidget
 
     private:
         int listdir(std::string path);
+        filedialogtype typedialog;
 };
 
 #endif // FILEDIALOGBOX_H

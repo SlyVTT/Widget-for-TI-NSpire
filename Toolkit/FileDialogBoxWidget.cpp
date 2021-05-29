@@ -53,14 +53,48 @@ std::string simplify(std::string path)
 
 FileDialogBoxWidget::FileDialogBoxWidget()
 {
-       widgettype = "FileDialogBox";
-       //strcpy( pathtoexplore, (char *) "./Widget\0" );
+    widgettype = "FileDialogBox";
+    typedialog = fileopen;
 }
 
 FileDialogBoxWidget::~FileDialogBoxWidget()
 {
        //dtor
 }
+
+
+void FileDialogBoxWidget::setdialogtype( FileDialogBoxWidget::filedialogtype type )
+{
+    typedialog = type;
+    if (type==fileopen)
+    {
+        this->setlabel( "File Open ...");
+        header_text->setlabel("Pick a folder and a file to open :");
+        filelist->enable();
+        bottom_text->setlabel("The selected file is :");
+    }
+    else  if (type==filesaveas)
+    {
+        this->setlabel( "File Save As ...");
+        header_text->setlabel("Pick a folder for save location :");
+        filelist->disable();
+        bottom_text->setlabel("Name of the file (ending with .tns) :");
+    }
+    else  if (type==filesave)
+    {
+        this->setlabel( "File Save ...");
+        header_text->setlabel("Pick a folder for save location :");
+        filelist->disable();
+        bottom_text->setlabel("Name of the file (ending with .tns) :");
+    }
+}
+
+
+FileDialogBoxWidget::filedialogtype FileDialogBoxWidget::getdialogtype( void )
+{
+    return typedialog;
+}
+
 
 char* FileDialogBoxWidget::getselectedfilename()
 {
@@ -87,26 +121,16 @@ int FileDialogBoxWidget::listdir( std::string path)
        while((ent = readdir(dir)))
        {
               //Test whether it's a directory
-              //strcpy(name, path);
-              //strcat(name,"/");
-              //strcat(name, ent->d_name);
               name = path+"/"+std::string(ent->d_name);
-
               DIR *test = opendir( name.c_str() );
               if(test)    // This is a directory and we add to the folder list widget
               {
                      closedir(test);
-                     //char *temp = (char*) malloc( strlen(ent->d_name) +1 );
-                     //strcpy(temp, ent->d_name );
-                     //filelist->additem( (char *) temp );
                      std::string temp(ent->d_name);
                      folderlist->additem( (char*) temp.c_str() );
               }
               else    // this is a file and we add to the file list widget
               {
-                     //char *temp = (char*) malloc( strlen(ent->d_name) +1 );
-                     //strcpy(temp, ent->d_name );
-                     //filelist->additem( (char *) temp );
                      std::string temp(ent->d_name);
                      filelist->additem( (char*) temp.c_str() );
               }
@@ -119,6 +143,7 @@ int FileDialogBoxWidget::listdir( std::string path)
 FileDialogBoxWidget::FileDialogBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ): DialogBoxWidget( l, x, y, w, h, p )
 {
        widgettype = "FileDialogBox";
+       typedialog = fileopen;
        pathtoexplore = std::string( "/documents/Widget/" );
 
        vertical_layout = new ContainerVWidget( "ContainerV", 1, 1, 1, 1, this );
@@ -139,6 +164,9 @@ FileDialogBoxWidget::FileDialogBoxWidget( std::string l, unsigned int x, unsigne
        filelist = new ListBoxWidget( "File List",1,1,1,1, horizontal_split );
        horizontal_split->addconstraint( 50, (char*) "%" );
 
+       bottom_text = new LabelWidget( "Selected file",1,1,1,1, vertical_layout );
+       bottom_text->setalignment( LabelWidget::left );
+       vertical_layout->addconstraint( 10, (char*) "px" );
 
        input_name = new InputWidget( ".",1,1,1,1, vertical_layout );
        input_name->setcontent( (char *) pathtoexplore.c_str() );
@@ -309,15 +337,10 @@ void FileDialogBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
               if (filelist->validated)
               {
-                     //strcpy( fileselected, filelist->getselecteditem() );
-
                      fileselected = std::string( filelist->getselecteditem() );
 
                      filelist->validated = false;
 
-                     //strcpy( fullname, pathtoexplore );
-                     //strcat( fullname, "/" );
-                     //strcat( fullname, fileselected );
                      fullname = pathtoexplore+fileselected;
 
                      input_name->setcontent( fullname.c_str() );
@@ -325,13 +348,11 @@ void FileDialogBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 
 
 
-
-
-
               if (okbutton->ispressed())
               {
                      validated = true;
                      canceled = false;
+                     this->setinvisible();
               }
 
 
@@ -339,6 +360,7 @@ void FileDialogBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
               {
                      validated = false;
                      canceled = true;
+                     this->setinvisible();
               }
 
               // No PopUpChild

@@ -59,6 +59,7 @@ public:
 
     virtual void initiateall( void );
     virtual void run( unsigned mode );
+    virtual void quit (void );
 
     virtual void render( void );
     virtual void renderdepth( void );

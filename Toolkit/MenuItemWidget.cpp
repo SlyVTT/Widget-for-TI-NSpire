@@ -27,12 +27,14 @@ void MenuItemWidget::drop( )
 {
        is_dropped = true;
        is_visible = true;
+       //is_pressed = false;
 }
 
 void MenuItemWidget::undrop( )
 {
        is_dropped = false;
        is_visible = false;
+       is_pressed = false;
 }
 
 
@@ -52,19 +54,25 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
               {
                      if (clickfunction)
                             clickfunction( (char*) "test" );
+                     is_pressed = true;
               }
               else if(!currently_pressed && is_pressed)
               {
                      if (releasefunction)
                             releasefunction( (char*) "test" );
+                     is_pressed = false;
               }
               else if(is_hovering)
               {
                      if (hoverfunction)
                             hoverfunction( (char*) "test" );
+                     is_pressed = false;
               }
-
-              is_pressed = currently_pressed;
+              else
+              {
+                     is_pressed = false;
+              }
+              //is_pressed = currently_pressed;
 
               if (is_pressed && (children.size()!=0))
               {
@@ -99,6 +107,15 @@ void MenuItemWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
               for (auto& c : children )
                      c->logic( mouse, keyboard );
        }
+/*       else
+       {
+              // DEBUG : test to see if it actually works
+              for (auto& c : children )
+                     c->logic( mouse, keyboard );
+
+              is_pressed = false;
+       }
+*/
 }
 
 void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
@@ -192,10 +209,6 @@ void MenuItemWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
               }
 
               for (auto& c : children )
-              {
-                     if (c->isvisible())
-                            c->render( screen, colors, fonts );
-              }
-
+                     c->render( screen, colors, fonts );
        }
 }

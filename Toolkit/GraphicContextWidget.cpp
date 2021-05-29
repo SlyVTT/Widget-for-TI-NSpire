@@ -1,6 +1,6 @@
 #include "GraphicContextWidget.h"
 #include <SDL/SDL_rotozoom.h>
-
+#include <SDL/SDL.h>
 
 GraphicContextWidget::GraphicContextWidget() : Widget()
 {
@@ -38,6 +38,26 @@ void GraphicContextWidget::assignsurface( SDL_Surface *surface )
        surfacetobedrawn = surface;
        setuserzoomlevel( 1.0f );
        update();
+}
+
+
+SDL_Surface *GraphicContextWidget::createemptyimage( unsigned int width, unsigned int height )
+{
+       SDL_Surface* surf;
+       surf = SDL_CreateRGBSurface(0, width, height, 16, 0, 0, 0, 0 );
+       SDL_FillRect( surf, 0, 0x0000);
+       SDL_Flip(surf);
+       return surf;
+}
+
+
+SDL_Surface *GraphicContextWidget::createemptyimagecolor( unsigned int width, unsigned int height, unsigned short R, unsigned short G, unsigned short B, unsigned short A  )
+{
+       SDL_Surface* surf;
+       surf = SDL_CreateRGBSurface(0, width, height, 16, 0, 0, 0, 0 );
+       SDL_FillRect( surf, 0, SDL_MapRGBA( surf->format, R, G, B, A));
+       SDL_Flip(surf);
+       return surf;
 }
 
 

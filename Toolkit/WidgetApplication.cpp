@@ -208,6 +208,30 @@ WidgetApplication::~WidgetApplication()
 }
 
 
+void WidgetApplication::quit()
+{
+    //nSDL_FreeFont( currentfont );
+    //SDL_FreeSurface( screen );
+
+    delete mouse;
+    delete keyboard;
+    delete colors;
+    delete fonts;
+
+    for (auto& c : desktops)
+    {
+        if (c->background_image != nullptr) SDL_FreeSurface( c->background_image );
+        SDL_FreeSurface( c->screen );
+        SDL_FreeSurface( c->depthbuffer );
+
+        c->rootwidgets.clear();
+    }
+
+    SDL_Quit();
+
+    printf("Exited cleanly\n");
+}
+
 
 void WidgetApplication::addchild( Widget *root )
 {
@@ -440,7 +464,7 @@ void WidgetApplication::logicwithforcedrender( void )
     renderdepth();
 
     // if an event from mouse or from keyboard is detected, we launch the children->logic() processes
-    if (mouse->ismouseevent() || keyboard->iskeyevent())
+//    if (mouse->ismouseevent() || keyboard->iskeyevent())
     {
         for (auto& c : currentdesktop->rootwidgets )
             c->logic( mouse, keyboard );

@@ -71,3 +71,6 @@
 #include "MultiLineRichTextBoxWidget.h"
 
 #include "GraphicContextWidget.h"
+
+#include "SplashScreenWidget.h"
+

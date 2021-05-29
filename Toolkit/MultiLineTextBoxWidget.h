@@ -15,7 +15,16 @@ public:
     virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
     virtual void loadcontentfromfile( std::string filename );
+    virtual void savecontenttofile( std::string filename );
     virtual void flush();
+
+    virtual void copyselection();
+    virtual void cutselection();
+    virtual void pasteselection();
+    virtual void eraseselection();
+
+    virtual void setnoneditable();
+    virtual void seteditable();
 
     virtual std::string getcontent();
     virtual void setcontent( std::string str );
@@ -30,9 +39,20 @@ private:
 
     std::vector<std::string> content;
 
+    KeyboardTask *keybclip = nullptr;
+
+    unsigned int selectstart;
+    unsigned int selectend;
+    std::string selection;
+    bool isselected;
+
+    bool iseditable = true;
+
     unsigned int nblinetotal = 0;
     unsigned int firstlinevisible = 0;
     unsigned int currentline = 0;
+
+    unsigned int currentlinecursor = 0;
 
     unsigned int nblinevisible = 0;
     unsigned int nbcharvisibleperline = 0;

@@ -345,9 +345,16 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                                           fonts->setmodifierunder( fonts->widget_text_enable.under );
                                           fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
-                                          int sh = fonts->getstringheight( getitem(i) );
+                                          //We check if the titel can be written in the titlebar (with 5px on each side of the title
+                                          if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( getitem(i), width-5-25 );
+                                          if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( getitem(i), width-5-25 );
 
-                                          fonts->drawstringleft( screen, getitem(i), xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                                          if (drawablecharlabel!=0)
+                                          {
+                                                 drawablelabel = fonts->reducestringtovisible( getitem(i), width-5 -25  );
+                                                 int sh = fonts->getstringheight( drawablelabel );
+                                                 fonts->drawstringleft( screen, drawablelabel, xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                                          }
                                    }
                                    else
                                    {
@@ -356,15 +363,25 @@ void ListBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
                                           fonts->setmodifierunder( fonts->widget_text_selected.under );
                                           fonts->setmodifierstrike( fonts->widget_text_selected.strike );
 
-                                          int sh = fonts->getstringheight( getitem(i) );
+                                          //We check if the titel can be written in the titlebar (with 5px on each side of the title
+                                          if (nbvisible>=nbitem) drawablecharlabel = fonts->assertstringlength( getitem(i), width-5-25 );
+                                          if (nbvisible<nbitem) drawablecharlabel = fonts->assertstringlength( getitem(i), width-5-25 );
 
-                                          // if we can see all the item, no need for space for the escalator on the right
-                                          if (nbvisible>=nbitem) roundedRectangleRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
-                                          //else we draw the selection line a bit shorter not to cover the escalator
-                                          if (nbvisible<nbitem) roundedRectangleRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
 
-                                          fonts->drawstringleft( screen, getitem(i), xpos+5, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
-                                   }
+                                          if (drawablecharlabel!=0)
+                                          {
+                                                 drawablelabel = fonts->reducestringtovisible( getitem(i), width-5 -25  );
+                                                 int sh = fonts->getstringheight( drawablelabel );
+
+                                                 // if we can see all the item, no need for space for the escalator on the right
+                                                 if (nbvisible>=nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-3, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+                                                 //else we draw the selection line a bit shorter not to cover the escalator
+                                                 if (nbvisible<nbitem) roundedBoxRGBA( screen, xpos+3, ypos+3+(unsigned int) ((i-scroll)*(sh*2)), xpos+width-18, ypos+15+(unsigned int) ((i-scroll)*(sh*2)), 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A );
+
+
+                                                 fonts->drawstringleft( screen, drawablelabel, xpos+8, ypos+5+(unsigned int) ((i-scroll)*(sh*2)), colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                                          }
+                                  }
                             }
                      }
 

@@ -14,6 +14,9 @@ public:
        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
+       SDL_Surface *createemptyimage( unsigned int width, unsigned int height );
+       SDL_Surface *createemptyimagecolor( unsigned int width, unsigned int height, unsigned short R, unsigned short G, unsigned short B, unsigned short A  );
+
        enum drawmode
        {
            normal = 0,              // zoomx = zoomy = 1

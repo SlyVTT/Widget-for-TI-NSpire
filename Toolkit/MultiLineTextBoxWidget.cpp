@@ -5,28 +5,44 @@
 MultiLineTextBoxWidget::MultiLineTextBoxWidget()
 {
        widgettype =  "MultiLineTextBox";
-       content.push_back( " ");
+       content.push_back( "");
+       cursor_posX = 0;
 }
 
 
 MultiLineTextBoxWidget::MultiLineTextBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
 {
        widgettype =  "MultiLineTextBox";
-       content.push_back( " ");
+       content.push_back( "" );
+       cursor_posX = 0;
 }
 
 
 MultiLineTextBoxWidget::~MultiLineTextBoxWidget()
 {
        content.clear();
+       selection.clear();
 }
 
 
 void MultiLineTextBoxWidget::flush()
 {
        content.clear();
+       cursor_posX = 0;
 }
 
+void MultiLineTextBoxWidget::savecontenttofile( std::string filename )
+{
+       FILE* pFile;
+
+       pFile = fopen (filename.c_str(), "w");
+       if (pFile!=NULL)
+       {
+              fprintf( pFile, "%s",  content[0].c_str());
+              fclose(pFile);
+       }
+       cursor_posX = 0;
+}
 
 void MultiLineTextBoxWidget::loadcontentfromfile( std::string filename )
 {
@@ -49,13 +65,15 @@ void MultiLineTextBoxWidget::loadcontentfromfile( std::string filename )
               fclose(pFile);
        }
 
-       content.push_back( filecontent );
+       setcontent( filecontent );
+       cursor_posX = 0;
 }
 
 
 void MultiLineTextBoxWidget::appendcontent(std::string str)
 {
-       content.push_back(str);
+       //content.push_back(str);
+       content[0] += str;
 }
 
 
@@ -72,8 +90,107 @@ std::string MultiLineTextBoxWidget::getcontent()
 }
 
 
+void MultiLineTextBoxWidget::setnoneditable()
+{
+       iseditable = false;
+}
+
+void MultiLineTextBoxWidget::seteditable()
+{
+       iseditable = true;
+}
+
+
+void MultiLineTextBoxWidget::copyselection()
+{
+       if (keybclip)
+       {
+              if (selectstart==selectend)
+              {
+                     //keybclip->flushselection();
+              }
+              else if (selectstart<selectend)
+              {
+                     keybclip->setselection( content[0].substr(selectstart, selectend-selectstart) );
+              }
+              else if (selectstart>selectend)
+              {
+                     keybclip->setselection( content[0].substr(selectend, selectstart-selectend) );
+              }
+              //keybclip->resetstate();
+              isselected = false;
+              selectend = selectstart;
+       }
+}
+
+void MultiLineTextBoxWidget::cutselection()
+{
+       if (keybclip && iseditable)
+       {
+              if (selectstart==selectend)
+              {
+                     //keybclip->flushselection();
+              }
+              else if (selectstart<selectend)
+              {
+                     keybclip->setselection( content[0].substr(selectstart, selectend-selectstart) );
+
+                     content[0].erase(selectstart, selectend-selectstart );
+              }
+              else if (selectstart>selectend)
+              {
+                     keybclip->setselection( content[0].substr(selectend, selectstart-selectend) );
+
+                     content[0].erase(selectend, selectstart-selectend );
+              }
+              //keybclip->resetstate();
+              isselected = false;
+              selectend = selectstart;
+       }
+}
+
+void MultiLineTextBoxWidget::pasteselection()
+{
+       if (keybclip&& iseditable)
+       {
+              if (keybclip->getselection().size()!=0)
+              {
+                     content[0].insert(cursor_posX, keybclip->getselection() );
+              }
+              //keybclip->resetstate();
+              isselected = false;
+              selectend = selectstart;
+       }
+}
+
+void MultiLineTextBoxWidget::eraseselection()
+{
+       if (keybclip && iseditable)
+       {
+              if (selectstart==selectend)
+              {
+                     // not selection to be erased
+              }
+              else if (selectstart<selectend)
+              {
+                     content[0].erase(selectstart, selectend-selectstart );
+              }
+              else if (selectstart>selectend)
+              {
+                     content[0].erase(selectend, selectstart-selectend );
+              }
+              //keybclip->resetstate();
+              isselected = false;
+              selectend = selectstart;
+       }
+}
+
+
 void MultiLineTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
+       // we get the connection with the keyboard handlet to have access to the clipboard function;
+       if (keybclip==nullptr) keybclip=keyboard;
+
        if (is_enabled && is_visible)
        {
               is_hovering = cursoron( mouse );
@@ -117,110 +234,227 @@ void MultiLineTextBoxWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
               if(!has_focus)
                      return;
 
-              char c = keyboard->asciiget();
 
-              if (c>=0x80)
-                     return;
+              char c;
 
+              if (iseditable)
+              {
+                     c = keyboard->asciiget();
+
+                     if (c>=0x80)
+                            return;
+              }
 
               if (key_hold_down)
               {
                      key_hold_down = any_key_pressed();
               }
-              else if (keyboard->kbSHIFT && keyboard->kbUP)
+
+
+
+
+              // This is the behavior assigned to SHIFT + arrow keys which control the selection
+
+              else if (keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbLEFT)
               {
-                     if (firstlinevisible>0) firstlinevisible--;
-              }
-              else if (keyboard->kbSHIFT && keyboard->kbDOWN)
-              {
-                     if (firstlinevisible<nblinetotal) firstlinevisible++;
-              }
-              else if (keyboard->kbCTRL && keyboard->kbLEFT)
-              {
-                     cursor_posX = 0;
+                     if (isselected==false) selectstart=cursor_posX;
+                     isselected=true;
+
+                     if (cursor_posX > 0)
+                     {
+                            cursor_posX--;
+                     }
+                     else
+                     {
+                            cursor_posX=0;
+                     }
+
+                     selectend = cursor_posX;
 
                      updateScroll();
               }
-              else if (keyboard->kbCTRL && keyboard->kbRIGHT)
+              else if (keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbRIGHT)
               {
-                     cursor_posX = content[0].length();
+                     if (isselected==false) selectstart=cursor_posX;
+                     isselected=true;
+
+                     if (cursor_posX < content[0].length())
+                     {
+                            cursor_posX++;
+                     }
+                     else
+                     {
+                            cursor_posX=content[0].length();
+                     }
+
+                     selectend = cursor_posX;
 
                      updateScroll();
               }
-              else if (keyboard->kbCTRL && keyboard->kbUP)
+              else if (keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbUP)
               {
-                     cursor_posX = 0;
+                     if (isselected==false) selectstart=cursor_posX;
+                     isselected=true;
+
+                     if(cursor_posX > nbcharvisibleperline)
+                            cursor_posX -= nbcharvisibleperline;
+                     else
+                            cursor_posX = 0;
+
+                     selectend = cursor_posX;
 
                      updateScroll();
-              }
-              else if (keyboard->kbCTRL && keyboard->kbDOWN)
-              {
-                     cursor_posX = content[0].length();
 
-                     updateScroll();
+                     //if (firstlinevisible>0) firstlinevisible--;
               }
-              else if (keyboard->kbLEFT)
+              else if (keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbDOWN)
               {
-                     if(cursor_posX > 0)
-                            --cursor_posX;
+                     if (isselected==false) selectstart=cursor_posX;
+                     isselected=true;
 
-                     updateScroll();
-              }
-              else if (keyboard->kbRIGHT)
-              {
-                     if(cursor_posX < content[0].length())
-                            ++cursor_posX;
-
-                     updateScroll();
-              }
-              else if (keyboard->kbDOWN)
-              {
                      if(cursor_posX < content[0].length()-nbcharvisibleperline)
                             cursor_posX += nbcharvisibleperline;
                      else
                             cursor_posX = content[0].length();
 
+                     selectend = cursor_posX;
+
+                     updateScroll();
+                     //if (firstlinevisible<nblinetotal) firstlinevisible++;
+              }
+
+
+              // This is the behavior assigned to CTRL + arrow keys and CTRL + X/V/C/DEL which control the scroll and copy/paste/cut/erase
+
+              else if (keyboard->keypressevent && isselected && !keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbC)                      // CTRL + C to copy the selection to the KeyboardTask
+              {
+                     copyselection();
+              }
+              else if (keyboard->keypressevent && isselected && !keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbX)                      // CTRL + X to cut the selection to the KeyboardTask
+              {
+                     cutselection();
+              }
+              else if (keyboard->keypressevent && isselected && !keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbDEL)                      // CTRL + DEL to erase the selection
+              {
+                     eraseselection();
+              }
+              else if (keyboard->keypressevent && !keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbV)                      // CTRL + V to paste the selection coming from the KeyboardTask
+              {
+                     pasteselection();
+              }
+              else if (!keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbLEFT)
+              {
+                     cursor_posX = 0;
+                     isselected = false;
                      updateScroll();
               }
-              else if (keyboard->kbUP)
+              else if (!keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbRIGHT)
+              {
+                     cursor_posX = content[0].length();
+                     isselected = false;
+                     updateScroll();
+              }
+              else if (!keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbUP)
               {
                      if(cursor_posX > nbcharvisibleperline)
                             cursor_posX -= nbcharvisibleperline;
                      else
                             cursor_posX = 0;
 
+                     if (currentlinecursor<=firstlinevisible) firstlinevisible=currentlinecursor;
+
+                     isselected = false;
+                     updateScroll();
+              }
+              else if (!keyboard->kbSHIFT && keyboard->kbCTRL && keyboard->kbDOWN)
+              {
+                     if(cursor_posX < content[0].length()-nbcharvisibleperline)
+                            cursor_posX += nbcharvisibleperline;
+                     else
+                            cursor_posX = content[0].length();
+
+                     if (currentlinecursor>firstlinevisible+nblinevisible) firstlinevisible=currentlinecursor;
+
+                     isselected = false;
+                     updateScroll();
+              }
+
+
+              // This is the behavior assigned to arrow keys which control the movement of the cursor
+
+              else if (!keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbLEFT)
+              {
+                     if(cursor_posX > 0)
+                            --cursor_posX;
+                     isselected = false;
+                     updateScroll();
+              }
+              else if (!keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbRIGHT)
+              {
+                     if(cursor_posX < content[0].length())
+                            ++cursor_posX;
+                     isselected = false;
+                     updateScroll();
+              }
+              else if (!keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbDOWN)
+              {
+                     if(cursor_posX < content[0].length()-nbcharvisibleperline)
+                            cursor_posX += nbcharvisibleperline;
+                     else
+                            cursor_posX = content[0].length();
+
+                     if (currentlinecursor>firstlinevisible+nblinevisible) firstlinevisible=currentlinecursor;
+
+                     isselected = false;
+                     updateScroll();
+              }
+              else if (!keyboard->kbSHIFT && !keyboard->kbCTRL && keyboard->kbUP)
+              {
+                     if(cursor_posX > nbcharvisibleperline)
+                            cursor_posX -= nbcharvisibleperline;
+                     else
+                            cursor_posX = 0;
+
+                     if (currentlinecursor<=firstlinevisible) firstlinevisible=currentlinecursor;
+
+                     isselected = false;
                      updateScroll();
               }
 
               static char old_char = 0;
-              if(c != old_char && c != 0)
+
+              if (iseditable)
               {
-                     if(c == '\b')
+
+                     if(c != old_char && c != 0)
                      {
-                            if(cursor_posX > 0)
+                            if(c == '\b')
                             {
-                                   content[0].erase(content[0].begin() + (cursor_posX - 1));
-                                   --cursor_posX;
+                                   if(cursor_posX > 0)
+                                   {
+                                          content[0].erase(content[0].begin() + (cursor_posX - 1));
+                                          --cursor_posX;
+
+                                          updateScroll();
+                                   }
+                            }
+                            else
+                            {
+                                   content[0].insert(content[0].begin() + cursor_posX, c);
+                                   ++cursor_posX;
 
                                    updateScroll();
                             }
                      }
-                     else
+
+                     old_char = c;
+
+                     if(!any_key_pressed())
                      {
-                            content[0].insert(content[0].begin() + cursor_posX, c);
-                            ++cursor_posX;
-
-                            updateScroll();
+                            old_char = 0;
                      }
+
               }
-
-              old_char = c;
-
-              if(!any_key_pressed())
-              {
-                     old_char = 0;
-              }
-
               for (auto& c : children ) c->logic( mouse, keyboard );
 
        }
@@ -283,6 +517,8 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
                      }
 
+
+
                      const char *str = content[0].c_str() + scrollX;
                      const char *cursor = content[0].c_str() + cursor_posX;
                      unsigned int x1 = xpos + 2;
@@ -292,16 +528,42 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                      fonts->setmodifierunder( fonts->widget_text_enable.under );
                      fonts->setmodifierstrike( fonts->widget_text_enable.strike );
 
+
+
                      char* tpstr = (char*) str;
                      int sh = fonts->getstringheight( tpstr );
                      int sp = fonts->getvspacing();
+
+                     unsigned int currentpositioniinstring = 0;
+                     bool selected = false;
+
+                     unsigned int selend=selectend;
+                     unsigned int selsta=selectstart;
+
+                     if (selend<selectstart)
+                     {
+                            selend = selectstart;
+                            selsta = selectend;
+                     }
 
                      currentline = 0;
                      //while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
                      while (*str)
                      {
 
-                            if(has_focus && str == cursor)
+                            if (isselected && (currentpositioniinstring>=selsta) && (currentpositioniinstring<selend))
+                                   selected = true;
+                            else
+                                   selected = false;
+
+                            // TO BE TESTED
+                            if (str == cursor)
+                            {
+                                   currentlinecursor = currentline;
+                            }
+                            // END TO BE TESTED
+
+                            if(has_focus && (str == cursor) &&  (currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                             {
                                    vlineRGBA( screen, x1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
                                    vlineRGBA( screen, x1+1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
@@ -330,7 +592,15 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                             {
                                    if ((currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                                    {
-                                          fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
+                                          if (!selected)
+                                          {
+                                                 fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A);
+                                          }
+                                          else
+                                          {
+                                                 boxRGBA( screen, x1, ypos+2+(currentline-firstlinevisible) * (sh+sp), x1+fonts->getcharwidth( (char) *str ), ypos+2+(currentline-firstlinevisible) * (sh+sp) + sh, colors->widget_selection.R, colors->widget_selection.G, colors->widget_selection.B, colors->widget_selection.A);
+                                                 fonts->drawcharleft( screen, *str, x1, ypos + 2 + (currentline-firstlinevisible) * (sh+sp),colors->widget_text_selected.R, colors->widget_text_selected.G, colors->widget_text_selected.B, colors->widget_text_selected.A);
+                                          }
                                    }
                                    x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
                             }
@@ -351,9 +621,17 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
 
                             ++str;
+                            currentpositioniinstring++;
                      }
 
-                     if(str == cursor)
+                     // TO BE TESTED
+                     if (str == cursor)
+                     {
+                            currentlinecursor = currentline;
+                     }
+                     // END TO BE TESTED
+
+                     if(has_focus && (str == cursor) && (currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                      {
                             vlineRGBA( screen, x1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
                             vlineRGBA( screen, x1+1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
@@ -376,7 +654,7 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
 
                      const char *str = content[0].c_str() + scrollX;
                      const char *cursor = content[0].c_str() + cursor_posX;
-                     unsigned int x1 = xpos + 5;
+                     unsigned int x1 = xpos + 2;
 
                      fonts->setcurrentfont( fonts->widget_text_disable.name );
                      fonts->setmodifiertypo( fonts->widget_text_disable.typo );
@@ -391,7 +669,14 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                      while (*str)
                      {
 
-                            if(has_focus && str == cursor)
+                            // TO BE TESTED
+                            if (str == cursor)
+                            {
+                                   currentlinecursor = currentline;
+                            }
+                            // END TO BE TESTED
+
+                            if(has_focus && str == cursor &&  (currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                             {
                                    vlineRGBA( screen, x1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
                                    vlineRGBA( screen, x1+1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
@@ -448,7 +733,14 @@ void MultiLineTextBoxWidget::render( SDL_Surface *screen, ColorEngine *colors, F
                             ++str;
                      }
 
-                     if(str == cursor)
+                     // TO BE TESTED
+                     if (str == cursor)
+                     {
+                            currentlinecursor = currentline;
+                     }
+                     // END TO BE TESTED
+
+                     if((str == cursor) && (currentline>=firstlinevisible) && (currentline<firstlinevisible+nblinevisible))
                      {
                             vlineRGBA( screen, x1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
                             vlineRGBA( screen, x1+1, ypos + 1+ (currentline-firstlinevisible) * (sh+sp), ypos + sh + 1+ (currentline-firstlinevisible) * (sh+sp), colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);

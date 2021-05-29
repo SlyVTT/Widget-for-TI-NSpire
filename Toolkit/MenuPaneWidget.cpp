@@ -35,7 +35,13 @@ MenuPaneWidget::MenuPaneWidget(std::string l, unsigned int x, unsigned int y, un
 
               for (auto& c : children )
               {
-                     unsigned int currentwidgetwidth = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+                     unsigned int currentwidgetwidth;
+
+                     if (c->getwidgettype()=="MenuItem")
+                            currentwidgetwidth = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+                     else
+                            currentwidgetwidth =10;
+
                      if ( currentwidgetwidth > tempw) tempw = currentwidgetwidth;
                      //tempw = 50;
                      temph += 14;
@@ -147,10 +153,14 @@ void MenuPaneWidget::adjust()
 
                      for (auto& c : children )
                      {
-                            int d = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+                            unsigned int currentwidgetwidth;
 
-                            if ( d > tempw)
-                                   tempw = d;
+                            if (c->getwidgettype()=="MenuItem")
+                                   currentwidgetwidth = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+                            else
+                                   currentwidgetwidth =10;
+
+                            if ( currentwidgetwidth > tempw) tempw = currentwidgetwidth;
                             //tempw = 50;
                             temph += 14;
                      }
@@ -214,11 +224,15 @@ void MenuPaneWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
                                           dynamic_cast<MenuPaneWidget*>(parent->getparent())->unsetchilddropped();
                                           dynamic_cast<MenuPaneWidget*>(parent->getparent())->undrop();
                                    }
-
               }
-
-
        }
+ /*      else
+       {
+              // DEBUG : test to see if it actually works
+              for (auto& c : children )
+                     c->logic( mouse, keyboard );
+       }
+*/
 }
 
 
@@ -234,12 +248,18 @@ void MenuPaneWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngin
 
        for (auto& c : children )
        {
-              int d = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
-              if ( d > tempw )
-                     tempw = d;
+              unsigned int currentwidgetwidth;
+
+              if (c->getwidgettype()=="MenuItem")
+                     currentwidgetwidth = dynamic_cast<MenuItemWidget*>(c)->getfulltextwidth();
+              else
+                     currentwidgetwidth =10;
+
+              if ( currentwidgetwidth > tempw) tempw = currentwidgetwidth;
               //tempw = 50;
               temph += 14;
        }
+
 
        width = tempw+5;
        height = temph;
