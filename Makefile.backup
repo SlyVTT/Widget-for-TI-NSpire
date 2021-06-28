@@ -8,7 +8,7 @@ GENZEHN = genzehn
 
 GCCFLAGS = -Wall -W -marm -Wunused-variable -Wunused-parameter -ffunction-sections -fdata-sections  -fno-exceptions
 LDFLAGS = -Wl,--gc-sections
-ZEHNFLAGS = --name "SimpleTextEditor2" --compress
+ZEHNFLAGS = --name "Widgets"
 ifeq ($(DEBUG),FALSE)
 	GCCFLAGS += -Os
 else
@@ -18,7 +18,7 @@ endif
 OBJS = $(patsubst %.c, %.o, $(shell find . -name \*.c))
 OBJS += $(patsubst %.cpp, %.o, $(shell find . -name \*.cpp))
 OBJS += $(patsubst %.S, %.o, $(shell find . -name \*.S))
-EXE = SimpleTextEditor2
+EXE = Widgets
 
 DISTDIR = .
 vpath %.tns $(DISTDIR)
