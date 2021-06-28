@@ -186,6 +186,6 @@ void IconBarWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine
         }
 
         for (auto& c : children )
-                c->render( screen, colors, fonts );
+            c->render( screen, colors, fonts );
     }
 }

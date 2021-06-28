@@ -339,8 +339,17 @@ Widget::Widget( std::string l, unsigned int x, unsigned int y, unsigned int w, u
 
 Widget::~Widget()
 {
+    for(auto& c : children)
+        delete c;
+
     children.clear();
+
+    for (auto& d : popupchildren )
+        delete d;
+
+    popupchildren.clear();
 }
+
 
 void Widget::adjust()
 {
@@ -533,7 +542,7 @@ void Widget::setparent( Widget *p )
 bool Widget::cursoron( CursorTask *mouse )
 {
     return ((unsigned int) mouse->x >= xpos)
-                    && ((unsigned int) mouse->y >= ypos)
-                    && ((unsigned int) mouse->x <= xpos+width)
-                    && ((unsigned int) mouse->y <= ypos+height);
+           && ((unsigned int) mouse->y >= ypos)
+           && ((unsigned int) mouse->x <= xpos+width)
+           && ((unsigned int) mouse->y <= ypos+height);
 }

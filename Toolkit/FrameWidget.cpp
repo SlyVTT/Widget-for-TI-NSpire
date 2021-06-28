@@ -1,20 +1,20 @@
 #include "FrameWidget.h"
 
-    FrameWidget::FrameWidget()
-    {
-        widgettype =  "Frame";
-        //strcpy( widgettype, (char*) "Frame");
-    };
+FrameWidget::FrameWidget()
+{
+    widgettype =  "Frame";
+    //strcpy( widgettype, (char*) "Frame");
+};
 
-    FrameWidget::FrameWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        widgettype =  "Frame";
-        //strcpy( widgettype, (char*) "Frame");
-    };
+FrameWidget::FrameWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+{
+    widgettype =  "Frame";
+    //strcpy( widgettype, (char*) "Frame");
+};
 
-    FrameWidget::~FrameWidget()
-     {
-     };
+FrameWidget::~FrameWidget()
+{
+};
 
 unsigned int FrameWidget::getuseablexpos()
 {
@@ -139,7 +139,7 @@ void FrameWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *
             //We check if the titel can be written in the titlebar (with 5px on each side of the title
             drawablecharlabel = fonts->assertstringlength( label, width-5-5 );
 
-             if (drawablecharlabel!=0)
+            if (drawablecharlabel!=0)
             {
                 int sl = fonts->getstringwidth( drawablelabel );
                 int sh = fonts->getstringheight( drawablelabel );

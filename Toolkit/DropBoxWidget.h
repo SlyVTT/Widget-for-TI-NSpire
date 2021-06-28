@@ -12,7 +12,7 @@ public:
 
     DropBoxWidget();
     DropBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-    virtual ~DropBoxWidget() {};
+    virtual ~DropBoxWidget();
 
 
     virtual void adjust() override;

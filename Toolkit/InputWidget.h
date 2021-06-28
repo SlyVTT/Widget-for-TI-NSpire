@@ -8,29 +8,29 @@
 class InputWidget : public Widget
 {
 public:
-       InputWidget();
-       InputWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-       virtual ~InputWidget();
+    InputWidget();
+    InputWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~InputWidget();
 
-       virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
-       virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
-       virtual std::string getcontent();
-       virtual void setcontent(std::string str);
+    virtual std::string getcontent();
+    virtual void setcontent(std::string str);
 
 private:
-       void updateScroll();
+    void updateScroll();
 
-       std::string text = " ";
+    std::string text = "";
 
-       unsigned int cursor_pos = 0;
-       unsigned int scroll = 0;
-       unsigned int mousex,mousey;
-       bool mouses;
+    unsigned int cursor_pos = 0;
+    unsigned int scroll = 0;
+    unsigned int mousex,mousey;
+    bool mouses;
 
-       FontEngine *nfontwidget = nullptr;
+    FontEngine *nfontwidget = nullptr;
 
-       bool key_hold_down = false;
+    bool key_hold_down = false;
 };
 
 #endif // INPUTWIDGET_H

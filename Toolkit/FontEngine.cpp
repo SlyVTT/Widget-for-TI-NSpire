@@ -30,13 +30,14 @@ FontEngine::~FontEngine()
     //dtor
     for (auto& c : FontCollection )
     {
-        for(auto& f : c->Font)
+        for(auto& d : c->Font)
         {
-            free( f->chardata );
+            free( d->chardata );
         }
         delete c;
     }
-    //delete FontCollection;
+
+    FontCollection.clear();
 }
 
 FontEngine::FontData* FontEngine::loadfontfromfilepointer( std::string filename )
@@ -378,7 +379,7 @@ unsigned int FontEngine::assertstringlength( char *str, unsigned int width )
     else
     {
         unsigned int current_length=0;
-        for (unsigned int i=0;i<nbchartotal;i++)
+        for (unsigned int i=0; i<nbchartotal; i++)
         {
             current_length += getcharwidth(str[i]);
             if (current_length >= width) return i;
@@ -400,7 +401,7 @@ unsigned int FontEngine::assertstringlength( std::string str, unsigned int width
     else
     {
         unsigned int current_length=0;
-        for (unsigned int i=0;i<nbchartotal;i++)
+        for (unsigned int i=0; i<nbchartotal; i++)
         {
             current_length += getcharwidth(str[i]);
             if (current_length >= width) return i;
@@ -428,7 +429,7 @@ unsigned int FontEngine::assertstringlength( std::string str, unsigned int width
     else
     {
         unsigned int current_length = 0;
-        for (unsigned int i=0;i<nbchartotal;i++)
+        for (unsigned int i=0; i<nbchartotal; i++)
         {
             current_length += getcharwidth(str[i]);
             if (current_length >= width) return i;

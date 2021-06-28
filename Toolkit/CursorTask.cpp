@@ -1,6 +1,6 @@
 #include "CursorTask.h"
 
-#include <libndls.h>
+//#include <libndls.h>
 #include <algorithm>
 
 #include <SDL/SDL_gfxPrimitives.h>
@@ -48,45 +48,45 @@ CursorTask::~CursorTask()
 }
 
 
-     void CursorTask::showmouse()
-    {
-        show=true;
-    };
+void CursorTask::showmouse()
+{
+    show=true;
+};
 
 
-         void CursorTask::hidemouse()
-    {
-        show=false;
-    };
+void CursorTask::hidemouse()
+{
+    show=false;
+};
 
 
-         bool CursorTask::ismousevisible()
-    {
-        return show;
-    };
+bool CursorTask::ismousevisible()
+{
+    return show;
+};
 
-         bool CursorTask::ismouseevent()
-    {
-        return mouseevent;
-    };
-
-
-         bool CursorTask::ismousemoveevent()
-    {
-        return mousemoveevent;
-    };
+bool CursorTask::ismouseevent()
+{
+    return mouseevent;
+};
 
 
-         bool CursorTask::ismouseclickevent()
-    {
-        return mouseclickevent;
-    };
+bool CursorTask::ismousemoveevent()
+{
+    return mousemoveevent;
+};
 
 
-         bool CursorTask::ismousereleaseevent()
-    {
-        return mousereleaseevent;
-    };
+bool CursorTask::ismouseclickevent()
+{
+    return mouseclickevent;
+};
+
+
+bool CursorTask::ismousereleaseevent()
+{
+    return mousereleaseevent;
+};
 
 
 void CursorTask::setcursortype( CursorTask::cursortype type )

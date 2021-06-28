@@ -10,270 +10,270 @@
 
 InputWidget::InputWidget()
 {
-       widgettype = "Input";
-       //strcpy( widgettype, (char*) "Input");
+    widgettype = "Input";
+    //strcpy( widgettype, (char*) "Input");
 };
 
 InputWidget::InputWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
 {
-       widgettype = "Input";
-       //strcpy( widgettype, (char*) "Input");
+    widgettype = "Input";
+    //strcpy( widgettype, (char*) "Input");
 };
 
 InputWidget::~InputWidget()
 {
-
+    text.clear();
 };
 
 
 std::string InputWidget::getcontent()
 {
-       return text;
+    return text;
 }
 
 void InputWidget::setcontent(std::string str)
 {
-       text = str;
-       cursor_pos = 0;
-       scroll = 0;
+    text = str;
+    cursor_pos = 0;
+    scroll = 0;
 }
 
 
 void InputWidget::logic( CursorTask *mouse, KeyboardTask *keyboard )
 {
 
-       if (is_enabled && is_visible)
-       {
-              is_hovering = cursoron( mouse );
-              mousex=mouse->x;
-              mousey=mouse->y;
-              mouses=mouse->state;
+    if (is_enabled && is_visible)
+    {
+        is_hovering = cursoron( mouse );
+        mousex=mouse->x;
+        mousey=mouse->y;
+        mouses=mouse->state;
 
-              if(is_hovering)
-              {
-                     if (hoverfunction)
-                            hoverfunction( (char*) "test" );
-              }
+        if(is_hovering)
+        {
+            if (hoverfunction)
+                hoverfunction( (char*) "test" );
+        }
 
-              if ( is_hovering && (mouse->state || keyboard->kbSCRATCH) && !has_focus )
-              {
-                     focus( this );
-              }
+        if ( is_hovering && (mouse->state || keyboard->kbSCRATCH) && !has_focus )
+        {
+            focus( this );
+        }
 
-              if( (mouse->state || keyboard->kbSCRATCH) && is_hovering )
-              {
-                     nfontwidget->setcurrentfont( nfontwidget->widget_text_disable.name );
-                     nfontwidget->setmodifiertypo( nfontwidget->widget_text_disable.typo );
-                     nfontwidget->setmodifierunder( nfontwidget->widget_text_disable.under );
-                     nfontwidget->setmodifierstrike( nfontwidget->widget_text_disable.strike );
+        if( (mouse->state || keyboard->kbSCRATCH) && is_hovering )
+        {
+            nfontwidget->setcurrentfont( nfontwidget->widget_text_disable.name );
+            nfontwidget->setmodifiertypo( nfontwidget->widget_text_disable.typo );
+            nfontwidget->setmodifierunder( nfontwidget->widget_text_disable.under );
+            nfontwidget->setmodifierstrike( nfontwidget->widget_text_disable.strike );
 
-                     unsigned int x_rel = mousex - xpos - 2;
-                     const char *str = text.c_str() + scroll;
-                     unsigned int pos = scroll;
+            unsigned int x_rel = mousex - xpos - 2;
+            const char *str = text.c_str() + scroll;
+            unsigned int pos = scroll;
 
-                     while(x_rel > 0 && *str)
-                     {
-                            unsigned int temp = nfontwidget->getcharwidth( (char) *str++ );
-                            x_rel -= temp;
-                            ++pos;
-                     }
+            while(x_rel > 0 && *str)
+            {
+                unsigned int temp = nfontwidget->getcharwidth( (char) *str++ );
+                x_rel -= temp;
+                ++pos;
+            }
 
-                     cursor_pos = pos;
+            cursor_pos = pos;
 
-              }
+        }
 
-              if(!has_focus)
-                     return;
+        if(!has_focus)
+            return;
 
-              char c = keyboard->asciiget();
-              if(c >= 0x80 || c == '\n')
-                     return;
+        char c = keyboard->asciiget();
+        if(c >= 0x80 || c == '\n')
+            return;
 
 
-              if (key_hold_down)
-              {
-                     key_hold_down = any_key_pressed();
-              }
-              else if (keyboard->kbCTRL && keyboard->kbLEFT)
-              {
-                     cursor_pos = 0;
-                     updateScroll();
-              }
-              else if (keyboard->kbCTRL && keyboard->kbRIGHT)
-              {
-                     cursor_pos = text.length();
-                     updateScroll();
-              }
-              else if (keyboard->kbLEFT)
-              {
-                     if(cursor_pos > 0) --cursor_pos;
-                     updateScroll();
-              }
-              else if (keyboard->kbRIGHT)
-              {
-                     if(cursor_pos < text.length()) ++cursor_pos;
-                     updateScroll();
-              }
+        if (key_hold_down)
+        {
+            key_hold_down = any_key_pressed();
+        }
+        else if (keyboard->kbCTRL && keyboard->kbLEFT)
+        {
+            cursor_pos = 0;
+            updateScroll();
+        }
+        else if (keyboard->kbCTRL && keyboard->kbRIGHT)
+        {
+            cursor_pos = text.length();
+            updateScroll();
+        }
+        else if (keyboard->kbLEFT)
+        {
+            if(cursor_pos > 0) --cursor_pos;
+            updateScroll();
+        }
+        else if (keyboard->kbRIGHT)
+        {
+            if(cursor_pos < text.length()) ++cursor_pos;
+            updateScroll();
+        }
 
-              static char old_char = 0;
-              if(c != old_char && c != 0)
-              {
-                     if(c == '\b')
-                     {
-                            if(cursor_pos > 0)
-                            {
-                                   text.erase(text.begin() + (cursor_pos - 1));
-                                   --cursor_pos;
+        static char old_char = 0;
+        if(c != old_char && c != 0)
+        {
+            if(c == '\b')
+            {
+                if(cursor_pos > 0)
+                {
+                    text.erase(text.begin() + (cursor_pos - 1));
+                    --cursor_pos;
 
-                                   updateScroll();
-                            }
-                     }
-                     else
-                     {
-                            text.insert(text.begin() + cursor_pos, c);
-                            ++cursor_pos;
+                    updateScroll();
+                }
+            }
+            else
+            {
+                text.insert(text.begin() + cursor_pos, c);
+                ++cursor_pos;
 
-                            updateScroll();
-                     }
-              }
+                updateScroll();
+            }
+        }
 
-              old_char = c;
+        old_char = c;
 
-              if(!any_key_pressed())
-              {
-                     old_char = 0;
-              }
+        if(!any_key_pressed())
+        {
+            old_char = 0;
+        }
 
-              for (auto& c : children ) c->logic( mouse, keyboard );
+        for (auto& c : children ) c->logic( mouse, keyboard );
 
-       }
+    }
 }
 
 
 void InputWidget::render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts )
 {
-       if (is_visible)
-       {
-              // if the current font has not been defined for the widget, we use the current fontengine
-              if (nfontwidget ==nullptr)
-                     nfontwidget = fonts;
+    if (is_visible)
+    {
+        // if the current font has not been defined for the widget, we use the current fontengine
+        if (nfontwidget ==nullptr)
+            nfontwidget = fonts;
 
-              if (is_enabled)
-              {
-                     roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
+        if (is_enabled)
+        {
+            roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_enable.R, colors->widget_filling_enable.G, colors->widget_filling_enable.B, colors->widget_filling_enable.A);
 
-                     if (!is_hovering)
-                     {
-                            roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                     }
-                     else
-                     {
-                            roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
-                     }
+            if (!is_hovering)
+            {
+                roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+            }
+            else
+            {
+                roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_cursoron.R, colors->widget_border_cursoron.G, colors->widget_border_cursoron.B, colors->widget_border_cursoron.A);
+            }
 
-                     const char *str = text.c_str() + scroll;
-                     const char *cursor = text.c_str() + cursor_pos;
-                     unsigned int x1 = xpos + 5;
+            const char *str = text.c_str() + scroll;
+            const char *cursor = text.c_str() + cursor_pos;
+            unsigned int x1 = xpos + 5;
 
-                     fonts->setcurrentfont( fonts->widget_text_enable.name );
-                     fonts->setmodifiertypo( fonts->widget_text_enable.typo );
-                     fonts->setmodifierunder( fonts->widget_text_enable.under );
-                     fonts->setmodifierstrike( fonts->widget_text_enable.strike );
-                     char* tpstr = (char*) str;
-                     int sh = fonts->getstringheight( tpstr );
+            fonts->setcurrentfont( fonts->widget_text_enable.name );
+            fonts->setmodifiertypo( fonts->widget_text_enable.typo );
+            fonts->setmodifierunder( fonts->widget_text_enable.under );
+            fonts->setmodifierstrike( fonts->widget_text_enable.strike );
+            char* tpstr = (char*) str;
+            int sh = fonts->getstringheight( tpstr );
 
-                     while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
-                     {
-                            if(has_focus && str == cursor)
-                            {
-                                   vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                                   vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                                   x1+=2;
-                            }
+            while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
+            {
+                if(has_focus && str == cursor)
+                {
+                    vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                    x1+=2;
+                }
 
-                            fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
-                            x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
+                fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_enable.R, colors->widget_text_enable.G, colors->widget_text_enable.B, colors->widget_text_enable.A );
+                x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
 
-                            ++str;
-                     }
+                ++str;
+            }
 
-                     if(str == cursor)
-                     {
-                            vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                            vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
-                            x1+=2;
-                     }
-              }
-              else
-              {
-                     roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
+            if(str == cursor)
+            {
+                vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_enable.R, colors->widget_border_enable.G, colors->widget_border_enable.B, colors->widget_border_enable.A);
+                x1+=2;
+            }
+        }
+        else
+        {
+            roundedBoxRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_filling_disable.R, colors->widget_filling_disable.G, colors->widget_filling_disable.B, colors->widget_filling_disable.A);
 
-                     roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+            roundedRectangleRGBA( screen, xpos, ypos, xpos+width, ypos+height, 3, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
 
-                     const char *str = text.c_str() + scroll;
-                     const char *cursor = text.c_str() + cursor_pos;
-                     unsigned int x1 = xpos + 5;
+            const char *str = text.c_str() + scroll;
+            const char *cursor = text.c_str() + cursor_pos;
+            unsigned int x1 = xpos + 5;
 
-                     fonts->setcurrentfont( fonts->widget_text_disable.name );
-                     fonts->setmodifiertypo( fonts->widget_text_disable.typo );
-                     fonts->setmodifierunder( fonts->widget_text_disable.under );
-                     fonts->setmodifierstrike( fonts->widget_text_disable.strike );
+            fonts->setcurrentfont( fonts->widget_text_disable.name );
+            fonts->setmodifiertypo( fonts->widget_text_disable.typo );
+            fonts->setmodifierunder( fonts->widget_text_disable.under );
+            fonts->setmodifierstrike( fonts->widget_text_disable.strike );
 
-                     char* tpstr = (char*) str;
-                     int sh = fonts->getstringheight( tpstr );
-
-
-                     while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
-                     {
-                            if(has_focus && str == cursor)
-                            {
-                                   vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
-                                   vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
-                                   x1+=2;
-                            }
-
-                            fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
-                            x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
-
-                            ++str;
-                     }
-
-                     if(str == cursor)
-                     {
-                            vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
-                            vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
-                            x1+=2;
-                     }
+            char* tpstr = (char*) str;
+            int sh = fonts->getstringheight( tpstr );
 
 
-              }
+            while(*str && x1 - xpos + fonts->getcharwidth( (char) *str) < width)
+            {
+                if(has_focus && str == cursor)
+                {
+                    vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+                    vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+                    x1+=2;
+                }
 
-              for (auto& c : children )
-                     c->render( screen, colors, fonts );
-       }
+                fonts->drawcharleft( screen, *str, x1, ypos + height/2 - sh/2, colors->widget_text_disable.R, colors->widget_text_disable.G, colors->widget_text_disable.B, colors->widget_text_disable.A );
+                x1 += fonts->getcharwidth( (char) *str ) + fonts->gethspacing();
+
+                ++str;
+            }
+
+            if(str == cursor)
+            {
+                vlineRGBA( screen, x1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+                vlineRGBA( screen, x1+1, ypos + height/4, ypos + 3*height/4, colors->widget_border_disable.R, colors->widget_border_disable.G, colors->widget_border_disable.B, colors->widget_border_disable.A);
+                x1+=2;
+            }
+
+
+        }
+
+        for (auto& c : children )
+            c->render( screen, colors, fonts );
+    }
 }
 
 
 void InputWidget::updateScroll()
 {
-       if(scroll != 0 && cursor_pos <= scroll)
-              --scroll;
+    if(scroll != 0 && cursor_pos <= scroll)
+        --scroll;
 
-       if(cursor_pos <= scroll)
-              return;
+    if(cursor_pos <= scroll)
+        return;
 
-       nfontwidget->setcurrentfont( nfontwidget->widget_text_disable.name );
-       nfontwidget->setmodifiertypo( nfontwidget->widget_text_disable.typo );
-       nfontwidget->setmodifierunder( nfontwidget->widget_text_disable.under );
-       nfontwidget->setmodifierstrike( nfontwidget->widget_text_disable.strike );
+    nfontwidget->setcurrentfont( nfontwidget->widget_text_disable.name );
+    nfontwidget->setmodifiertypo( nfontwidget->widget_text_disable.typo );
+    nfontwidget->setmodifierunder( nfontwidget->widget_text_disable.under );
+    nfontwidget->setmodifierstrike( nfontwidget->widget_text_disable.strike );
 
-       const char *str = text.c_str() + scroll;
-       unsigned int cur_x = 0;
-       unsigned int len = cursor_pos - scroll;
+    const char *str = text.c_str() + scroll;
+    unsigned int cur_x = 0;
+    unsigned int len = cursor_pos - scroll;
 
-       while(len--)
-              cur_x += nfontwidget->getcharwidth( *str++ ) + nfontwidget->gethspacing();
+    while(len--)
+        cur_x += nfontwidget->getcharwidth( *str++ ) + nfontwidget->gethspacing();
 
-       if(cur_x >= width - 5)
-              ++scroll;
+    if(cur_x >= width - 5)
+        ++scroll;
 }

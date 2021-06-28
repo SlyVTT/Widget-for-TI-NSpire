@@ -24,7 +24,7 @@ public:
     virtual bool getmenubar();
     virtual bool geticonbar();
 
-    // These methods must be override cause window geometry is a bit different with the title bar
+    // These methods must be overriden cause window geometry is a bit different with the title bar
     virtual unsigned int getuseablexpos() override;
     virtual unsigned int getuseableypos() override;
     virtual unsigned int getuseablewidth() override;

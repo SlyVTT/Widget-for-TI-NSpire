@@ -1,36 +1,36 @@
 #include "SliderWidget.h"
 
-    SliderWidget::SliderWidget()
-    {
-        widgettype =  "Slider";
-        //strcpy( widgettype, (char*) "Slider");
-    };
+SliderWidget::SliderWidget()
+{
+    widgettype =  "Slider";
+    //strcpy( widgettype, (char*) "Slider");
+};
 
-    SliderWidget::SliderWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
-    {
-        length_pixels = w-8;
-        widgettype =  "Slider";
-        //strcpy( widgettype, (char*) "Slider");
-    };
+SliderWidget::SliderWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p ) : Widget( l, x, y, w, h, p )
+{
+    length_pixels = w-8;
+    widgettype =  "Slider";
+    //strcpy( widgettype, (char*) "Slider");
+};
 
-    SliderWidget::~SliderWidget()
-    {
+SliderWidget::~SliderWidget()
+{
 
-    };
-
-
-    void SliderWidget::setrangeint( int minvalue, int maxvalue)
-    {
-        intmin = minvalue;
-        intmax=maxvalue;
-    };
+};
 
 
-    void SliderWidget::setrangefloat( float minvalue, float maxvalue )
-    {
-        floatmin = minvalue;
-        floatmax=maxvalue;
-    };
+void SliderWidget::setrangeint( int minvalue, int maxvalue)
+{
+    intmin = minvalue;
+    intmax=maxvalue;
+};
+
+
+void SliderWidget::setrangefloat( float minvalue, float maxvalue )
+{
+    floatmin = minvalue;
+    floatmax=maxvalue;
+};
 
 
 int SliderWidget::getvalueint()

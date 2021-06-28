@@ -6,27 +6,28 @@
 
 class SplashScreenWidget : public Widget
 {
-    public:
-        SplashScreenWidget();
-        SplashScreenWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
-        virtual ~SplashScreenWidget();
+public:
+    SplashScreenWidget();
+    SplashScreenWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    virtual ~SplashScreenWidget();
 
-        virtual void assignimage(std::string);
+    virtual void assignimage( std::string filename );
 
-        virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
-        virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts );
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard );
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts );
 
-        virtual void setduration( Uint32 duration );
-        virtual void start( void );
+    virtual void setduration( Uint32 duration );    // duration in ms
+    virtual void start( void );
 
-    protected:
+protected:
 
-        Uint32 timerstart = 0;
-        Uint32 currenttimer = 0;
-        Uint32 durationsplash = 0;
+    Uint32 timerstart = 0;
+    Uint32 currenttimer = 0;
+    Uint32 durationsplash = 0;
 
-    private:
-        SDL_Surface *image = nullptr;
+private:
+    SDL_Surface *image = nullptr;
+    std::string filereference;
 };
 
 #endif // SPLASHSCREENWIDGET_H

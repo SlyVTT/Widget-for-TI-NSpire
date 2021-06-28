@@ -13,16 +13,16 @@ public:
     virtual ~MiniButtonWidget();
 
 
-enum typesymbol
-{
-    Bottom_Arrow = 0,
-    Up_Arrow = 1,
-    Left_Arrow = 2,
-    Right_Arrow = 3,
-    Close_Symbol = 4,
-    Question_Symbol = 5,
-    Exclamation_Symbol = 6
-};
+    enum typesymbol
+    {
+        Bottom_Arrow = 0,
+        Up_Arrow = 1,
+        Left_Arrow = 2,
+        Right_Arrow = 3,
+        Close_Symbol = 4,
+        Question_Symbol = 5,
+        Exclamation_Symbol = 6
+    };
 
     virtual bool ispressed() override;
     virtual bool isticked( void );

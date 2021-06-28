@@ -109,114 +109,114 @@ class CheckBoxWidget : public ButtonWidget
 {
 public:
 
-       /// Simple constructor.
-       ///
-       /// Widget properties are set to default, nothing more.
-       /// Simple constructor, will need specific properties assignement later.
-       /// @param None
-       /// @returns Nothing
-       /// @see ButtonWidget() or Widget()
-       CheckBoxWidget();
+    /// Simple constructor.
+    ///
+    /// Widget properties are set to default, nothing more.
+    /// Simple constructor, will need specific properties assignement later.
+    /// @param None
+    /// @returns Nothing
+    /// @see ButtonWidget() or Widget()
+    CheckBoxWidget();
 
 
-       /// Advanced constructor.
-       ///
-       /// Widget properties are set with parameters values given at call.
-       /// @param l : text string (char*) that will be used as the widget textual content
-       /// @param x : position x in pixels relatively to the parent widget usable drawspace
-       /// @param y : position y in pixels relatively to the parent widget usable drawspace
-       /// @param w : width in pixel of the widget
-       /// @param h : height in pixel of the widget
-       /// @param p : pointer type to a Widget* to create a link with the parent widget (if any).
-       /// @note *p* should be set to *nullptr* if no parent exists
-       /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
-       /// @returns Nothing
-       /// @see ButtonWidget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
-       CheckBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
+    /// Advanced constructor.
+    ///
+    /// Widget properties are set with parameters values given at call.
+    /// @param l : text string (char*) that will be used as the widget textual content
+    /// @param x : position x in pixels relatively to the parent widget usable drawspace
+    /// @param y : position y in pixels relatively to the parent widget usable drawspace
+    /// @param w : width in pixel of the widget
+    /// @param h : height in pixel of the widget
+    /// @param p : pointer type to a Widget* to create a link with the parent widget (if any).
+    /// @note *p* should be set to *nullptr* if no parent exists
+    /// @note *p* can be omitted (i.e. set to *nullptr*) and parent-children link can be created with a call to the Widget::addchild() method of the parent Widget.
+    /// @returns Nothing
+    /// @see ButtonWidget( char*, int, int, int, int, Widget* ) or Widget( char*, int, int, int, int, Widget* )
+    CheckBoxWidget( std::string l, unsigned int x, unsigned int y, unsigned int w, unsigned int h, Widget *p );
 
 
-       /// Object destructor
-       ///
-       /// Object destructor, remove all trace of the object and free allocated memory
-       /// @param None
-       /// @returns Nothing
-       /// @see ~Widget()
-       virtual ~CheckBoxWidget();
+    /// Object destructor
+    ///
+    /// Object destructor, remove all trace of the object and free allocated memory
+    /// @param None
+    /// @returns Nothing
+    /// @see ~Widget()
+    virtual ~CheckBoxWidget();
 
 
-       /// Enumerator for CheckBoxWidget style.
-       ///
-       /// Gives the style of CheckBoxWidget (of the tickmark).
-       /// *Square_Tick* style represents the tick by a rounded square
-       /// *Cross_Tick* style represents the tick by a X / Cross
-       enum tick
-       {
-              Square_Tick = 0,
-              Cross_Tick = 1
-       };
+    /// Enumerator for CheckBoxWidget style.
+    ///
+    /// Gives the style of CheckBoxWidget (of the tickmark).
+    /// *Square_Tick* style represents the tick by a rounded square
+    /// *Cross_Tick* style represents the tick by a X / Cross
+    enum tick
+    {
+        Square_Tick = 0,
+        Cross_Tick = 1
+    };
 
 
-       /// Invert the CheckBox status
-       ///
-       /// Invert the CheckBoxWidget status, if unticked --> ticked and if ticked --> unticked
-       /// @param None
-       /// @returns None
-       /// @note It changes the internal property *is_ticked* of the CheckBoxWidget
-       virtual void invert();
+    /// Invert the CheckBox status
+    ///
+    /// Invert the CheckBoxWidget status, if unticked --> ticked and if ticked --> unticked
+    /// @param None
+    /// @returns None
+    /// @note It changes the internal property *is_ticked* of the CheckBoxWidget
+    virtual void invert();
 
 
-       /// Is the CheckBox ticked ?
-       ///
-       /// Gives the status of the CheckBoxWidget (ticked or not).
-       /// @param None
-       /// @returns Boolean value : *true* if the CheckBox is ticked, *false* otherwise
-       virtual bool isticked( void );
+    /// Is the CheckBox ticked ?
+    ///
+    /// Gives the status of the CheckBoxWidget (ticked or not).
+    /// @param None
+    /// @returns Boolean value : *true* if the CheckBox is ticked, *false* otherwise
+    virtual bool isticked( void );
 
 
-       /// The CheckBoxWidget logic mechanism
-       ///
-       /// Method to be launched to drive the the mechanics behind the CheckBoxWidget behavior.
-       /// @param mouse : pointer to a CursorTask handler object serving at passing the mouse (Touchpad) state and position
-       /// @param keyboard : pointer to a KeyboardTask handler object serving at passing the keyboard state
-       /// @returns Nothing, but will launch the logic() method of all the widgets belonging to chidren (vector<Widget*>)
-       /// @note This method overrides Widget::logic( CursorTask*, KeyboardTask*)
-       /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->logic() from the WidgetApplication class
-       /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
-       /// @warning Before calling the logic method, a mouse handler and a keyboard handler must be instancied and properly updated through their respective logic() methods. This is normally done by using the WidgetApplication class.
-       virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
+    /// The CheckBoxWidget logic mechanism
+    ///
+    /// Method to be launched to drive the the mechanics behind the CheckBoxWidget behavior.
+    /// @param mouse : pointer to a CursorTask handler object serving at passing the mouse (Touchpad) state and position
+    /// @param keyboard : pointer to a KeyboardTask handler object serving at passing the keyboard state
+    /// @returns Nothing, but will launch the logic() method of all the widgets belonging to chidren (vector<Widget*>)
+    /// @note This method overrides Widget::logic( CursorTask*, KeyboardTask*)
+    /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->logic() from the WidgetApplication class
+    /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
+    /// @warning Before calling the logic method, a mouse handler and a keyboard handler must be instancied and properly updated through their respective logic() methods. This is normally done by using the WidgetApplication class.
+    virtual void logic( CursorTask *mouse, KeyboardTask *keyboard ) override;
 
 
 
-       /// The CheckBoxWidget render method.
-       ///
-       /// Method to be launched to draw the widget.
-       /// @param screen : pointer to a SDL_Surface object where we would like to draw the widget
-       /// @param colors : pointer to a ColorEngine object giving all the color options to be used (theme) for drawing the widget
-       /// @param fonts : pointer to a FontEngine object giving all the fonts options to be used (theme) for drawing the widget
-       /// @returns Nothing, but will launch the render() method of all the Widgets belonging to chidren (vector<Widget*>)
-       /// @note This method overrides Widget::render( SDL_Surface*, ColorEngine*, FontEngine*)
-       /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->render() from the WidgetApplication class.
-       /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
-       /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
-       virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
+    /// The CheckBoxWidget render method.
+    ///
+    /// Method to be launched to draw the widget.
+    /// @param screen : pointer to a SDL_Surface object where we would like to draw the widget
+    /// @param colors : pointer to a ColorEngine object giving all the color options to be used (theme) for drawing the widget
+    /// @param fonts : pointer to a FontEngine object giving all the fonts options to be used (theme) for drawing the widget
+    /// @returns Nothing, but will launch the render() method of all the Widgets belonging to chidren (vector<Widget*>)
+    /// @note This method overrides Widget::render( SDL_Surface*, ColorEngine*, FontEngine*)
+    /// @note This method is not intended to be used by a direct call from the user, it is normally called through cascaded calls to children->render() from the WidgetApplication class.
+    /// @note Direct call can be used when the Widget is used out of the WidgetApplication 'ecosystem', for example in an application that just use few individual widgets (not recommended cause it may need intensive work from the developper to create adequate working conditions).
+    /// @warning Before calling the render method, a SDL_Surface (i.e. a rendering context) as well as a ColorEngine and FontEngine objects must be properly instancied. This is normally done by using the WidgetApplication class.
+    virtual void render( SDL_Surface *screen, ColorEngine *colors, FontEngine *fonts ) override;
 
 
-       /// CheckBoxWidget style setter.
-       ///
-       /// Gives the style of CheckBoxWidget (of the tickmark)
-       /// @param type refers to one of the styles given by the *tick* enumerator
-       /// @returns Nothing
-       /// @see tick
-       virtual void settype( tick type );
+    /// CheckBoxWidget style setter.
+    ///
+    /// Gives the style of CheckBoxWidget (of the tickmark)
+    /// @param type refers to one of the styles given by the *tick* enumerator
+    /// @returns Nothing
+    /// @see tick
+    virtual void settype( tick type );
 
 
-       /// CheckBoxWidget style getter.
-       ///
-       /// Gives the style of CheckBoxWidget (of the tickmark)
-       /// @param None
-       /// @returns The corresponding type of CheckBoxWidget style
-       /// @see tick
-       virtual tick gettype();
+    /// CheckBoxWidget style getter.
+    ///
+    /// Gives the style of CheckBoxWidget (of the tickmark)
+    /// @param None
+    /// @returns The corresponding type of CheckBoxWidget style
+    /// @see tick
+    virtual tick gettype();
 
 
 
@@ -225,28 +225,28 @@ protected:
 
 private:
 
-       /// Is the CheckBoxWidget pressed ?
-       ///
-       /// Widget properties giving the status of the CheckBox.
-       /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CheckBoxWidget::isticked() method.
-       /// @see CheckBoxWidget::isticked()
-       bool is_ticked = false;
+    /// Is the CheckBoxWidget pressed ?
+    ///
+    /// Widget properties giving the status of the CheckBox.
+    /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CheckBoxWidget::isticked() method.
+    /// @see CheckBoxWidget::isticked()
+    bool is_ticked = false;
 
 
-       /// Is the mouse button hold down ?
-       ///
-       /// Private property, not accessible by the user directly
-       /// @note This boolean should not be adressed directly by the user. It says if the click button is hold down to avoid the CheckBoxWidget to switch on/off at each call to logic();
-       /// @note This is only aiming at serving good behavior of the widget.
-       bool mouse_hold_down = false;
+    /// Is the mouse button hold down ?
+    ///
+    /// Private property, not accessible by the user directly
+    /// @note This boolean should not be adressed directly by the user. It says if the click button is hold down to avoid the CheckBoxWidget to switch on/off at each call to logic();
+    /// @note This is only aiming at serving good behavior of the widget.
+    bool mouse_hold_down = false;
 
 
-       /// The style of the CheckBoxWidget
-       ///
-       /// Private property, not accessible by the user directly
-       /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CheckBoxWidget::gettype() method.
-       /// @see CheckBoxWidget::gettype()
-       tick typetick = Square_Tick;
+    /// The style of the CheckBoxWidget
+    ///
+    /// Private property, not accessible by the user directly
+    /// @note This boolean should not be adressed directly by the user. Status should be obtained by the CheckBoxWidget::gettype() method.
+    /// @see CheckBoxWidget::gettype()
+    tick typetick = Square_Tick;
 };
 
 #endif // CHECKBOXWIDGET_H

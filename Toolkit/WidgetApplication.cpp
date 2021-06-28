@@ -190,21 +190,40 @@ WidgetApplication::~WidgetApplication()
     delete keyboard;
     delete colors;
     delete fonts;
+    delete theme;
 
+    // for each desktopfeature class
     for (auto& c : desktops)
     {
+        // if we have a wallpaper, we free the associated memory
         if (c->background_image != nullptr) SDL_FreeSurface( c->background_image );
+
+        // we free the memory corresponding to the screen and to the depthbuffer
         SDL_FreeSurface( c->screen );
         SDL_FreeSurface( c->depthbuffer );
 
+        //for each widget in the rootwidget of the desktop feature class, we delete it to ask for the destructor
+        for (auto& d : c->rootwidgets)
+        {
+            delete d;
+        }
+
+        // then we clear the collection
         c->rootwidgets.clear();
+
+        //and finally we delete the desktopfeature
+        delete c;
     }
-
-
 
     SDL_Quit();
 
     printf("Exited cleanly\n");
+}
+
+
+void WidgetApplication::putontop( Widget *widgetsearched )
+{
+    dynamic_cast<DesktopWidget*>(currentdesktop->rootwidgets[0])->putontop( widgetsearched );
 }
 
 
@@ -217,14 +236,29 @@ void WidgetApplication::quit()
     delete keyboard;
     delete colors;
     delete fonts;
+    delete theme;
 
+    // for each desktopfeature class
     for (auto& c : desktops)
     {
+        // if we have a wallpaper, we free the associated memory
         if (c->background_image != nullptr) SDL_FreeSurface( c->background_image );
+
+        // we free the memory corresponding to the screen and to the depthbuffer
         SDL_FreeSurface( c->screen );
         SDL_FreeSurface( c->depthbuffer );
 
+        //for each widget in the rootwidget of the desktop feature class, we delete it to ask for the destructor
+        for (auto& d : c->rootwidgets)
+        {
+            delete d;
+        }
+
+        // then we clear the collection
         c->rootwidgets.clear();
+
+        //and finally we delete the desktopfeature
+        delete c;
     }
 
     SDL_Quit();

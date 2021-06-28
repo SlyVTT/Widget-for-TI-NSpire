@@ -64,6 +64,8 @@ public:
     virtual void render( void );
     virtual void renderdepth( void );
 
+    virtual void putontop( Widget *widgetsearched );
+
     virtual void logic( void );
     virtual void logicwithforcedrender( void );
 
